@@ -102,8 +102,8 @@ class UserList extends Component {
     }
 
     handleMessageClick = (user) => {
-        this.setState({ modalVisible: true });
-        console.log('USER', user);
+        // this.setState({ modalVisible: true });
+        this.props.onMessageClick && this.props.onMessageClick(user);
     }
 
     render() {

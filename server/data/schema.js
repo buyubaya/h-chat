@@ -4,8 +4,8 @@ const gql = require('apollo-server-express').gql;
 const typeDefs = gql`
     type Query {
         user: [User]
-        comment: [CommentResponse]
-        userStatus: [UserStatus]
+        comment(roomId: String!): [CommentResponse]
+        userStatus(roomId: String!): [UserStatus]
     }
 
     type Mutation {
@@ -17,6 +17,7 @@ const typeDefs = gql`
         login(userId: String!, password: String!): LoginResponse
         updateUserStatus(userId: String!, userName: String!, groupId: String, isTyping: Boolean): UserStatus
         sendMessage(senderId: String!, senderName: String!, groupId: String!, receiverId: String!, content: String!): MessageReceived
+        inviteToRoom(senderId: String!, senderName: String!, receiverId: String!, roomId: String!): RoomInvited 
     }
 
     type Subscription {
@@ -25,6 +26,7 @@ const typeDefs = gql`
         commentAdded(groupId: String, replyId: String): CommentResponse
         userStatusUpdated(userId: String, groupId: String, isTyping: Boolean): UserStatus
         messageReceived(receiverId: String!): MessageReceived
+        roomInvited(receiverId: String!): RoomInvited
     }
 
     type User {
@@ -76,6 +78,14 @@ const typeDefs = gql`
         receiver: Receiver!
         groupId: String!
         content: String!
+    }
+
+    type RoomInvited {
+        senderId: String!
+        senderName: String!
+        receiverId: String!
+        roomId: String!
+        createdAt: String
     }
 `;
 

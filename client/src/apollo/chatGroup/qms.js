@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 
 
 export const COMMENT_QUERY = gql`
-    query {
-        comment {
+    query comment($roomId: String!){
+        comment(roomId: $roomId) {
             commentId
             userId
             userName
@@ -14,8 +14,8 @@ export const COMMENT_QUERY = gql`
 `;
 
 export const USER_STATUS_QUERY = gql`
-    query {
-        userStatus {
+    query userStatus($roomId: String!){
+        userStatus(roomId: $roomId) {
             userId
             userName
             groupId
@@ -149,6 +149,42 @@ export const MESSAGE_RECEIVED_SUBSCRIPTION = gql`
             }
             groupId
             content
+        }
+    }
+`;
+
+export const INVITE_TO_ROOM_MUTATION = gql`
+    mutation inviteToRoom(
+        $senderId: String!, 
+        $senderName: String!, 
+        $receiverId: String!,
+        $roomId: String!
+    )
+    {
+        inviteToRoom(
+            senderId: $senderId, 
+            senderName: $senderName,
+            receiverId: $receiverId,
+            roomId: $roomId
+        )
+        {
+            senderId
+            senderName
+            receiverId
+            roomId
+            createdAt
+        }
+    }
+`;
+
+export const ROOM_INVITED_SUBSCRIPTION = gql`
+    subscription roomInvited($receiverId: String!){
+        roomInvited(receiverId: $receiverId){
+            senderId
+            senderName
+            receiverId
+            roomId
+            createdAt
         }
     }
 `;

@@ -10,6 +10,7 @@ const USER_REMOVED = 'USER_REMOVED';
 const COMMENT_ADDED = 'COMMENT_ADDED';
 const USER_STATUS_UPDATED = 'USER_STATUS';
 const MESSAGE_RECEIVED = 'MESSAGE_RECEIVED';
+const ROOM_INVITED = 'ROOM_INVITED';
 const pubsub = new PubSub();
 
 
@@ -76,16 +77,17 @@ const resolvers = {
             if(content && content.trim()){
                 // ADD TO FIREBASE
                 const newRef = await ref('comments').push(commentAdded);
-                // PUBLISH COMMENT SUBSCRIPTION
                 commentResponse = {
                     commentId: newRef.key,
                     ...commentAdded
                 };
-                pubsub.publish(COMMENT_ADDED, { commentAdded: commentResponse });
             }
             else {
                 commentResponse = { error: 'Invalid Comment' };
             }
+
+            // PUBLISH SUBSCRIPTION
+            pubsub.publish(COMMENT_ADDED, { commentAdded: commentResponse });
 
             return commentResponse;
         },
@@ -172,6 +174,21 @@ const resolvers = {
             pubsub.publish(MESSAGE_RECEIVED, { messageRecceived });
 
             return messageRecceived;
+        },
+
+        inviteToRoom: (_, { senderId, senderName, receiverId, roomId }) => {
+            const roomInvited = {
+                senderId, 
+                senderName, 
+                receiverId, 
+                roomId,
+                createdAt: Date.now()
+            };
+            console.log('MU', roomInvited);
+            // PUBLISH SUBSCRIPTION
+            pubsub.publish(ROOM_INVITED, { roomInvited });
+
+            return roomInvited;
         }
     },
     Subscription: {
@@ -181,7 +198,7 @@ const resolvers = {
                 (payload, variables, context, info) => {
                     const groupId = variables && variables.groupId;
                     const replyId = variables && variables.replyId;
-                    console.log('SUB', payload, replyId);
+                    
                     if(payload && groupId){
                         return payload.commentAdded.groupId === groupId;
                     }
@@ -206,7 +223,7 @@ const resolvers = {
                     const userId = variables && variables.userId;
                     const groupId = variables && variables.groupId;
                     const replyId = variables && variables.replyId;
-                    console.log('STATUS', payload, variables);
+                    
                     if(payload && groupId){
                         return payload.userStatusUpdated.userId !== userId &&payload.userStatusUpdated.groupId === groupId;
                     }
@@ -223,9 +240,24 @@ const resolvers = {
                 () => pubsub.asyncIterator([MESSAGE_RECEIVED]),
                 (payload, variables) => {
                     const receiverId = variables && variables.receiverId;
-                    console.log('SUB', payload, receiverId);
+                    
                     if(payload && receiverId){
                         return payload.messageRecceived.receiver.userId !== receiverId;
+                    }
+
+                    return true;
+                }
+            )
+        },
+
+        roomInvited: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator([ROOM_INVITED]),
+                (payload, variables) => {
+                    const receiverId = variables && variables.receiverId;
+                    
+                    if(payload && receiverId){
+                        return payload.roomInvited.receiverId === receiverId;
                     }
 
                     return true;

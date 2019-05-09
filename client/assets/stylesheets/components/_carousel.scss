@@ -1,0 +1,118 @@
+.carousel {
+	.carousel-control {
+		width: inherit;
+		background: none;
+	}
+
+	.carousel-control.right,
+	.carousel-control.left {
+		background-image: none;
+		opacity: .9;
+
+	}
+
+	.carousel-control:hover {
+		opacity: 1;
+	}
+
+	.carousel {
+		padding: spacing(20) spacing(40) 0;
+		margin-bottom: spacing(20);
+
+		@include responsive-max($screen-sm) {
+			padding: 0 spacing(20);
+		}
+	}
+
+	.carousel-inner {
+		box-shadow: $standard-box-shadow;
+
+		.item {
+			height: 300px;
+
+			.card-image {
+				width: 100%;
+				max-width: none;
+				height: 300px;
+			}
+		}
+
+		.selected-image-carousel {
+			height: 100%;
+			width: 100%;
+		}
+	}
+
+	.carousel-caption {
+		bottom: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+		width: 100%;
+		overflow: hidden;
+		text-shadow: none;
+		z-index: $z-index-overlay;
+
+		.carousel-caption-content {
+			@include transform(translate3d(0, 0, 0));
+			background-color: palette(blue, transparent);
+			padding: spacing(20) $standard-spacing;
+			position: relative;
+
+			@include responsive-max($screen-md) {
+				padding: spacing(20) spacing(10);
+			}
+
+			.caption-description {
+				margin-bottom: 7px;
+			}
+
+			.estimated-cost {
+				font-size: $font-size-small;
+				margin: 0;
+			}
+		}
+
+		.card-image {
+			@include filter(blur(4px));
+		}
+	}
+
+	.previous-icon-green,
+	.next-icon-green {
+		width: 35px;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+
+		@include responsive-max($screen-md) {
+			width: 25px;
+		}
+	}
+
+	.next-icon-green {
+		right: -5px;
+
+		@include responsive-between($screen-sm, $screen-md) {
+			right: 5px;
+		}
+
+		@include responsive-max($screen-sm) {
+			right: -10px;
+		}
+	}
+
+	.previous-icon-green {
+		left: -5px;
+
+		@include responsive-between($screen-sm, $screen-md) {
+			left: 5px;
+		}
+
+		@include responsive-max($screen-sm) {
+			left: -10px;
+		}
+	}
+}

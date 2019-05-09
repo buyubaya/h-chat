@@ -1,0 +1,30 @@
+$line-height-map: (
+	isa: (
+		large: (
+			medium: 26px
+		),
+		medium: (
+			large: 25px,
+			medium: 21px,
+			small: 18px
+		),
+		small: (
+			medium: 15px
+		)
+	),
+	vyw: (
+		small: (
+			large: 18px,
+			medium: 15px
+		)
+	)
+);
+
+/// Get a line-height based on group name - included in $line-height-map
+/// @param {String} $group - group name
+/// @param {String} $font-size - based on get-font-size (font-size name)
+/// @parem {String} $size - line-height size
+/// @return {Number} + px
+@function get-line-height($group, $font-size: 'medium', $size: 'medium') {
+	@return map-get(map-get(map-get($line-height-map, $group), $font-size), $size);
+}

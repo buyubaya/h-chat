@@ -1,0 +1,153 @@
+// Common colours for all pages of the application, based on style guide
+
+// scss-lint:disable TrailingSemicolon
+$palettes: (
+	black: (
+		base: #000
+	),
+	white: (
+		base: #fff,
+		transparent: rgba(255, 255, 255, .2),
+		opaque: rgba(255, 255, 255, .7)
+	),
+	grey: (
+		lightest: #f3f3f3,
+		light: #e6e6e6,
+		base: #d8d8d8,
+		mid: #8e8e8e,
+		dark: #3e3e3e,
+		glass: rgba(0, 0, 0, .7)
+	),
+	shadow: (
+		base: rgba(62, 62, 62, .15),
+		dark: rgba(62, 62, 62, .3)
+	),
+	blue: (
+		lightest: #e5eaf5,
+		light: #4066b3,
+		base: #039,
+		dark: #006,
+		sky: #009ee0,
+		mid: #4f90c8,
+		transparent: rgba(0, 0, 102, .5)
+	),
+	teal: (
+		base: #007396
+	),
+	turquoise: (
+		base: #00bfb3,
+		transparent: rgba(0, 191, 179, .2)
+	),
+	yellow: (
+		base: #e0e27c
+	),
+	orange: (
+		base: #f69c00
+	),
+	red: (
+		light: rgba(234, 99, 92, .2),
+		base: #ea635c,
+	)
+);
+// scss-lint:enable TrailingSemicolon
+
+@function palette($color, $tone: 'base') {
+	@return map-get(map-get($palettes, $color), $tone);
+}
+
+.palette-circle {
+	// scss-lint:disable VariableForProperty
+	background-color: palette(black);
+	border-radius: 50%;
+	color: palette(white);
+	display: inline-block;
+	height: 100px;
+	line-height: 100px;
+	margin-left: 20px;
+	margin-right: spacing(20);
+	text-align: center;
+	width: 100px;
+	// scss-lint:enable VariableForProperty
+
+	// Adding these here as they shouldn't need to be used outside of this context
+	&.black {
+		background-color: palette(black);
+	}
+
+	&.white {
+		background-color: palette(white);
+		border: 1px dashed palette(grey);
+		color: palette(black);
+	}
+
+	&.grey-lightest {
+		background-color: palette(grey, lightest);
+		color: palette(black);
+	}
+
+	&.grey-light {
+		background-color: palette(grey, light);
+		color: palette(black);
+	}
+
+	&.grey {
+		background-color: palette(grey);
+		color: palette(black);
+	}
+
+	&.grey-dark {
+		background-color: palette(grey, dark);
+	}
+
+	&.blue-lightest {
+		background-color: palette(blue, lightest);
+		color: palette(black);
+	}
+
+	&.blue-light {
+		background-color: palette(blue, light);
+	}
+
+	&.blue {
+		background-color: palette(blue);
+		color: palette(white);
+	}
+
+	&.blue-dark {
+		color: palette(white);
+		background-color: palette(blue, dark);
+	}
+
+	&.blue-sky {
+		background-color: palette(blue, sky);
+	}
+
+	&.blue-mid {
+		background-color: palette(blue, mid);
+	}
+
+	&.teal {
+		background-color: palette(teal);
+	}
+
+	&.turquoise {
+		background-color: palette(turquoise);
+	}
+
+	&.yellow {
+		background-color: palette(yellow);
+	}
+
+	&.orange {
+		background-color: palette(orange);
+	}
+
+	&.red-light {
+		background-color: palette(red, light);
+		color: palette(black);
+	}
+
+	&.red {
+		background-color: palette(red);
+	}
+}

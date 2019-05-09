@@ -1,0 +1,47 @@
+.uploads-list {
+	.no-file-chosen {
+		position: relative;
+		top: 13px;
+		margin-left: $standard-spacing;
+	}
+
+	.uploaded {
+		padding: spacing(10);
+		border-radius: $standard-border-radius;
+		background-color: palette(blue, lightest);
+
+		.uploaded-item {
+			margin: spacing(5) 0;
+		}
+	}
+
+	.uploaded-title {
+		font-weight: bold;
+	}
+
+	.uploaded-image {
+		display: block;
+		margin: 0 auto;
+		height: 18px;
+		cursor: pointer;
+	}
+
+	.upload-input {
+		visibility: hidden;
+	}
+
+	.help-span {
+		margin-top: spacing(10);
+		margin-bottom: spacing(10);
+		background-color: palette(red, light);
+		color: palette(grey, dark);
+	}
+
+	.form-group {
+		margin: 0;
+	}
+
+	.help-block {
+		float: none;
+	}
+}

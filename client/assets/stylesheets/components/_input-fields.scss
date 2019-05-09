@@ -1,0 +1,80 @@
+// Colours for errors
+.has-error {
+	.help-block,
+	.control-label {
+		color: palette(grey, dark);
+	}
+	//scss-lint:disable ImportantRule
+	.form-control {
+		border-color: palette(red);
+
+		&:focus {
+			border-color: palette(red);
+			box-shadow: 0 0 6px palette(red);
+		}
+	}
+	//scss-lint:enable ImportantRule
+
+	.help-block {
+		font-size: $pes-input-error-font-size;
+		font-weight: normal;
+		color: $pes-input-error-color;
+		text-transform: none !important;
+		background-color: transparent;
+		padding: $pes-input-error-spacing;
+		margin-bottom: 0;
+	}
+}
+
+.has-success {
+	.form-control {
+		border-color: palette(blue);
+
+		&:focus {
+			border-color: palette(blue);
+			box-shadow: 0 0 6px palette(blue);
+		}
+	}
+}
+
+.help-block {
+	background-color: palette(grey, lightest);
+	border-radius: $standard-border-radius;
+	//scss-lint:disable ImportantRule
+	//scss-lint:enable ImportantRule
+	padding: 8px;
+	padding-left: 10px;
+	float: left;
+	width: 100%;
+	margin-top: 0;
+}
+
+.input-with-tooltip {
+	margin-bottom: 15px;
+
+	label {
+		display: block;
+	}
+
+	.help-block,
+	.form-control {
+		width: 84%; // 84% is compliant with iPhone 4 width and higher
+	}
+
+	.form-control,
+	.form-group {
+		display: inline;
+	}
+
+	.tool-tip {
+		padding-top: spacing(30);
+		padding-left: 0;
+	}
+}
+
+.field-format-prompt {
+	margin-bottom: spacing(10);
+	font-size: $font-size-small;
+	font-style: italic;
+	color: palette(grey, dark);
+}

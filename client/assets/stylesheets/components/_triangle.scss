@@ -1,0 +1,34 @@
+.up-triangle,
+.down-triangle,
+.left-triangle,
+.right-triangle {
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid transparent;
+	height: 0;
+	width: 0;
+}
+
+.up-triangle {
+	border-bottom: 15px solid palette(blue);
+}
+
+.down-triangle {
+	border-top: 15px solid palette(blue);
+}
+
+.left-triangle {
+	border-right: 15px solid palette(blue);
+
+	&.small {
+		border-right: 9px solid palette(blue);
+		border-left: 3px solid transparent;
+		border-bottom: 6px solid transparent;
+		border-top: 7px solid transparent;
+	}
+}
+
+.right-triangle {
+	border-left: 15px solid palette(blue);
+}

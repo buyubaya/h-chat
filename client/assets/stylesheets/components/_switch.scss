@@ -1,0 +1,62 @@
+// Override default switch styles
+.switch-toggle {
+	width: 26px;
+	height: 27px;
+	left: 0;
+	border-radius: 13px;
+	background: white;
+	position: relative;
+	transition: left .2s ease-in-out;
+}
+
+$switch-off-color: palette(grey, dark);
+$switch-on-color: palette(blue, dark);
+
+.switch {
+	border: 1px solid palette(grey, dark);
+	background: palette(grey, dark);
+	width: 53px;
+	height: 29px;
+	border-radius: 14px;
+	cursor: pointer;
+	display: inline-block;
+
+	&.on {
+		background: palette(blue, dark);
+		border: 1px solid palette(blue, dark);
+
+		.switch-toggle {
+			left: 25px;
+		}
+	}
+
+	&.disabled {
+		cursor: not-allowed;
+	}
+}
+
+.lpp-switch {
+	border-radius: 14px;
+	cursor: pointer;
+	display: inline-block;
+
+	.lpp-switch-btn {
+		width: 100px !important;
+		height: 40px;
+	}
+
+	&.on {
+
+		.lpp-switch-btn {
+			background-color: white;
+			color: #194A9B;
+			&:hover {
+				background-color: #ddd;
+			}
+		}
+	}
+
+	&.disabled {
+		cursor: not-allowed;
+	}
+}

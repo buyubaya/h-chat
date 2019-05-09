@@ -1,0 +1,17 @@
+.curved-text {
+	font-family: $fy-font-serif;
+	font-size: $font-size-curved-text;
+
+	[class*='char'] {
+		letter-spacing: -.05em;
+	}
+}
+
+.curved-text-container {
+	margin: 0 auto 10px;
+	max-width: 500px;
+
+	.lp-landing-page & {
+		width: 70%;
+	}
+}

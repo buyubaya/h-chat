@@ -1,0 +1,140 @@
+.#{$pes}-servicing-page {
+    .#{$pes}-input-group {
+        width: auto;
+
+        .form-control {
+            width: map-get($pes-servicing-input-width, textInput);
+            max-width: 100%;
+        }
+
+        &.bg-white .form-control {
+            background: #fff !important;
+            cursor: text !important;
+        }
+    }
+
+    .#{$pes}-radio-group {
+        padding-top: #{($pes-input-height - 15px)/2};
+        padding-bottom: #{($pes-input-height - 15px)/2};
+    }
+
+    .#{$pes}-btn-bottom-area {
+        text-align: right;
+        margin-top: $pes-servicing-btn-bottom-area-space-y;
+        padding-bottom: $pes-servicing-btn-bottom-area-space-y;
+
+        .#{$pes}-btn {
+            margin-right: $pes-servicing-btn-bottom-area-space-x;
+        }
+    }
+
+    .amount-per-year {
+        position: relative;
+
+        // &.has-error {
+        //     height: 80px;
+        //     background: transparent;
+        // }
+        // .help-block {
+        //     position: absolute;
+        //     top: $pes-input-height;
+        // }
+    }
+
+    .w-percent {
+        width: $pes-servicing-w-percent;
+        &.has-error {
+            height: 45px !important;
+        }
+        .help-block {
+            position: absolute !important;
+        }
+    }
+    .wf-percent {
+        display: inline-block;
+        width: $pes-servicing-w-percent;
+
+        &.has-error {
+            height: 60px;
+        }
+        .help-block {
+            position: absolute;
+            width: auto;
+        }
+    }
+
+    .tlcell {
+        vertical-align: top;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    .#{$pes}-servicing-history-details-page {
+        .tlcell {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    }
+
+    .#{$pes}-btn {
+        width: $pes-servicing-btn-width;
+        max-width: 100%;
+    }
+
+    .#{$pes}-error-area {
+        background-color: $pes-grey-base;
+        margin-bottom: 0;
+        padding: $pes-table-padding-y $pes-table-padding-x;
+        list-style-position: inside;
+        
+        li {
+            color: $pes-color-error !important;
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    .#{$pes}-table-list {
+        &.payee-details-area {
+            .input-label {
+                text-transform: capitalize;
+            }
+        }
+    }
+}
+
+.#{pes}-servicing-search-area {
+    .search-row{
+        display: table-row;
+        .pes-input-group{
+            width: auto;
+            padding: 2px;
+        }
+    }
+    .input-area {
+        display: table-cell;
+        width: map-get($pes-servicing-input-width, textInput);
+
+        .#{$pes}-input-group:first-child {
+            margin-bottom: 5px;
+        }
+    }
+    
+    .btn-area {
+        display: table-cell;
+        padding-left: $pes-servicing-btn-bottom-area-space-x;
+        vertical-align: bottom;
+    }
+
+    @include responsive-max(640px){
+        .input-area, .btn-area {
+            display: block;
+        }
+
+        .btn-area {
+            padding-left: 0;
+            margin-top: $pes-servicing-btn-bottom-area-space-y;
+        }
+    }   
+}

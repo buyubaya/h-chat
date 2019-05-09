@@ -1,0 +1,121 @@
+$switch-transition: background-color 200ms linear;
+
+.switch-panel {
+	text-align: left;
+
+	.panel {
+		@include remove-box-shadow();
+		border-radius: 0;
+
+		&.panel-default {
+			margin-bottom: 30px;
+		}
+
+		.panel-body {
+			padding: 30px;
+
+			.nudge-icon {
+				img {
+					max-width: 110px;
+					max-height: 110px;
+				}
+			}
+
+			.input-description {
+				background-color: #FEE9E9;
+				border-radius: 6px;
+				color: #3e3e3e !important;
+				padding: 8px 10px 10px;
+				float: none;
+				width: 100%;
+				max-width: 450px;
+				margin-top: -20px;
+
+				span {
+					font-size: 14px;
+					font-weight: 300;
+				}
+			}
+
+			@include responsive-max($screen-sm) {
+				padding: 30px 20px;
+			}
+		}
+
+		&.panel-default {
+			margin-bottom: 30px;
+		}
+	}
+
+	.panel-heading {
+		padding: 10px 30px;
+		line-height: 0;
+		border-radius: 0;
+
+		@include responsive-max($screen-sm) {
+			padding: 15px 20px;
+		}
+	}
+
+	.panel-title {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.help-block {
+		float: none;
+	}
+
+	label {
+		margin-bottom: 0;
+		$font-size-medium: 15px;
+	}
+
+	.icon-tick::before {
+		font-size: $font-size-h3;
+		margin-right: 15px;
+	}
+
+	&.off {
+		.panel-heading {
+			transition: $transition-background-color;
+		}
+
+		label {
+			transition: $transition-opacity;
+		}
+	}
+
+	&.on {
+		.panel-heading {
+			background-color: palette(blue, light);
+			color: palette(white);
+			transition: $transition-background-color;
+
+			label {
+				&::before {					
+					font-family: 'planenquiry';
+					vertical-align: middle;
+					content: '7';
+				}
+				> span:first-child {
+					padding-left: 10px;
+				}
+			}
+		}
+
+		.question-dot {
+			background-color: palette(blue, light);
+			color: palette(white);
+			border: 1px solid palette(white);
+
+			&:focus,
+			&:hover {
+				background-color: palette(white);
+				color: palette(blue, light);
+				border: 1px solid palette(blue, light);
+			}
+		}
+	}
+}

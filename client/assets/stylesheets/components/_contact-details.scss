@@ -1,0 +1,25 @@
+.contact-details {
+	background-color: palette(blue, lightest);
+	padding: spacing(20);
+	margin-top: spacing(20);
+
+	.first-panel {
+		padding: 0 spacing(20) spacing(20);
+		border-right: 1px solid palette(grey);
+
+		@include responsive-max($screen-sm) {
+			border-right: 0;
+			border-bottom: 1px solid palette(grey);
+		}
+	}
+
+	.second-panel {
+		margin-left: spacing(20);
+	}
+
+	.padding-left-medium {
+		@include responsive-max($screen-sm) {
+			padding: 0;
+		}
+	}
+}

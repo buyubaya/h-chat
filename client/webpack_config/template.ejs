@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1030, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" />
+    
+    <% if (htmlWebpackPlugin.files.favicon) { %>
+		<link rel="shortcut icon" href="<%= htmlWebpackPlugin.files.favicon %>">
+    <% } %>
+
+    <% if(htmlWebpackPlugin.options.isProduction) { %>
+        <% for (var style in htmlWebpackPlugin.options.styles) { %>
+            <link href="<%= htmlWebpackPlugin.options.styles[style].href %>"/>
+        <% } %>
+    <% } %>
+</head>
+<body>
+    <main role="main" class="content">
+        <div id="app"></div>
+    </main>
+	<!--javascript ref-->
+</body>
+</html>
+

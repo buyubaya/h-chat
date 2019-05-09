@@ -1,0 +1,149 @@
+.risk-details {
+	text-align: center;
+	color: palette(white);
+	padding-top: spacing(80);
+	width: 100%;
+
+	.risk-details-placeholder {
+		h2 {
+			margin-bottom: spacing(35);
+		}
+	}
+
+	.risk-details-cta {
+		display: table;
+		margin: 0 auto spacing(40);
+
+		.risk-details-image-placeholder {
+			width: 202px;
+			height: 202px;
+			border-radius: $standard-circle-border-radius;
+			line-height: 24px;
+			display: table-cell;
+			padding: spacing(50);
+			vertical-align: middle;
+			background: url('../../assets/images/atr-image-placeholder.svg') left top no-repeat;
+		}
+	}
+
+	.risk-details-quote {
+		font-family: $fy-font-serif;
+		font-size: $font-size-large;
+		font-weight: 400;
+		line-height: 1.1;
+		margin-bottom: 0;
+	}
+
+	.risk-details-learn-link {
+		display: inline-block;
+		color: palette(white);
+		margin-top: spacing(40);
+	}
+
+	.caption {
+		margin-bottom: spacing(15);
+	}
+
+	.btn {
+		margin-top: spacing(30);
+	}
+
+	.risk-details-learn-more-block {
+		position: absolute;
+		margin-top: spacing(65);
+	}
+
+	.risk-details-risk-profile {
+		position: relative;
+		padding-bottom: spacing(60);
+
+		h2 {
+			margin-bottom: spacing(20);
+		}
+	}
+
+	.risk-details-learn-more-button {
+		@include transform(translateX(-50%));
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+	}
+
+	.animations-container {
+		height: 270px;
+
+		.bodymovin-animation {
+			top: spacing(-70);
+		}
+	}
+}
+
+@include responsive-max($screen-md) {
+	.risk-details {
+		padding: spacing(50) 0;
+
+		.risk-details-quote {
+			max-width: 420px;
+			margin: 0 auto;
+		}
+
+		.risk-details-cta {
+			margin: 0 auto;
+
+			.risk-details-image-placeholder {
+				display: none;
+			}
+		}
+
+		.risk-details-image {
+			display: none;
+		}
+
+		.risk-details-learn-more-block {
+			margin-top: spacing(0);
+		}
+
+		.btn {
+			margin-top: spacing(50);
+		}
+	}
+}
+
+@include responsive-max($screen-sm) {
+	.risk-details {
+		padding: spacing(25) 0;
+
+		.risk-details-placeholder {
+			padding: spacing(30) 0;
+		}
+
+		.risk-details-cta {
+			margin-bottom: 0;
+		}
+
+		.risk-details-risk-profile {
+			padding-bottom: spacing(0);
+		}
+
+		.risk-details-short-desc {
+			padding-bottom: spacing(45);
+
+			&.invisible {
+				display: none;
+			}
+		}
+
+		.caption {
+			margin-bottom: spacing(10);
+		}
+
+		.risk-details-learn-more-block {
+			position: static;
+		}
+
+		.btn {
+			width: 100%;
+			margin-top: spacing(20);
+		}
+	}
+}

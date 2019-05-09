@@ -1,0 +1,224 @@
+%single-header {
+	border-top: 1px solid palette(grey, light);
+	border-bottom: 1px solid palette(grey, light);
+	height: 60px;
+	line-height: 60px;
+	padding: 0 15px;
+
+	@include responsive-max($screen-sm) {
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+
+	.step-description {
+		float: left;
+		font-weight: normal;
+	}
+
+	.step-progress {
+		float: right;
+		font-weight: bold;
+	}
+}
+
+%lpp-single-header {
+	border-top: 1px solid palette(grey, light);
+	border-bottom: 1px solid palette(grey, light);
+	height: 60px;
+	line-height: 60px;
+	padding: 0 30px;
+	color: #194A9B;
+	font-size: 15px;
+
+	@include responsive-max($screen-sm) {
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+
+	.step-description {
+		float: right;
+		font-weight: bold;
+	}
+
+	.step-progress {
+		float: left;
+		font-weight: bold;
+	}
+}
+
+.step-progressbar-container {
+	&.circle {
+		display: flex;
+		position: relative;
+		z-index: $z-index-progress-bar-container;
+		margin-bottom: $standard-spacing;
+		counter-reset: step;
+
+		div.circular-progress {
+			list-style-type: none;
+			float: left;
+			font-size: $font-size-small;
+			position: relative;
+			text-align: center;
+			color: palette(blue);
+			flex: 1;
+
+			&::before {
+				width: 45px;
+				height: 45px;
+				content: counter(step);
+				counter-increment: step;
+				line-height: 42px;
+				border: 2px solid palette(blue);
+				display: block;
+				text-align: center;
+				margin: 0 auto 10px;
+				border-radius: $circle-border-radius;
+				background-color: white;
+				color: palette(blue);
+			}
+
+			&::after {
+				width: 100%;
+				height: 2px;
+				content: '';
+				position: absolute;
+				background-color: palette(blue);
+				top: 22px;
+				left: -50%;
+				z-index: $z-index-progress-bar-connector;
+			}
+
+			&:first-child::after {
+				content: none;
+			}
+
+			&.active::before {
+				background-color: palette(blue);
+				color: white;
+			}
+
+			&.completed::before {
+				content: '7';
+				font-family: planenquiry;
+				font-size: $font-size-medium;
+			}
+
+			>span {
+				@include responsive-max($screen-xs) {
+					display: none;
+				}
+			}
+		}
+	}
+
+	&.plain {
+		overflow: hidden;
+		height: 80px;
+		width: 100%;
+		line-height: 77px;
+		font-size: get-font-size(base-fy6, large);
+		color: #a6a6a6;
+		border-bottom: 1px solid palette(grey, light);
+		margin-bottom: 30px;
+		counter-reset: step;
+		text-align: left;
+
+		@include responsive-max($screen-xs) {
+			display: none;
+		}
+
+		@include responsive-max($screen-md) {
+			font-size: 16px;
+		}
+
+		.plain-progress {
+			display: inline-block;
+			margin-right: 30px;
+
+			@include responsive-max($screen-md) {
+				margin-right: 20px;
+			}
+
+			&.active {
+				color: palette(blue, dark);
+				border-bottom: 3px solid palette(blue, dark);
+				font-weight: normal;
+			}
+
+			&::before {
+				content: counter(step) '. ';
+				counter-increment: step;
+			}
+		}
+	}
+
+	&.lpp-plain {
+		overflow: hidden;
+		height: 80px;
+		width: 100%;
+		line-height: 77px;
+		font-size: get-font-size(base-fy6, large);
+		color: #a6a6a6;
+		border-bottom: 1px solid palette(grey, light);
+		margin-bottom: 30px;
+		counter-reset: step;
+		text-align: left;
+
+		@include responsive-max($screen-xs) {
+			display: none;
+		}
+
+		@include responsive-max($screen-md) {
+			font-size: 16px;
+		}
+
+		.plain-progress {
+			display: inline-block;
+			margin-right: 30px;
+
+			@include responsive-max($screen-md) {
+				margin-right: 20px;
+			}
+
+			&.active {
+				color: #194A9B;
+				font-weight: normal;
+			}
+
+			&::before {
+				content: counter(step) '. ';
+				counter-increment: step;
+			}
+		}
+	}
+
+	&.single-header {
+		@extend %single-header;
+	}
+
+	&.lpp-single-header {
+		@extend %lpp-single-header;
+	}
+
+	&.single-header--inverted {
+		@extend %single-header;
+
+		.step-description {
+			float: right;
+		}
+
+		.step-progress {
+			float: left;
+		}
+	}
+}
+
+.lpp-progress-wrapper {
+	.progress-bar-visual {
+		content: '';
+		display: block;
+		margin-top: -3px;
+		border-bottom: 3px solid #F69C00;
+	}
+}

@@ -1,0 +1,30 @@
+.listgroup--download {
+	.list-group-item {
+		a.link--download {
+			float: right;
+			font-weight: normal;
+			cursor: pointer;
+			color: palette(grey, dark);
+
+			&:hover {
+				color: palette(blue, dark);
+			}
+		}
+	}
+}
+
+.list-group {
+	border: 1px solid palette(grey, base);
+	box-shadow: 0 2px 15px 0 rgba(0, 0, 0, .05);
+	background-color: palette(white);
+
+	.list-group-item {
+		border: 0;
+		padding: 25px 0;
+		margin: 0 30px;
+
+		&:not(:first-child) {
+			border-top: 1px solid palette(grey, base);
+		}
+	}
+}

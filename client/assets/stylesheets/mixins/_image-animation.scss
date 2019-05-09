@@ -1,0 +1,10 @@
+@mixin rotating-image($speed) {
+	@include animation(reverse-spin $speed linear infinite);
+}
+
+@include keyframes (reverse-spin) {
+	100% {
+		transform: rotate(-360deg);
+	}
+}
+

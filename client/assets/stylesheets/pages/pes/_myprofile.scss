@@ -1,0 +1,82 @@
+##{$pes}-myprofile-page {
+    .#{$pes}-input-group.w-biggest {
+        .form-control {
+            width: 500px !important;
+        }
+    }
+
+    .#{$pes}-error-area {
+        background-color: #fff;
+        margin-bottom: 0;
+        padding: $pes-table-padding-y $pes-table-padding-x;
+        list-style-position: inside;
+        
+        li {
+            color: $pes-color-error !important;
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.#{$pes}-myprofile-page {
+    .#{$pes}-table-list {
+        .tlcell {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        &.has-input {
+            min-height: #{$pes-input-height + 2*2px};
+        }
+    }
+
+    .tab-headers {
+        background: none !important;
+        text-transform: capitalize;
+    }
+
+    .#{$pes}-input-group {
+        width: auto;
+
+        .form-control {
+            width: map-get($pes-servicing-input-width, textInput);
+            max-width: 100%;
+        }
+    }
+
+    // TABS
+    .#{$pes}-myaccount-tab {
+        .bg-notice {
+            .clearfix {
+                margin-top: 10px;
+            }
+
+            .pes-btn {
+                margin-left: 2px;
+            }
+        }
+    }
+
+    .#{$pes}-upgradeaccess-tab {
+        .#{$pes}-input-group {
+            width: auto;
+
+            .form-control {
+                width: map-get($pes-servicing-input-width, textInput);
+            }
+
+            &.w-code {
+                .form-control {
+                    width: 100px;
+                }
+            }
+        }
+    }
+    .#{$pes}-agencycodes-tab {
+        .#{$pes}-input-group {
+            width: 100px;
+        }
+    }
+}

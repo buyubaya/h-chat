@@ -1,0 +1,77 @@
+.big-dot {
+	background-color: palette(blue, sky);
+	border-radius: $standard-circle-border-radius;
+	display: inline-block;
+	height: 10px;
+	margin: -2% auto 20px;
+	width: 10px;
+}
+
+.info-dot,
+.plus-dot {
+	background-color: palette(blue);
+	border-radius: $standard-circle-border-radius;
+	color: palette(white);
+	cursor: pointer;
+	display: inline-block;
+	height: 22px;
+	margin-left: 10px;
+	text-align: center;
+	width: 22px;
+	line-height: 22px;
+	vertical-align: middle;
+}
+
+.plus-dot {
+	line-height: 20px;
+	margin-right: 5px;
+}
+
+%dot-template {
+	background-color: palette(white);
+	border-radius: $standard-circle-border-radius;
+	color: palette(blue, light);
+	cursor: pointer;
+	display: inline-block;
+	height: 20px;
+	margin-left: 10px;
+	text-align: center;
+	width: 20px;
+	line-height: 20px;
+	vertical-align: middle;
+	border: 1px solid palette(blue, light);
+	text-decoration: none;
+	font-size: $font-size-smallest;
+
+	&.is-active,
+	&:focus,
+	&:hover {
+		background-color: palette(blue, light);
+		color: palette(white);
+		text-decoration: none;
+	}
+
+	&.no-effect {
+		cursor: default;
+
+		&:focus,
+		&:hover {
+			background-color: #fff;
+			color: #4066b3;
+		}
+	}
+}
+
+.question-dot {
+	@extend %dot-template;
+}
+
+.info-dot-template {
+	@extend %dot-template;
+
+	margin-left: 0;
+	font-weight: bold;
+	font-size: get-font-size(base-fy6, small);
+}
+
+

@@ -1,0 +1,61 @@
+.pagination {
+	margin-top: spacing(10);
+	margin-bottom: 0;
+
+	.back-button,
+	.next-button {
+		margin: 0 spacing(40);
+
+		@include responsive-max($screen-sm) {
+			margin: 0 spacing(30);
+		}
+
+		&.inactive {
+			color: palette(grey);
+			cursor: not-allowed;
+
+			&:hover {
+				color: palette(grey);
+				cursor: not-allowed;
+			}
+		}
+
+		&:hover {
+			color: palette(blue);
+			cursor: pointer;
+		}
+	}
+
+	.page-label {
+		margin-right: spacing(10);
+
+		@include responsive-max($screen-sm) {
+			display: none;
+		}
+	}
+
+	.form-group {
+		display: inline-block;
+		position: relative;
+		margin-right: spacing(10);
+
+		.form-control {
+			height: 35px;
+			width: 83px;
+		}
+
+		&::after {
+			content: '';
+			height: 35px;
+			width: 35px;
+			background: url('../images/dropdown-chevron.png') center center no-repeat;
+			background-color: palette(grey, light);
+			border: 1px solid palette(grey);
+			border-radius: $dropdown-border-right;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			pointer-events: none;
+		}
+	}
+}

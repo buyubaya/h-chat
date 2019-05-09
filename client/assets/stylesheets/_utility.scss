@@ -1,0 +1,213 @@
+// Utility classes
+
+.center {
+	text-align: center;
+}
+
+.center-xs {
+	@include responsive-max($screen-sm) {
+		text-align: center;
+	}
+}
+
+.left {
+	text-align: left;
+
+	&.xs-right {
+		@include responsive-max($screen-sm) {
+			text-align: right;
+		}
+	}
+
+	&.xs-center {
+		@include responsive-max($screen-sm) {
+			text-align: center;
+		}
+	}
+}
+
+.right {
+	text-align: right;
+
+	&.xs-left {
+		@include responsive-max($screen-sm) {
+			text-align: left;
+		}
+	}
+}
+
+.subtext {
+	font-style: italic;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.black {
+	color: palette(black);
+}
+
+.blue {
+	color: palette(blue);
+}
+
+.blue-dark {
+	color: palette(blue, dark);
+}
+
+.white {
+	color: palette(white);
+}
+
+.padding {
+	padding: $standard-spacing;
+}
+
+.padding-top {
+	padding-top: $standard-spacing;
+}
+
+.padding-bottom {
+	padding-bottom: $standard-spacing;
+}
+
+.padding-left {
+	padding-left: $standard-spacing;
+}
+
+.padding-right {
+	padding-right: $standard-spacing;
+}
+
+.padding-left-medium {
+	padding-left: spacing(20);
+}
+
+.padding-right-medium {
+	padding-right: spacing(20);
+}
+
+.padding-right-large {
+	padding-right: spacing(40);
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.margin-top {
+	margin-top: $standard-spacing;
+}
+
+.margin-bottom {
+	margin-bottom: $standard-spacing;
+}
+
+.margin-bottom-dashboard {
+	margin-bottom: 62px;
+}
+
+.margin-right {
+	margin-right: $standard-spacing;
+}
+
+.margin-left {
+	margin-left: $standard-spacing;
+}
+
+.margin-left-small {
+	margin-left: spacing(10);
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.text-align-justify {
+	text-align: justify;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.table {
+	display: table;
+}
+
+.table-cell {
+	display: table-cell;
+}
+
+.display-flex {
+	@include display(flex);
+
+	&.align-center {
+		align-items: center;
+	}
+}
+
+.background-cover {
+	background-size: cover;
+}
+
+.background-no-repeat {
+	background-repeat: no-repeat;
+}
+
+.background-white {
+	background-color: palette(white);
+}
+
+.background-light-grey {
+	background-color: palette(grey, lightest);
+}
+
+.background-blue {
+	background-color: palette(blue, light);
+}
+
+.word-wrap {
+	word-wrap: break-word;
+}
+
+.horizontal-line {
+	margin-top: spacing(20);
+	margin-bottom: spacing(20);
+	border: 0;
+	border-top: 1px solid palette(grey, light);
+}
+
+.clear-both {
+	clear: both;
+}
+
+.full-width-xs {
+	@include full-width($screen-sm);
+}
+
+.full-width {
+	width: 100%;
+}
+
+// Generate spacing position (padding, margin) automatically.
+@include make-space();
+
+@include responsive-max($screen-sm) {
+	@include make-space(xs);
+}
+
+@include responsive-between($screen-sm, $screen-md) {
+	@include make-space(sm);
+}
+
+

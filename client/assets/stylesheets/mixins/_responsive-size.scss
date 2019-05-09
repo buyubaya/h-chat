@@ -1,0 +1,5 @@
+@mixin full-width($screen-size) {
+	@include responsive-max($screen-size) {
+		width: 100%;
+	}
+}

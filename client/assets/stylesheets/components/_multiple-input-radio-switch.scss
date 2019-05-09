@@ -1,0 +1,17 @@
+.multiple-input-radio-switch {
+	.switch-wrapper {
+		display: inline-block;
+
+		@include responsive-max($screen-sm) {
+			display: block;
+		}
+	}
+
+	.switch-wrapper-vertical {
+		margin-top: 5px;
+	}
+
+	.switch-wrapper-vertical:first-child {
+		margin-top: 0;
+	}
+}

@@ -1,0 +1,232 @@
+.radio-slider.horizontal,
+.radio-slider.vertical {
+	&::before {
+		content: ' ';
+		display: block;
+		position: absolute;
+	}
+
+	.radio-input-item {
+		.form-group {
+			margin-bottom: 0;
+		}
+
+		&:active {
+			outline: 0;
+		}
+	}
+
+	.radio {
+		label {
+			font-weight: 700;
+			display: block;
+		}
+
+		input[type="radio"] {
+			@include transform(translateX(-50%));
+			position: absolute;
+			margin-left: 0;
+			bottom: 0;
+			clip: rect(0 0 0 0);
+
+			+ span::before {
+				@include transform(translateX(-50%));
+				content: ' ';
+				width: 22px;
+				height: 22px;
+				display: inline-block;
+				border-radius: $standard-circle-border-radius;
+				background: palette(grey, light);
+				border: 1px solid palette(grey, base);
+				position: absolute;
+				margin-left: 0;
+				bottom: 0;
+			}
+
+			&:checked + span::before {
+				content: ' ';
+				border: 1px solid palette(blue, base);
+				background: url('../../assets/images/tick.svg') center center no-repeat palette(blue, base);
+			}
+
+			&:focus + span::before {
+				outline: none;
+			}
+		}
+	}
+
+	.focus-highlight {
+		.radio input {
+			&:focus + span::before {
+				outline: 5px auto -webkit-focus-ring-color;
+			}
+		}
+	}
+
+}
+
+// HORIZONTAL
+.radio-slider.horizontal {
+	position: relative;
+	margin-bottom: spacing(20);
+
+	&::before {
+		bottom: spacing(10);
+		left: $third-part / 2;
+		border-bottom: 2px solid palette(grey, base);
+		width: $third-part * 2;
+	}
+
+	.radio-input {
+		display: flex;
+		width: 100%;
+	}
+
+	.radio-input-item {
+		width: $third-part;
+		text-align: center;
+		vertical-align: middle;
+		position: relative;
+	}
+
+	.radio {
+		position: static;
+		margin: 0;
+
+		label {
+			padding: 0 0 35px;
+		}
+
+		span {
+			display: inline-block;
+			width: 150px;
+			vertical-align: -webkit-baseline-middle;
+		}
+
+		input[type="radio"] {
+			left: 50%;
+
+			+ span::before {
+				left: 50%;
+			}
+		}
+	}
+}
+
+// HORIZONTAL MOBILE
+@include responsive-max($screen-xs) {
+	.radio-slider.horizontal {
+		display: block;
+		border-radius: $standard-border-radius;
+		background: palette(blue, lightest);
+		box-shadow: inset 1px 1px 0 0 palette(grey), inset 1px 0 6px 0 rgba(0, 0, 0, .15);
+
+		&::before {
+			display: none;
+		}
+
+		.radio-input {
+			display: block;
+		}
+
+		.radio-input-item {
+			display: block;
+			width: 100%;
+			border-top: 1px solid palette(grey);
+
+			.form-group {
+				height: 100%;
+				width: 100%;
+			}
+
+			// scss-lint:disable VariableForProperty
+			&:first-child {
+				border-top: 0;
+
+				input[type="radio"] + span {
+					border-radius: $standard-border-radius $standard-border-radius 0 0;
+				}
+			}
+
+			&:last-child {
+				input[type="radio"] + span {
+					border-radius: 0 0 $standard-border-radius $standard-border-radius;
+				}
+			}
+			// scss-lint:enable VariableForProperty
+		}
+
+		.active-radio-input {
+			+ .radio-input-item {
+				border-color: transparent;
+			}
+		}
+
+		.radio {
+			height: 100%;
+			width: 100%;
+			display: block;
+
+			label {
+				width: 100%;
+				height: 100%;
+				display: block;
+				padding: 0;
+				border-collapse: separate;
+			}
+
+			input[type="radio"] + span::before {
+				display: none;
+			}
+
+			input[type="radio"]:checked + span::before {
+				display: none;
+			}
+
+			input[type="radio"] + span {
+				background: none;
+				display: block;
+				vertical-align: middle;
+				width: 100%;
+				height: 100%;
+				padding: spacing(10);
+				border: 1px solid transparent;
+			}
+
+			input[type="radio"]:checked + span {
+				background: palette(white);
+				border: 1px solid palette(blue, base);
+			}
+		}
+	}
+}
+
+// VERTICAL
+.radio-slider.vertical {
+	margin: spacing(40) auto;
+	width: 215px;
+
+	&::before {
+		border-left: 2px solid palette(grey, base);
+		height: 240px;
+	}
+
+	.radio-input-item {
+		margin-bottom: spacing(35);
+		text-align: left;
+	}
+
+	.radio {
+		label {
+			padding-left: spacing(25);
+		}
+
+		input[type="radio"] {
+			left: 0;
+
+			+ span::before {
+				left: 1px;
+			}
+		}
+	}
+}

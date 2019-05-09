@@ -1,0 +1,24 @@
+$font-size-map: (
+	isa: (
+		h2: 25px,
+		large: 18px,
+		medium: 15px,
+		small: 13px
+	),
+	base-fy6: (
+		large: 18px,
+		medium: 15px,
+		small: 13px
+	),
+	vyw: (
+		large: 18px,
+		medium: 15px,
+		smaller: 13px,
+		small: 12px
+	)
+);
+
+@function get-font-size($group, $size: medium) {
+	@return map-get(map-get($font-size-map, $group), $size);
+}
+

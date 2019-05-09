@@ -1,0 +1,13 @@
+@mixin circle($size, $color, $font-size) {
+	background-color: $color;
+	border-radius: $standard-circle-border-radius;
+	color: palette(white);
+	display: inline-block;
+	font-size: $font-size;
+	height: $size;
+	line-height: $size;
+	margin-left: spacing(10);
+	margin-right: spacing(10);
+	text-align: center;
+	width: $size;
+}

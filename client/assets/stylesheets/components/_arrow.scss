@@ -1,0 +1,25 @@
+.up-arrow,
+.down-arrow,
+.right-arrow,
+.left-arrow {
+	content: '';
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-right: 4px solid palette(blue, dark);
+	border-top: 4px solid palette(blue, dark);
+	transform: rotate(225deg);
+	left: spacing(10);
+}
+
+.up-arrow {
+	transform: rotate(315deg);
+}
+
+.down-arrow {
+	transform: rotate(135deg);
+}
+
+.right-arrow {
+	transform: rotate(45deg);
+}

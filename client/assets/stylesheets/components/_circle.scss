@@ -1,0 +1,7 @@
+.big-circle {
+	@include circle(30px, palette(orange), $font-size-small);
+}
+
+.small-circle {
+	@include circle(17px, palette(orange), $font-size-smallest);
+}

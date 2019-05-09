@@ -1,0 +1,160 @@
+// LIST
+.#{$pes}-valuation-list {
+    li {
+        padding: $pes-table-padding-y 0;
+        border-bottom: 1px solid palette(grey);
+
+        .valuation-title, .valuation-value {
+            padding: 0 $pes-table-padding-x;
+        }
+
+        .valuation-value {
+            span {
+                display: inline-block;
+                width: 25%;
+                text-align: right;
+                padding-left: $pes-table-padding-x;
+                padding-right: $pes-table-padding-x;
+                margin-left: #{-$pes-table-padding-x};
+            }
+        }
+    }
+}
+
+
+// FORM
+.withdrawals-search-filter-form-area {
+    .field-area {
+        float: left;
+        width: $withdrawals-search-filter-input-group-width;
+    }
+
+    .btn-area {
+        margin-left: #{$withdrawals-search-filter-input-group-width + 20px};
+    }
+
+    .pes-input-label {
+        display: table-cell;
+        width: $withdrawals-search-filter-label-width;
+        min-width: $withdrawals-search-filter-label-width;
+    }
+
+    .pes-input-group {
+        display: table-cell;
+        width: 100%;
+    }
+
+    @include responsive-max($screen-xs){
+        .btn-area {
+            margin-left: $withdrawals-search-filter-label-width;
+        }
+    }
+}
+
+// SUMMARY TABLE
+.#{$pes}-summary-table {
+    min-width: 1000px;
+
+    .tlhead {
+        text-transform: capitalize;
+    }
+
+    .cell-currency {
+        padding-left: map-get($pes-summary-table-width, currency);
+    }
+
+    .cell-fundname {
+        width: map-get($pes-summary-table-width, fundName);
+    }
+
+    .cell-funddetails {
+        width: map-get($pes-summary-table-width, fundDetails);
+    }
+
+    .cell-units {
+        width: map-get($pes-summary-table-width, units);
+    }
+
+    .cell-currency {
+        width: map-get($pes-summary-table-width, currency);
+    }
+
+    .cell-unitprice {
+        width: map-get($pes-summary-table-width, unitPrice);
+    }
+
+    .cell-value {
+        width: map-get($pes-summary-table-width, value);
+    }
+
+    .cell-switchfund {
+        width: map-get($pes-summary-table-width, switchFund);
+    }
+
+    .cell-surrender {
+        width: map-get($pes-summary-table-width, surrender);
+    }
+}
+
+.#{$pes}-authority-modal {
+    text-align: left;
+
+    .#{$pes}-footer-area {
+        background: $pes-grey-base;
+        border-top: 1px solid $pes-grey-dark;
+        margin-top: $pes-input-height !important;
+
+        .container {
+            padding-left: $pes-table-padding-x;
+            padding-right: $pes-table-padding-x;
+        }
+
+        .text-designed, .links-list {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    }
+
+    .tlrow {
+        min-height: $pes-input-height !important;
+        line-height: $pes-input-height;  
+    }
+
+    .tlcell {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    @include responsive-min(768px){
+        .modal-dialog {
+            min-width: 738px;
+        }
+    }
+
+    .#{$pes}-footer-area {
+        margin-top: 0px;
+    }
+}
+
+// WITHDRAWALS TABLE
+.#{$pes}-withdrawals-table {
+    @include responsive-max($screen-sm){
+        .tlh {
+            background: $pes-grey-dark;
+            margin-top: 20px !important;
+        }
+    }
+}
+
+.icon-color-link:before, .icon-color-link:after {
+    color: palette(blue);
+}
+
+// AUTHORITY MODAL
+.#{$pes}-authority-modal {
+    .#{$pes}-footer-area {
+        li a {
+            color: $pes-text-color;
+        }
+    }
+}

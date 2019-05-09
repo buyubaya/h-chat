@@ -1,0 +1,10 @@
+.date-input {
+	.form-control {
+		font-size: $font-size-small;
+
+		@include placeholder {
+			opacity: .7;
+			font-weight: 300;
+		}
+	}
+}

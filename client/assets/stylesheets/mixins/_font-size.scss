@@ -1,0 +1,10 @@
+@mixin fy6-p-default-size() {
+	font-size: get-font-size(base-fy6, medium);
+	line-height: 21px;
+}
+
+@mixin fy6-h4() {
+	font-size: get-font-size(base-fy6, large);
+	line-height: 26px;
+	font-weight: bold;
+}

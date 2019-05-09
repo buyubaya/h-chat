@@ -1,0 +1,98 @@
+.fy6-numeric-input-container {
+	.help-block {
+		float: none;
+	}
+
+	.input-description {
+		background-color: #FEE9E9;
+		border-radius: 6px;
+		color: #3e3e3e !important;
+		padding: 8px 10px 10px;
+		float: none;
+		width: 100%;
+		margin-top: -20px;
+	}
+}
+
+.numeric-input {
+	display: flex;
+	align-items: flex-end;
+
+	button {
+		height: 50px;
+		border-radius: $flat-button-border-radius;
+		padding: 6px 24px;
+		position: relative;
+		border: 0;
+		background-color: transparent;
+	}
+
+	button:hover {
+		background-color: transparent;
+	}
+
+	.numeric-input-box {
+		flex: 1;
+	}
+
+	.increase-button::before,
+	.increase-button::after,
+	.decrease-button::after {
+		content: '';
+		position: absolute;
+		background-color: palette(grey, dark);
+	}
+
+	.increase-button::before {
+		top: 20px;
+		left: 24px;
+		width: 2px;
+		height: 10px;
+	}
+
+	.increase-button::after,
+	.decrease-button::after {
+		top: 24px;
+		left: 20px;
+		width: 10px;
+		height: 2px;
+	}
+
+	.input-group-addon {
+		border-radius: $input-border-radius;
+		padding: 6px 20px;
+		font-size: $font-size-small;
+	}
+
+	.form-group {
+		margin: 0 5px;
+	}
+
+	input.form-control {
+		height: 50px;
+		font-size: get-font-size(base-fy6, medium);
+		line-height: 30px;
+		border-radius: $input-border-radius;
+	}
+
+	input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	&.non-plus-minus{
+		.form-group {
+			margin: 0;
+		}
+		
+		.numeric-input-box {
+			&.on-focus {
+				.input-group-addon,
+				.form-control {
+					border-color: #4066b3 !important;
+				}
+			}
+		}
+	}
+}

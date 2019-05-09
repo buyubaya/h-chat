@@ -1,0 +1,40 @@
+.risk-selection {
+	.risk-selection-illustration {
+		background-color: palette(blue, light);
+	}
+
+	.risk-selection-profile-selector {
+		padding-top: spacing(80);
+		background-color: palette(white);
+		text-align: center;
+		display: block;
+
+		.risk-selection-profile-selector-title {
+			margin-bottom: spacing(25);
+		}
+	}
+
+	.button-toolbar {
+		> .btn {
+			@include responsive-min($screen-sm) {
+				width: 220px;
+			}
+		}
+	}
+}
+
+@include responsive-max($screen-md) {
+	.risk-selection {
+		.risk-selection-btn-next {
+			@include order(1);
+		}
+
+		.risk-selection-btn-prev {
+			@include order(2);
+		}
+
+		.row-equal-height {
+			display: block;
+		}
+	}
+}

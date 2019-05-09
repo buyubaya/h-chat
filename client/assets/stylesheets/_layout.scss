@@ -1,0 +1,20 @@
+main.content {
+	@include calc(min-height, '100vh - #{$footer-height} - #{$header-height}');
+	margin-bottom: $footer-height;
+
+}
+
+footer.footer {
+	margin-top: -$footer-height;
+}
+
+@include responsive-max($screen-md) {
+	main.content {
+		min-height: auto;
+		margin-bottom: 0;
+	}
+
+	footer.footer {
+		margin-top: 0;
+	}
+}

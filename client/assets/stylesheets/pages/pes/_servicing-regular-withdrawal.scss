@@ -1,0 +1,40 @@
+.#{pes}-servicing-regular-withdrawal {
+    .amount-per-year {
+        .help-block {
+            float: none;
+            max-width: map-get($pes-servicing-input-width, textInput);
+        }
+    }
+
+    .w-percent{
+        width: auto;
+        vertical-align: top;
+        .help-block{
+            display: block;
+        }
+        input.form-control{
+            width: 50px;
+        }
+    }
+    span{
+        &.s-percent{
+            position: absolute;
+            left: 65px;
+        }
+        &.s-withdrawal-7-5{
+            vertical-align: top;
+        }
+    }
+    .annualPerIncrease{
+        position: relative;
+        .sp_annualPerIncrease{
+            position: absolute;
+            left: 40%;
+            top: 10%;
+        }
+    }
+    
+    .top-error-msg {
+        color: red;
+    }
+}

@@ -1,0 +1,33 @@
+// Error bar css
+
+.error-bar {
+	background-color: palette(red, light);
+	border-radius: $page-border-radius;
+	font-size: $font-size-small;
+	padding: 8px;
+
+	.alert-icon {
+		background-color: palette(red);
+		border-radius: $icon-border-radius;
+		color: palette(white);
+		display: inline-block;
+		font-family: serif;
+		font-weight: bold;
+		height: 18px;
+		margin-right: spacing(10);
+		text-align: center;
+		width: 18px;
+	}
+
+	.close {
+		font-weight: normal;
+		margin-right: spacing(5);
+		opacity: .6;
+		position: relative;
+		top: 50%;
+
+		&:hover {
+			opacity: .8;
+		}
+	}
+}

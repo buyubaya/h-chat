@@ -1,0 +1,25 @@
+.address-lookup {
+
+	.address-lookup-field-wrapper {
+		display: block;
+		width: 100%;
+
+		.address-lookup-field {
+			vertical-align: middle;
+			width: 100%;
+		}
+	}
+
+	.address-lookup-container {
+		position: relative;
+	}
+
+	.address-lookup-address-select {
+		width: 100%;
+		height: 108px;
+	}
+
+	.select-box-spacing {
+		margin-top: 0;
+	}
+}

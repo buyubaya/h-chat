@@ -1,0 +1,73 @@
+.no-gutter > [class*='col-'] {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.no-col-gutter {
+	margin: 0;
+	padding: 0;
+}
+
+.vertical-align {
+	align-items: center;
+	display: flex;
+}
+
+.panel-title {
+	a {
+		text-decoration: none;
+	}
+}
+
+.panel-group .panel-heading+.panel-collapse>.panel-body {
+	border-top: 0;
+}
+
+.modal {
+	z-index: $z-index-modal;
+}
+
+.modal-content {
+	border-color: transparent;
+	border-radius: $page-border-radius;
+	box-shadow: 0 0 2px palette(shadow);
+}
+
+.modal-backdrop {
+	z-index: $z-index-modal-backdrop;
+	background-color: palette(grey, dark);
+
+	&.in {
+		opacity: .35;
+	}
+}
+
+.modal-open {
+	overflow-y: auto;
+}
+
+// Row with equal height columns (used for Dashboard tiles).
+.row-equal-height {
+	@include responsive-min($screen-sm) {
+		@include display(flex);
+
+		//applies display: flex to all direct children of row-equal-height (first tier Cols)
+		> div {
+			@include display(flex);
+		}
+
+		.panel {
+			@include flex-grow(1);
+		}
+	}
+}
+
+.modal-dialog {
+	@include responsive-min($screen-md) {
+		margin: 0 auto;
+	}
+}
+
+.checkbox {
+	margin-top: 0;
+}

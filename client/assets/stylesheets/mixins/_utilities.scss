@@ -1,0 +1,26 @@
+$spaces: (
+	padding-top,
+	padding-bottom,
+	margin-top,
+	margin-bottom
+);
+
+@mixin generate-space($breakpoint-name) {
+	@for $size from 0 through 10 {
+		@each $space in $spaces {
+			@if($breakpoint-name) {
+				.#{$space}-#{$breakpoint-name}-#{$size * 10} {
+					#{$space}: #{$size * 10}px;
+				}
+			} @else {
+				.#{$space}-#{$size * 10} {
+					#{$space}: #{$size * 10}px;
+				}
+			}
+		}
+	}
+}
+
+@mixin make-space($breakpoint-name: null) {
+	@include generate-space($breakpoint-name);
+}

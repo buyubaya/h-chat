@@ -1,0 +1,115 @@
+$amend-input-group-width: 220px;
+$amend-btn-search-margin-left: 53px;
+$amend-text-update-padding-left: 63px;
+
+
+.#{$pes}-servicing-amend-page {
+    .#{$pes}-page-title {
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+
+    .#{$pes}-section-title {
+        text-transform: capitalize;
+    }
+
+    .text-update {
+        padding-left: $amend-text-update-padding-left;
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .#{$pes}-input-group {
+        width: $amend-input-group-width;
+        float: right;
+
+        .#{$pes}-dropdown-inner{
+            width: 100%;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+    }
+
+    .amend-address-area {
+        .amend-address {
+            line-height: $pes-input-height;
+        }
+
+        .tlrow {
+            margin-left: -#{$pes-table-padding-x};
+            margin-right: -#{$pes-table-padding-x};
+
+            &.empty {
+                min-height: #{$pes-font-size*$pes-line-height};
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .amend-search-form {
+        .#{$pes}-multiselect .form-control {
+            min-height: 100px;
+        }
+
+        .#{$pes}-btn {
+            margin-left: $amend-btn-search-margin-left;
+        }
+    }
+
+    .#{$pes}-text-belt {
+        text-transform: capitalize;
+    }
+
+    .planholderListArea {
+        .#{$pes}-input-checkbox {
+            line-height: 20px;
+            margin-bottom: $pes-input-checkbox-margin-bottom;
+        }
+    }
+}
+
+.#{$pes}-table-list {
+    &.apply-all-changes-area {
+        .#{$pes}-input-group {
+            margin-bottom: 10px;
+            max-width: map-get($pes-servicing-input-width, textInput);
+        }
+
+        .col-xs-4:nth-child(n+13) {
+            .#{$pes}-input-group {
+                margin-bottom: 0;
+            }
+        }
+
+        .inputs-area {
+            .input-field {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+
+                .#{$pes}-input-group {
+                    max-width: none;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        &.amend-organisation {
+            .input-field {
+                margin-right: 50%;
+
+                .#{$pes}-input-group {
+                    margin-top: 3px;
+                    margin-bottom: 3px;
+                }
+            }
+        }
+    }
+}

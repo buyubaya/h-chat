@@ -1,0 +1,50 @@
+.address-fieldset {
+	.form-row {
+
+		label {
+			display: block;
+
+			p {
+				color: palette(grey);
+			}
+		}
+	}
+
+	.form-row-lookup {
+		margin-bottom: 0;
+	}
+
+	.form-row-select {
+		margin-top: 5px;
+	}
+
+	.modal-margins {
+		margin-top: 30px;
+		margin-left: -10px;
+	}
+
+	.address-clickable-link {
+		display: table-cell;
+		vertical-align: bottom;
+		padding: 0 0 5px;
+		line-height: 1;
+		cursor: pointer;
+		color: palette(blue);
+		text-decoration: underline;
+	}
+
+	.address-clickable-address-link {
+		display: table-cell;
+		vertical-align: bottom;
+		padding: 0 0 5px;
+		line-height: 1;
+		cursor: pointer;
+		color: palette(gray, dark);
+		text-decoration: underline;
+	}
+
+	.well-header-text {
+		padding-bottom: 10px;
+		font-weight: bold;
+	}
+}

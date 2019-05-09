@@ -1,0 +1,315 @@
+.accordion {
+
+	h2 {
+		line-height: 1.3;
+	}
+
+	.tickbox {
+		margin-left: 7px;
+		max-height: 30px;
+	}
+
+	.panel {
+		border: 0;
+	}
+
+	.panel-images {
+		height: 70px;
+	}
+
+	.panel-default {
+		.panel-heading {
+			background-color: palette(white);
+			padding-top: $standard-spacing;
+		}
+	}
+
+	.panel-title {
+		margin-bottom: .5%;
+		text-align: center;
+	}
+
+	.text-row {
+		margin-top: spacing(10);
+		padding: spacing(10) $standard-spacing;
+	}
+
+
+	.transfer-text-row {
+		margin-top: 5%;
+
+		@include responsive-max($screen-md) {
+			margin-top: 0;
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+
+	.grey-box {
+		background-color: palette(grey, lightest);
+		border-radius: $standard-border-radius;
+		padding: spacing(20);
+
+		@include responsive-max($screen-md) {
+			margin-top: 37%;
+		}
+
+		@include responsive-max($screen-sm) {
+			margin-top: 5%;
+		}
+	}
+
+	.pins {
+		height: 30px;
+		margin-top: -14%;
+	}
+
+	.first-rectangle,
+	.second-rectangle,
+	.third-rectangle,
+	.fourth-rectangle {
+		border: 2px palette(blue, sky) dashed;
+		height: 30%;
+		position: absolute;
+		width: 23%;
+
+		@include responsive-max($screen-lg) {
+			height: 33%;
+		}
+
+		@include responsive-max($screen-md) {
+			height: 31%;
+			width: 35%;
+		}
+	}
+
+	.first-rectangle {
+		border-bottom: 0;
+		border-left: 0;
+		border-top: 0;
+		height: 4%;
+		left: 27.1%;
+		top: 19.4%;
+
+		@include responsive-max($screen-lg) {
+			top: 16%;
+		}
+
+		@include responsive-max($screen-md) {
+			left: 15%;
+			top: 24%;
+		}
+	}
+
+	.second-rectangle {
+		border-right: 0;
+		bottom: 47%;
+		left: 27%;
+
+		@include responsive-max($screen-lg) {
+			bottom: 47%;
+		}
+
+		@include responsive-max($screen-md) {
+			bottom: 41%;
+			left: 15%;
+		}
+	}
+
+	.third-rectangle {
+		border-left: 0;
+		left: 50%;
+		top: 52%;
+
+		@include responsive-max($screen-lg) {
+			top: 53%;
+		}
+
+		@include responsive-max($screen-md) {
+			left: 51%;
+			top: 59%;
+		}
+	}
+
+	.fourth-rectangle {
+		border-bottom: 0;
+		border-right: 0;
+		border-top: 0;
+		bottom: 14.5%;
+		height: 4%;
+		right: 27.1%;
+
+		@include responsive-max($screen-lg) {
+			bottom: 10%;
+		}
+
+		@include responsive-max($screen-md) {
+			bottom: 6%;
+			right: 15%;
+		}
+	}
+
+	.straight-line-rectangle {
+		border-right: 2px palette(blue, sky) dashed;
+		height: 97%;
+		left: 0;
+		right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		position: absolute;
+		top: 2%;
+		width: 0;
+	}
+
+	.top {
+		background-color: palette(black);
+		left: 0;
+		right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		position: absolute;
+		top: 22%;
+
+		@include responsive-max($screen-lg) {
+			top: 17%;
+		}
+
+		@include responsive-max($screen-md) {
+			top: 24%;
+		}
+
+		@include responsive-max($screen-sm) {
+			top: 3.5%;
+		}
+	}
+
+	.bottom {
+		background-color: palette(black);
+		left: 0;
+		right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		position: absolute;
+		top: 93%;
+
+		@include responsive-max($screen-lg) {
+			top: 97%;
+		}
+
+		@include responsive-max($screen-md) {
+			top: 100%;
+		}
+	}
+
+	.download-pdf-block {
+		margin-bottom: $standard-spacing;
+		max-width: 250px;
+	}
+
+	.pdf-icon {
+		height: 80px;
+		margin-top: 2%;
+	}
+
+	.button-finally {
+		margin: 0 0 0 20px;
+	}
+
+	.accordion-button {
+		display: block;
+		margin: 0 auto;
+		margin-top: $standard-spacing;
+		white-space: normal;
+	}
+
+	.finally-column {
+		padding-left: 7%;
+		padding-right: 7%;
+
+		@include responsive-max($screen-md) {
+			padding-left: $standard-spacing;
+			padding-right: $standard-spacing;
+		}
+	}
+
+	.document-title {
+		display: inline-block;
+		font-weight: bold;
+		margin-left: 20px;
+		margin-top: 10px;
+	}
+
+	.vertical-line {
+		border-left: 1px palette(grey, light) solid;
+
+		@include responsive-max($screen-md) {
+			border-left: 0;
+			border-top: 1px palette(grey, light) solid;
+			margin-top: $standard-spacing;
+			padding-top: $standard-spacing;
+		}
+	}
+
+	.row-equal-height {
+		@include responsive-min($screen-xs) {
+			display: flex;
+
+			//applies display: flex to all direct children of row-equal-height (first tier Cols)
+			> div {
+				display: flex;
+		}
+
+			.panel {
+				flex-grow: 1;
+			}
+		}
+	}
+}
+
+
+.#{$pes}-accordion-area {
+    .card {
+        border: none;
+        border-radius: 0;
+    }
+
+    .card-body {
+        padding: $pes-accordion-card-body-padding-y 0;
+    }
+
+    .card-header {
+        border-bottom: none;
+        border-top: $pes-accordion-border-width solid palette(blue, base);
+        padding: 0;
+
+        h4 {
+            margin-bottom: 0;
+        }
+
+        a {
+            display: block;
+            position: relative;
+            font-weight: bold;
+            padding: $pes-accordion-card-header-padding-y 0;
+            text-decoration: none;
+            position: relative;
+
+            &:after {
+                content: '';
+                display: block;
+                width: $pes-card-header-arrow-size;
+                height: $pes-card-header-arrow-size;
+                background: url('../images/dropdown-chevron-blue.png') no-repeat center;
+                background-size: 100%;
+                @include position(absolute, calc(50% - #{$pes-card-header-arrow-size/2}) 0 null null);
+                transform: rotate(180deg);
+                transform-origin: center center;
+            }
+            &.collapsed:after {
+                transform: rotate(0);
+            }
+        }
+    }
+}
+
+

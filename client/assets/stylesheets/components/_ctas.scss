@@ -1,0 +1,37 @@
+%cta {
+    display: table;
+	text-decoration: none !important;
+	border-radius: 3px;
+	transition-duration: .3s;
+	height: $pes-cta-height;
+	line-height: #{$pes-cta-height - 2px};
+	// font-size: 15px;
+	padding: 0 25px;
+}
+
+.cta {
+	@extend %cta;
+}
+
+a.cta, a.btn, .cta-inline {
+    display: inline-block;
+}
+
+.pes-cta-default {
+	background: url('../images/buttonBG.jpg');
+    color: palette(white);
+	border: 1px solid transparent;
+
+    &:hover {
+        color: $pes-cta-bg-default;
+		background: palette(white);
+		border: 1px solid $pes-cta-bg-default;
+	}
+	
+	&[disabled] {
+		color: $pes-text-color;
+		background: palette(grey);
+		border-color: palette(grey) !important;
+		cursor: not-allowed;
+	}
+}

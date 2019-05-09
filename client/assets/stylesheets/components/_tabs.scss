@@ -1,0 +1,102 @@
+.#{$pes}-tab-area {
+    .tab-headers-area {
+        overflow-x: hidden;
+    }
+
+    .tab-headers {
+        min-width: $pes-tab-min-width;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        @include clearfix;
+    
+        &.mb {
+            margin-bottom: $pes-tab-header-height;
+        }
+
+        li {
+            float: left;
+            font-size: $pes-tab-header-font-size;
+            line-height: $pes-tab-header-line-height;
+            color: $pes-tab-header-color; 
+            position: relative;
+
+            &:not(:last-child) {
+                &:before {
+                    content: '';
+                    display: block;
+                    width: 1px;
+                    background: $pes-tab-header-border-color;
+                    position: absolute;
+                    top: 5px;
+                    bottom: 5px;
+                    right: 0;
+                }
+            }
+            
+            span {
+                display: block;
+                padding: $pes-tab-item-padding-y $pes-tab-item-padding-x;
+                cursor: pointer;
+            }
+    
+            &.active {
+                color: $pes-tab-header-color-active;
+                background: $pes-tab-header-bg-color-active;
+                
+                & > span {
+                    pointer-events: none;
+                }
+            }
+
+            &:hover {
+                color: $pes-tab-header-color-active;
+            }
+        }
+
+        .sublist {
+            display: none;
+            width: 1000px;
+            list-style: none;
+            margin: 0;
+            margin-left: 1px;
+            padding: 0;
+            @include position(absolute, 100% null null 100%);
+
+            li {
+                border-right: 0;
+                float: none;
+                display: table-cell;
+            }
+        }
+
+        li.active {
+            .sublist {
+                display: block;
+            }
+        }
+    }
+
+    .tab-body {
+        padding-top: $pes-tab-body-padding-y;
+        background: $pes-tab-bg-color-active;
+    }
+
+    @include responsive-max($screen-md){
+        .tab-headers-area {
+            overflow-x: auto;
+        }
+
+        .tab-headers {
+            .sublist {
+                width: 265px;
+                @include position(absolute, 100% 0 null initial);
+    
+                li {
+                    width: 1%;
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,56 @@
+.tab-buttons {
+	text-align: center;
+
+	.enclosure {
+		border: 1px solid palette(blue);
+		border-radius: $standard-border-radius;
+		font-size: $font-size-small;
+		margin-bottom: spacing(10);
+		width: 100%;
+	}
+
+	.left-a,
+	.right-a {
+		cursor: pointer;
+		display: inline-block;
+		text-align: center;
+		width: 50%;
+		text-decoration: none;
+		padding-top: spacing(5);
+		padding-bottom: spacing(5);
+
+		@include responsive-max($screen-xs) {
+			padding-left: spacing(15);
+			padding-right: spacing(15);
+		}
+
+		@include responsive-between($screen-sm, $screen-md) {
+			padding-left: spacing(15);
+			padding-right: spacing(15);
+		}
+	}
+
+	.left-a {
+		border-bottom-left-radius: $standard-border-radius;
+		border-right: 1px solid palette(blue);
+		border-top-left-radius: $standard-border-radius;
+		vertical-align: middle;
+	}
+
+	.right-a {
+		border-bottom-right-radius: $standard-border-radius;
+		border-top-right-radius: $standard-border-radius;
+		vertical-align: middle;
+	}
+
+	.active {
+		background-color: palette(blue);
+		color: palette(white);
+	}
+
+	.inactive {
+		background-color: palette(white);
+		color: palette(blue);
+	}
+
+}

@@ -1,0 +1,135 @@
+// VARIABLES
+@import 'palette';
+@import 'variables';
+@import 'easings';
+
+// BOOTSTRAP 3.3.7
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+// BOURBON
+@import '~bourbon/app/assets/stylesheets/bourbon';
+
+// ICON FONTS
+@import '../fonts/planenquiry/planenquiry';
+
+// VENDOR
+$font-path: '~react-widgets/lib/fonts';
+$img-path: '~react-widgets/lib/img';
+@import '~react-widgets/lib/scss/react-widgets';
+
+// Mixins
+@import 'mixins/responsive';
+@import 'mixins/shapes';
+@import 'mixins/fonts';
+@import 'mixins/box-shadow';
+@import 'mixins/image-animation';
+@import 'mixins/font-size';
+@import 'mixins/responsive-size';
+@import 'mixins/utilities';
+
+// Functions
+@import 'functions/spacing';
+@import 'functions/font-size';
+@import 'functions/line-height';
+
+// OVERRIDES BOOTSTRAP
+// @import 'overrides/bootstrap';
+
+// CORE
+@import 'core';
+@import 'utility';
+// @import 'financial-navigator';
+
+// LAYOUT
+// @import 'layout';
+
+// COMMON
+@import 'components/dots';
+// @import 'components/progress-bar';
+// @import 'components/info-field';
+// @import 'components/error-bar';
+// @import 'components/image-progress-bar';
+// @import 'components/slider';
+// @import 'components/date-input';
+// @import 'components/image-choice';
+// @import 'components/carousel';
+// @import 'components/curved-text';
+// @import 'components/tab-buttons';
+// @import 'components/circle';
+// @import 'components/triangle';
+// @import 'components/uploads-list';
+// @import 'components/accordion';
+// @import 'components/radio-input';
+// @import 'components/checkbox-input';
+// @import 'components/slick';
+// @import 'components/slick-theme';
+// @import 'components/header-alert-message';
+// @import 'components/three-way-carousel';
+// @import 'components/already-registered-modal';
+// @import 'components/modal-window';
+// @import 'components/contact-details';
+// @import 'components/address-fieldset';
+// @import 'components/address-lookup';
+// @import 'components/account-summary-template';
+// @import 'components/step-progress-bar';
+// @import 'components/radio-slider';
+// @import 'components/dots-paginator';
+// // @import 'components/hero';
+// @import 'components/go-back-link';
+// @import 'components/arrow';
+// @import 'components/risk-selection';
+// @import 'components/fund-selection';
+// @import 'components/tabs';
+// @import 'components/risk-details';
+// @import 'components/animations-container';
+// @import 'components/date-time-picker';
+// @import 'components/pagination';
+// @import 'components/switch';
+// @import 'components/numeric-input';
+// @import 'components/common/switch-panel';
+// @import 'components/common/accordion-panel';
+// @import 'components/common/fy6-check-list';
+// @import 'components/common/form';
+// @import 'components/common/listgroup-download';
+// @import 'components/multiple-input-radio-switch';
+// @import 'components/multiple-input-radio-switch-custom';
+// @import 'components/ctas';
+@import 'components/loading-dots';
+@import 'components/form';
+@import 'components/input-fields';
+@import 'components/buttons';
+@import 'components/radio-input';
+@import 'components/checkbox-input';
+@import 'components/table';
+@import 'components/tabs';
+@import 'components/accordion';
+@import 'components/card';
+@import 'components/dropdown';
+@import 'components/modal';
+@import 'components/table-list';
+
+
+// PES EXISTING BUSINESS
+@import 'pages/pes/helper';
+@import 'pages/pes/plan-search';
+@import 'pages/pes/plan-details';
+@import 'pages/pes/servicing';
+@import 'pages/pes/servicing-amend';
+@import 'pages/pes/servicing-switch-fund';
+@import 'pages/pes/servicing-regular-withdrawal';
+@import 'pages/pes/servicing-distribution';
+@import 'pages/pes/servicing-income-payment';
+@import 'pages/pes/toolbar';
+@import 'pages/pes/maintab';
+@import 'pages/pes/mainmenu';
+@import 'pages/pes/header';
+@import 'pages/pes/footer';
+@import 'pages/pes/helppage';
+@import 'pages/pes/myprofile';
+@import 'pages/pes/error_page';
+
+
+#app {
+    background: yellow;
+}

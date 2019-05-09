@@ -1,0 +1,44 @@
+.toolbar-area {
+    margin-top: 10px;
+
+    .color-grey {
+        color: palette(grey, mid);
+    }
+
+    .toolbar-top, .toolbar-bottom {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        
+        & > [class*="col-"] {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        // & > [class*=col-]:first-child {
+        //     padding-left: 0 !important;
+        // }
+
+        // & > [class*=col-]:last-child {
+        //     padding-right: 0 !important;
+        // }
+    }
+
+    .toolbar-bottom {
+        border-top: 1px solid $pes-line-color;
+    }
+
+    .tools-list {
+        li {
+            margin-bottom: 3px;
+        }
+
+        @include responsive-max($screen-sm){
+            margin-top: 10px;
+        }
+    }
+
+
+    .#{$pes}-text-belt {
+        color: palette(blue, dark);
+    }
+}

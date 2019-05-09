@@ -1,0 +1,318 @@
+// BOOTSTRAP FONTS PATH
+$icon-font-path: '../fonts/bootstrap/';
+
+// Screen sizes
+$screen-xs: 480px;
+$screen-sm: 768px;
+$screen-md: 992px;
+$screen-lg: 1200px;
+
+// Font family
+$fy-font-sans-serif: Frutiger,
+	'HelveticaNeue-Light',
+	'Helvetica Neue Light',
+	'Helvetica Neue',
+	'Arial',
+	'Lucida Grande',
+	sans-serif;
+$fy-font-serif: 'Garamond',
+	serif;
+
+// Font sizes
+$font-size-largest: 36px;
+$font-size-large: 26px;
+$font-size-medium: 16px;
+$font-size-small: 14px;
+$font-size-smaller: 13px;
+$font-size-smallest: 12px;
+
+$font-size-isa-large:40px;
+$font-size-isa-medium:30px;
+$font-size-isa-small:20px;
+
+// Custom font sizes
+$font-size-curved-text: 50px;
+$font-size-curved-text-title: 90px;
+$font-size-largest-numeric: 50px;
+$font-size-medium-numeric: 45px;
+$font-size-small-numeric: 30px;
+
+// Standard styles
+$standard-border-radius: 6px;
+$standard-spacing: 26px;
+$standard-circle-border-radius: 50%;
+$standard-slider-border-radius: 10px;
+$handle-slider-border-radius: 40px;
+$bar-border-radius: 10px;
+$page-border-radius: 3px;
+$modal-top-border-radius: 2px;
+$carousel-frequency-border-radius: 12px;
+$checkbox-border-radius: 5px;
+
+// Z-Index (Z-Index should be kept low and incremental, don't exceed 10)
+$z-index-progress-bar-connector: -1;
+$z-index-life-planner-video: 0;
+$z-index-life-planner-video-overlay: 1;
+$z-index-overlay: 1;
+$z-index-progress-bar-container: 1;
+$z-index-overlay-two: 2;
+$z-index-overlay-three: 3;
+$z-index-header-alert-message: 4;
+$z-index-header: 5;
+$z-index-modal-backdrop: 5;
+$z-index-modal: 6;
+$z-index-glass-wall: 7;
+$z-index-loading-dots: 10;
+
+// Custom
+$icon-border-radius: 10px;
+$button-border-radius: 5px;
+$highlight-border-radius: 3px;
+$oblong-border-radius: 3em;
+$circle-border-radius: 50%;
+$no-border-radius: 0;
+$validation-message-border-radius: 4px;
+$currency-input-border-right: 0 4px 4px 0;
+$currency-input-border-left: 4px 0 0 4px;
+$dropdown-border-right: 0 4px 4px 0;
+$third-part: 100% / 3;
+$icon-font-size: 23px;
+
+// Image dimensions
+$image-width: 250px;
+$image-height: 160px;
+
+// Curved Header Height
+$curved-header-height: 35px;
+
+// Shadows
+$standard-box-shadow: 0 2px 4px palette(shadow);
+
+// Layout
+$header-height: 90px;
+$footer-height: 63px;
+
+$transition-fast-timing: 200ms;
+$transition-background-color: background-color $transition-fast-timing linear;
+$transition-opacity: opacity $transition-fast-timing linear;
+
+// Input Styles
+$flat-button-border-radius: 0;
+$input-border-radius: 0;
+$input-promo-code-border-radius: 0;
+
+
+/********** PLAN ENQUIRY SYSTEM **********/
+// PREFIX
+$pes: pes;
+$pes-icon-font-family: planenquiry;
+
+.#{pes}-container {
+    font-weight: 400;
+}
+
+$pes-container-width: 1200px;
+
+
+// BODY
+$pes-font-family: Frutiger, Verdana, Arial, Helvetica, sans-serif;
+$pes-text-color: #3e3e3e;
+$pes-font-size: 12px;
+$pes-line-height: 1.3636;
+$pes-bg-error: #FFEDED;
+
+// COLOR
+$pes-color-primary: #194A9B;
+$pes-color-error: #CC3300;
+$pes-line-color: #c0c0c0;
+$pes-border-color: $pes-line-color;
+$pes-input-icon-bg-color: #f3f3f3;
+
+// HEADER
+$pes-grey-base: #f5f5f5;
+$pes-grey-light: #e6e9eb;
+$pes-grey-dark: #e3e3e3;
+$pes-header-padding-top: 16px;
+$pes-header-margin-bottom: 20px;
+$pes-nav-logo-width: 136px;
+$pes-nav-logo-min-width: 112px;
+$pes-nav-logo-margin-y: 4px;
+$pes-nav-item-font-size: 14px;
+$pes-nav-item-line-height: 1.5;
+$pes-nav-item-color: palette(blue, base);
+$pes-nav-item-color-hover: palette(blue, dark);
+$pes-nav-item-color-active: #706964;
+$pes-nav-item-padding-y: 0.75em;
+$pes-nav-item-spacing: 20px;
+$pes-nav-border-color: palette(blue, base);
+
+// TABLE
+$pes-table-bg: transparent;
+$pes-table-head-color: inherit;
+$pes-table-head-border-color: palette(blue, base);
+$pes-table-padding-y: 5px;
+$pes-table-padding-x: 10px;
+$pes-table-border-color: $pes-line-color;
+$pes-table-list-head-color: inherit;
+$pes-table-list-head-border-color: palette(blue, base);
+$pes-table-list-padding-y: 5px;
+$pes-table-list-padding-x: 10px;
+$pes-table-list-border-color: $pes-line-color;
+$pes-table-list-border-width: 1px;
+
+// FORM
+$pes-input-height: 21px;
+$pes-input-width: 300px;
+$pes-input-border-radius: 1px;
+$pes-input-bg-color: #fff;
+$pes-input-border-color: $pes-border-color;
+$pes-input-label-margin-bottom: 10px;
+$pes-input-padding: 5px;
+$pes-input-paddding-x: 5px;
+$pes-input-paddding-y: 10px;
+$pes-bg-input-disabled: #eee;
+%input-disabled {
+	background: $pes-bg-input-disabled !important;
+    cursor: not-allowed !important;
+}
+$pes-input-currency-bg: $pes-input-icon-bg-color;
+// RADIO
+$pes-input-radio-size: 16px;
+// CHECKBOX
+$pes-input-checkbox-size: 16px;
+$pes-input-checkbox-border-radius: 2px;
+$pes-input-checkbox-color: $pes-border-color;
+$pes-input-checkbox-color-active: #4a4a4a;
+$pes-input-checkbox-margin-bottom: 5px;
+// MULTISELECT
+$pes-multiselect-height: 200px;
+// ERROR
+$pes-input-error-color: #a94442;
+$pes-input-error-bg: rgba(253, 85, 85, 0.1);
+$pes-input-error-border-radius: 2px;
+$pes-input-error-font-size: 11px;
+$pes-input-error-spacing: 5px;
+// DROPDOWN
+$pes-dropdown-height: $pes-input-height;
+$pes-dropdown-padding-y: 5px;
+$pes-dropdown-padding-x: 6px;
+$pes-dropdown-icon-size: 6px; 
+$pes-dropdown-icon-color: #3e3e3e; 
+$pes-dropdown-icon-bg: #f3f3f3; 
+
+// BUTTON
+$pes-btn-height: $pes-input-height;
+$pes-btn-bg-default: $pes-color-primary;
+$pes-btn-height: $pes-input-height;
+$pes-btn-width: 100px;
+$pes-btn-border-radius: 3px;
+$pes-btn-bg-color-default: $pes-color-primary;
+$pes-btn-padding-x: 20px;
+
+// TAB
+$pes-tab-min-width: 687px;
+$pes-tab-bg-color-active: #f7f5f0;
+$pes-tab-header-font-size: $pes-font-size;
+$pes-tab-header-line-height: 1;
+$pes-tab-header-color: $pes-text-color;
+$pes-tab-header-border-color: #dadada;
+$pes-tab-header-color-active: palette(blue, dark);
+$pes-tab-header-bg-color-active: $pes-tab-bg-color-active;
+$pes-tab-item-padding-x: 15px;
+$pes-tab-item-padding-y: 20px;
+$pes-tab-header-height: #{$pes-tab-header-font-size * $pes-tab-header-line-height + 2 * $pes-tab-item-padding-y};
+$pes-tab-item-border-color-active: $pes-color-primary;
+$pes-tab-body-padding-x: 20px;
+$pes-tab-body-padding-y: 20px;
+
+// ACCORDION
+$pes-accordion-border-width: 3px;
+$pes-card-header-arrow-size: 25px;
+$pes-accordion-card-header-padding-y: 20px;
+$pes-accordion-card-body-padding-y: 30px;
+
+// CTA
+$pes-cta-height: $pes-input-height;
+$pes-cta-bg-default: $pes-color-primary;
+
+// CARD
+$pes-card-padding: 30px;
+
+// TITLE
+$pes-page-title-color: #202020;
+$pes-page-title-font-size: 15px;
+$pes-page-title-line-height: 1.2333;
+$pes-page-title-padding-y: 1em;
+$pes-page-title-padding-x: $pes-table-list-padding-x;
+$pes-page-title-margin-y: 10px;
+$pes-page-title-border-color: $pes-color-primary;
+
+$pes-section-title-color: $pes-color-primary;
+$pes-section-title-font-size: 13px;
+$pes-section-title-line-height: 1.4444;
+$pes-section-title-padding-y: 0.8333em;
+$pes-section-title-padding-x: $pes-table-list-padding-x;
+$pes-section-title-margin-top: $pes-input-height;
+
+// MODAL
+$pes-modal-border-radius: 3px;
+$pes-modal-padding-x: 97px;
+$pes-modal-padding-top: 30px;
+$pes-modal-padding-bottom: 30px;
+$pes-modal-title-font-size: 20px;
+$pes-modal-title-border-color: #4066b3;
+$pes-modal-title-padding-bottom: 20px;
+$pes-modal-title-margin-bottom: 17px;
+$pes-modal-content-font-size: 13px;
+$pes-modal-content-margin-bottom: 30px;
+$pes-modal-icon-close-size: 1.5em;
+$pes-modal-icon-close-color: #4a4a4a;
+$pes-modal-icon-close-spacing: 20px;
+
+// SEARCH PAGE
+$pes-search-bg-color: rgba(255, 0, 0, 0.05);
+$pes-search-input-width: 220px;
+$pes-search-table-cashin-width: 160px;
+$pes-search-table-links-width: 300px;
+$pes-search-table-width: (
+	large: 275px,
+	medium: 200px, 
+	small: 145px,
+	smaller: 120px, 
+	smallest: 80px,
+);
+
+// HELP PAGE
+$pes-helppage-margin-bottom: 1000px;
+$pes-list-telephone-dt-width: 200px;
+
+// PLAN DETAILS PAGE
+$withdrawals-search-filter-input-group-width: 250px;
+$withdrawals-search-filter-label-width: 70px;
+$pes-authority-modal-title-fontsize: 16px;
+$pes-summary-table-width: (
+	table: 1000px,
+	currency: 100px,
+	fundName: 40%,
+	fundDetails: 60%,
+	units: 100px,
+	unitPrice: 100px,
+	value: 100px,
+	switchFund: 120px,
+	surrender: 180px
+);
+
+// PLAN SERVICING PAGE
+$pes-servicing-input-width: (
+	textInput: 200px,
+	select: 300px,
+	percent: 50px
+);
+
+// SERVICING PAGE
+$pes-servicing-btn-bottom-area-space-y: 2px;
+$pes-servicing-btn-bottom-area-space-x: 10px;
+$pes-servicing-w-percent: 50px;
+$pes-servicing-btn-width: $pes-btn-width;
+$pes-myprofile-btn-width: $pes-btn-width;
+// $pes-servicing-tlcell-height: 32px;

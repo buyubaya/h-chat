@@ -1,0 +1,26 @@
+.dots-paginator {
+	text-align: center;
+
+	.dots-paginator-bullet {
+		display: inline-block;
+		padding: spacing(5);
+		line-height: 0;
+
+		&::after {
+			content: ' ';
+			display: inline-block;
+			width: 11px;
+			height: 11px;
+			border-radius: $standard-circle-border-radius;
+			border: 1px solid palette(grey);
+			background: palette(white);
+		}
+
+		&.active {
+			&::after {
+				border-color: palette(blue, light);
+				background: palette(blue, light);
+			}
+		}
+	}
+}

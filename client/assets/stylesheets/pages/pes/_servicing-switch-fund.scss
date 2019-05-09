@@ -1,0 +1,111 @@
+.#{pes}-servicing-switch-fund-page {
+    &.switch-fund-b34{
+        
+    }
+    .product_tip{
+        input.form-control{
+            display: none;
+        }
+    }
+    .clear-background{
+        background-color: transparent
+    }
+    .clear-boder{
+        border-bottom: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+    .font-normal{font-weight: normal}
+    .pes-table-list{
+        // .tlhead{
+        //     border-bottom: none;
+        // }
+        .row-total{
+            .tlcell{vertical-align: top}
+        }
+    } 
+    .pr-btn {
+        padding-right: $pes-servicing-btn-width;
+    }
+    .investment-funds-area {
+        .input-field, .input-btn {
+            display: table-cell;
+            font-size: $pes-font-size;
+            vertical-align: top;
+        }
+        .input-field {
+            width: 100%;
+            padding-right: $pes-table-padding-x;
+            &.has-error{
+                .fund-box{
+                    border-color: #ea635c;
+                }
+            }   
+            .fund-box{
+                background-color: white;
+                padding: 10px;
+                height: 100px;
+                max-height: 100px;
+                overflow: auto;
+                vertical-align: top;
+                .investment_fund{
+                    cursor: pointer;
+                }
+                .selected{
+                    background: #ddd;
+                }
+                
+            }      
+        }
+
+        .input-btn {
+            min-width: $pes-servicing-btn-width;
+            &.btn-add-fund {
+                padding-left: 10px;
+                vertical-align: top;
+            }
+        }
+    }
+    .col-empty{
+        min-height: 20px;
+        height: 20px;
+        background-color: $pes-grey-dark;
+    }
+    .col-empty-2{
+        min-height: 20px;
+        height: 20px;
+        background-color: transparent;
+    }
+    .cell-percentinvestted {
+        padding-left: 0;
+        padding-right: 0;
+        .w-percent{width: 100%}
+        .help-block{
+            text-align: left;
+            position: relative !important;
+        }
+        .total-investment{
+            .help-block{
+                text-align: left;
+            }
+        }
+        .ml-10{
+            position: absolute; left: calc(50% + 20px); top:3px;
+            &.newInvestment{
+                left: 60px;
+            }
+        }
+        .form-control{
+            width: 50px;
+            display: inline-block;
+        }
+    }
+    .total-switch{
+        input{display: none}
+    }
+    .highlight{
+        font-weight: 700;
+        color: gray;
+    }
+}

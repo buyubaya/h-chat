@@ -1,0 +1,73 @@
+.#{pes}-header-area {
+	.header-top-area {
+		padding-top: 10px;
+		padding-bottom: 10px;
+    }
+    
+    .navbar-header, .navbar-collapse {
+        float: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-collapse {
+        padding: 0 !important;
+    }
+	
+	.logo-desktop {
+        float: left;
+        width: 94px;
+        
+        img {
+            width: 100%;
+        }
+
+        @include responsive-max($screen-xs){
+            width: 70px;
+        }
+    }
+    
+    .strap {
+        margin: 20px 94px 0 94px;
+        text-align: center;
+
+        @include responsive-max($screen-sm){
+            margin-top: 23px;
+
+            img {
+                max-width: 200px;
+            }
+        }
+
+        @include responsive-max($screen-xs){
+            margin-top: 8px;
+            margin-left: 0;
+        }
+    }
+
+    .navbar-toggle-area {
+        background: $pes-grey-light;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin: 10px 0;
+
+        .icon-bar {
+            background: palette(blue);
+        }
+    }
+
+    .navbar-top {
+        position: relative;
+    }
+
+    .sign-out {
+        width: 94px;
+        padding-right: 10px;
+        text-align: right;
+        position: absolute;
+        right: 0;
+        bottom: 10px;
+    }
+}

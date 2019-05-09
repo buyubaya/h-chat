@@ -1,0 +1,25 @@
+#help-page {
+    margin-bottom: $pes-helppage-margin-bottom;
+
+    section {
+        margin: 20px 0;
+    }
+
+    .#{$pes}-section-title {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .#{$pes}-list-telephone {
+        @include responsive-min($screen-xs){
+            dt {
+                float: left;
+                width: $pes-list-telephone-dt-width;
+            }
+    
+            dd {
+                margin-left: $pes-list-telephone-dt-width;
+            }
+        }
+    }
+}

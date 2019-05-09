@@ -1,0 +1,322 @@
+// ****************************************************************************
+// When updating this file from fontastic please only copy the parts below
+// ****************************************************************************
+
+$font-path: '../fonts/planenquiry/' !default;
+
+@font-face {
+  font-family: 'planenquiry';
+  src: url('#{$font-path}planenquiry.eot');
+  src: url('#{$font-path}planenquiry.eot') format('embedded-opentype'), 
+  url('#{$font-path}planenquiry.woff') format('woff'), 
+  url('#{$font-path}planenquiry.ttf') format('truetype'), 
+  url('#{$font-path}planenquiry.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// scss-lint:disable VariableForProperty
+@mixin icon-size($size) {
+
+	&.icon-#{$size} {
+		font-size: #{$size}px;
+		line-height: 0;
+	}
+}
+// scss-lint:enable VariableForProperty
+
+[class^='icon-'],
+[class*=' icon-'] {
+	@include icon-size(16);
+	@include icon-size(24);
+	@include icon-size(32);
+	@include icon-size(64);
+	@include icon-size(128);
+	@include icon-size(256);
+
+	&::before {
+		font-family: 'planenquiry';
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		speak: none;
+		line-height: 1;
+		vertical-align: middle;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+}
+
+.icon-mail-read::before {
+	content: '\61';
+}
+
+.icon-pdf-download::before {
+	content: '\64';
+}
+
+.icon-facebook::before {
+	content: '\65';
+}
+
+.icon-double-arrows-down::before {
+	content: '\66';
+}
+
+.icon-arrow-down::before {
+	content: '\67';
+}
+
+.icon-arrow-left::before {
+	content: '\68';
+}
+
+.icon-arrow-right::before {
+	content: '\69';
+}
+
+.icon-arrow-up::before {
+	content: '\6a';
+}
+
+.icon-at::before {
+	content: '\6b';
+}
+
+.icon-chevron-arrow-left::before {
+	content: '\6d';
+}
+
+.icon-chevron-arrow-right::before {
+	content: '\6e';
+}
+
+.icon-circle-arrow-left::before {
+	content: '\6f';
+}
+
+.icon-circle-arrow-right::before {
+	content: '\70';
+}
+
+.icon-circle-arrow-up::before {
+	content: '\71';
+}
+
+.icon-circle-arrow-down::before {
+	content: '\72';
+}
+
+.icon-circle-tick::before {
+	content: '\73';
+}
+
+.icon-dir-arrow-double-right::before {
+	content: '\74';
+}
+
+.icon-dir-arrow-double-left::before {
+	content: '\75';
+}
+
+.icon-double-arrows-right::before {
+	content: '\76';
+}
+
+.icon-double-arrows-left::before {
+	content: '\77';
+}
+
+.icon-cup::before {
+	content: '\78';
+}
+
+.icon-cube-with-cross::before {
+	content: '\79';
+}
+
+.icon-table-cross::before {
+	content: '\7a';
+}
+
+.icon-comment::before {
+	content: '\41';
+}
+
+.icon-x::before {
+	content: '\42';
+}
+
+.icon-close::before {
+	content: '\43';
+}
+
+.icon-clock::before {
+	content: '\44';
+}
+
+.icon-circle-tick-negative::before {
+	content: '\45';
+}
+
+.icon-dir-down::before {
+	content: '\46';
+}
+
+.icon-circle-download::before {
+	content: '\47';
+}
+
+.icon-edit::before {
+	content: '\48';
+}
+
+.icon-envelope-outline::before {
+	content: '\49';
+}
+
+.icon-face-to-face::before {
+	content: '\4a';
+}
+
+.icon-flip::before {
+	content: '\4b';
+}
+
+.icon-google-plus::before {
+	content: '\4c';
+}
+
+.icon-info::before {
+	content: '\4d';
+}
+
+.icon-info-negative::before {
+	content: '\4e';
+}
+
+.icon-instagram::before {
+	content: '\4f';
+}
+
+.icon-dir-arrow-left::before {
+	content: '\50';
+}
+
+.icon-sad-computer::before {
+	content: '\51';
+}
+
+.icon-open-big-right::before {
+	content: '\52';
+}
+
+.icon-dir-arrow-right::before {
+	content: '\53';
+}
+
+.icon-print::before {
+	content: '\54';
+}
+
+.icon-play::before {
+	content: '\55';
+}
+
+.icon-pdf-upload::before {
+	content: '\56';
+}
+
+.icon-pdf-delete::before {
+	content: '\57';
+}
+
+.icon-menu::before {
+	content: '\58';
+}
+
+.icon-linkedin::before {
+	content: '\59';
+}
+
+.icon-like-outline::before {
+	content: '\5a';
+}
+
+.icon-like::before {
+	content: '\30';
+}
+
+.icon-open-big-left::before {
+	content: '\31';
+}
+
+.icon-scan-upload::before {
+	content: '\32';
+}
+
+.icon-circle-upload::before {
+	content: '\33';
+}
+
+.icon-share::before {
+	content: '\34';
+}
+
+.icon-sterling::before {
+	content: '\35';
+}
+
+.icon-circle-sterling::before {
+	content: '\36';
+}
+
+.icon-tick::before {
+	content: '\37';
+}
+
+.icon-table-tick::before {
+	content: '\38';
+}
+
+.icon-twitter::before {
+	content: '\39';
+}
+
+.icon-dir-up::before {
+	content: '\21';
+}
+
+.icon-write-to-us::before {
+	content: '\22';
+}
+
+.icon-call-us::before {
+	content: '\62';
+}
+
+.icon-dir-right::before {
+	content: '\63';
+}
+
+.icon-dir-left::before {
+	content: '\6c';
+}
+
+.icon-refresh:before {
+    content: '\23';
+}
+
+// ****************************************************************************
+// Below are modified versions of the fontastic generated classes. Don't remove
+// these when updating from the fontastic library
+// ****************************************************************************
+.icon-open-big-down {
+	transform: rotate(90deg);
+	display: inline-block;
+
+	&::before {
+		content: '\52';
+	}
+}

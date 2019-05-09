@@ -1,0 +1,64 @@
+.header-alert-message {
+	background-color: palette(gray, dark);
+	position: relative;
+	display: block;
+	z-index: $z-index-header-alert-message;
+	padding-bottom: spacing(5);
+	padding-top: spacing(10);
+	color: palette(white);
+	font-size: $font-size-small;
+	margin-top: 1px;
+	overflow-x: hidden;
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	.title-text,
+	.text-description,
+	.action-primary-wrapper,
+	.action-secondary-wrapper {
+		margin-bottom: spacing(10);
+	}
+
+	.title-text {
+		font-weight: bold;
+		font-family: Frutiger;
+
+		@include responsive-min($screen-md) {
+			max-width: 237px;
+			padding-left: spacing(20);
+		}
+	}
+
+	.action-text {
+		cursor: pointer;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		.icon-button {
+			font-size: $font-size-small;
+			margin-right: spacing(5);
+		}
+
+		.action-primary-wrapper {
+			cursor: pointer;
+
+			@include responsive-min($screen-md) {
+				max-width: 192px;
+			}
+		}
+
+		.action-secondary-wrapper {
+			cursor: pointer;
+		}
+	}
+
+}

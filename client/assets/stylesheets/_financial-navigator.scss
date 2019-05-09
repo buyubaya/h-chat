@@ -1,0 +1,40 @@
+
+// Common styles for all pages of the application, based on style guide
+
+.financial-navigator {
+	background-color: palette(grey, lightest);
+
+	// scss-lint:disable IdSelector
+	#app {
+		position: relative;
+	}
+	// scss-lint:enable IdSelector
+
+	.white-box {
+		padding: spacing(20);
+
+		> .container {
+			background-color: palette(white);
+			border-radius: $page-border-radius;
+			box-shadow: $standard-box-shadow;
+			margin-top: $standard-spacing;
+			overflow: hidden;
+			padding: $standard-spacing;
+
+			&.no-padding {
+				padding: 0;
+			}
+		}
+	}
+
+	.white-page {
+		background-color: palette(white);
+		border-radius: $standard-border-radius;
+		margin-top: $standard-spacing;
+		padding: $standard-spacing;
+	}
+
+	.panel {
+		border-radius: $page-border-radius;
+	}
+}

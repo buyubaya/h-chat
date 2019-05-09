@@ -1,0 +1,21 @@
+ul.fy6-check-list {
+	@include fy6-p-default-size;
+
+	-webkit-padding-start: 0;
+	padding-left: 30px;
+	font-weight: normal;
+
+	li {
+		list-style: none;
+		margin-top: 10px;
+	}
+
+	li::before {
+		font-family: planenquiry;
+		content: '8';
+		color: #039;
+		left: 15px;
+		padding-right: 15px;
+		position: absolute;
+	}
+}

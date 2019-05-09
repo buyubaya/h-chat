@@ -1,0 +1,96 @@
+.slider {
+	padding: 0 spacing(20);
+	margin-top: spacing(70);
+}
+
+//Rangeslider
+.rangeslider {
+	background: palette(grey, light);
+	margin: spacing(20) 0;
+	position: relative;
+
+	.rangeslider-fill,
+	.rangeslider-handle {
+		position: absolute;
+	}
+
+	.rangeslider-fill {
+		display: block;
+	}
+
+	.rangeslider-handle {
+		background: palette(orange);
+		box-shadow: $standard-box-shadow;
+		cursor: pointer;
+		display: inline-block;
+		position: absolute;
+	}
+
+	.rangeslider-handle:active {
+		background: palette(orange);
+	}
+}
+
+// Rangeslider - Horizontal slider
+
+.rangeslider-horizontal {
+
+	border-radius: $standard-slider-border-radius;
+	height: 12px;
+
+	.rangeslider-fill {
+		background: palette(orange);
+		border-radius: $standard-slider-border-radius;
+		height: 100%;
+		top: 0;
+	}
+
+	.rangeslider-handle {
+		border-radius: $handle-slider-border-radius;
+		height: 25px;
+		top: -8px;
+		width: 25px;
+	}
+}
+
+//Rangeslider - Vertical slider
+
+.rangeslider-vertical {
+	background: none;
+	height: 150px;
+	margin: spacing(20) auto;
+	max-width: 10px;
+
+	.rangeslider-fill {
+		background: palette(orange);
+		bottom: 0;
+		width: 100%;
+	}
+
+	.rangeslider-handle {
+		height: 10px;
+		left: -10px;
+		width: 30px;
+	}
+}
+
+//Non-Vendor Styling
+
+.slider-tooltip {
+	background-color: palette(grey, lightest);
+	border-radius: $standard-border-radius;
+	bottom: 150%;
+	height: 2em;
+	left: -84%;
+	padding: 15%;
+	position: absolute;
+	text-align: center;
+	width: 4em;
+}
+
+.slider-pointer {
+	bottom: 86%;
+	color: palette(grey);
+	left: 14%;
+	position: absolute;
+}

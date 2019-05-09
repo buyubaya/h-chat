@@ -1,0 +1,41 @@
+%pes-btn {
+	display: inline-table;
+	width: $pes-btn-width;
+	max-width: 100%;
+	height: $pes-btn-height;
+	line-height: #{$pes-btn-height - 2px};
+	text-align: center;
+	text-decoration: none !important;
+	border-radius: $pes-btn-border-radius;
+	background: $pes-btn-bg-color-default;
+	// padding: 0 $pes-btn-padding-x;
+	transition-duration: .3s;
+}
+
+
+.#{$pes}-btn {
+	@extend %pes-btn;
+
+	&.#{$pes}-btn-default {
+		background: $pes-btn-bg-default;
+		color: palette(white);
+		border: 1px solid transparent;
+
+		&:hover {
+			color: $pes-btn-bg-default;
+			background: palette(white);
+			border: 1px solid $pes-btn-bg-default;
+		}
+	}
+
+	&[disabled] {
+		color: $pes-text-color !important;
+		border-color: palette(grey) !important;
+		background: palette(grey) !important;
+		cursor: not-allowed;
+	}
+}
+
+a.#{$pes}-btn, a.btn {
+    display: inline-block;
+}

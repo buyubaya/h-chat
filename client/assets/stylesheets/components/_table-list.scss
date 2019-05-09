@@ -1,0 +1,106 @@
+// .#{$pes}-table-area {
+//     margin-bottom: 20px;
+// }
+
+.#{$pes}-table-list {
+    overflow-x: hidden;
+
+    .tlhead {
+        color: $pes-table-list-head-color;
+        font-weight: bold;
+        border-bottom: #{$pes-table-list-border-width + 1px} solid $pes-table-list-head-border-color;
+
+        .tlrow {
+            border-bottom: none;
+            
+            .tlcell {
+                padding-top: $pes-table-list-padding-y;
+                padding-bottom: $pes-table-list-padding-y;
+            }
+        }
+    }
+
+    .tlrow {
+        margin-left: 0;
+        margin-right: 0;
+        border-bottom: $pes-table-list-border-width solid $pes-table-list-border-color;
+        font-size: 0;
+
+        &.border-none {
+            border: none;
+        }
+
+        &.empty {
+            min-height: 25px;
+        }
+
+        &.align-middle {
+            .tlcell {
+                vertical-align: middle;
+            }
+        }
+
+        @include clearfix();
+    }
+
+    &.border-none {
+        .tlrow:last-child {
+            border: none;
+        }
+    }
+
+    .tlcell {
+        float: none;
+        display: inline-block;
+        padding: $pes-table-list-padding-y $pes-table-list-padding-x;
+        font-size: $pes-font-size;  
+        vertical-align: middle;
+
+        // &:last-child {
+        //     padding-right: 0;
+        // }
+
+        &.align-top {
+            vertical-align: top;
+        }
+
+        .row {
+            font-size: 0;
+            margin-left: -10px;
+            margin-right: -10px;
+    
+            [class*='col-'] {
+                float: none;
+                display: inline-block;
+                font-size: $pes-font-size;
+                padding-left: 10px;
+                padding-right: 10px;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    &.align-top {
+        .tlcell {
+            vertical-align: top;
+        }
+    }
+
+    &.align-middle {
+        .tlcell {
+            vertical-align: middle;
+        }
+    }
+
+    .tlhead {
+        .tlcell {
+            vertical-align: top;
+        }
+    }
+
+    .list-of-5 {
+        & > [class*='col-'] {
+            width: 20%;
+        }
+    }
+}

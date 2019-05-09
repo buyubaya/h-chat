@@ -1,0 +1,143 @@
+.account-summary-template {
+	.latest-fund-information {
+		margin-top: spacing(10);
+	}
+
+	.top-header {
+		background-color: palette(grey, lightest);
+		padding: spacing(10) spacing(20);
+		margin: $standard-spacing 0;
+
+		.how-it-works {
+			font-size: $font-size-small;
+			margin-left: spacing(20);
+			vertical-align: middle;
+		}
+	}
+
+	.current-value {
+		border: 1px solid palette(grey, light);
+		overflow: hidden;
+
+		@include responsive-max($screen-sm) {
+			padding: 0 spacing(20) spacing(20);
+
+			.top-row {
+				margin-left: spacing(-20);
+				margin-right: spacing(-20);
+			}
+		}
+
+		.top-row {
+			background-color: palette(grey, lightest);
+			padding-top: spacing(10);
+			margin-bottom: spacing(20);
+		}
+	}
+
+	.payments-section {
+		margin: $standard-spacing 0;
+		border: 1px solid palette(grey, light);
+	}
+
+	.regular-payments {
+		padding: spacing(20) spacing(20) 0;
+
+		.title-section {
+			margin-bottom: spacing(20);
+			border-bottom: 1px solid palette(grey, light);
+		}
+
+		.title {
+			font-size: $font-size-large;
+			padding-right: spacing(25);
+		}
+
+		.edit-link {
+			padding-left: spacing(5);
+			vertical-align: super;
+		}
+	}
+
+	.left-border {
+		top: spacing(-20);
+
+		@include responsive-min($screen-sm) {
+			&::before {
+				content: '';
+				border-left: 1px solid palette(grey, light);
+				position: relative;
+				top: spacing(150);
+				left: spacing(-15);
+				padding-top: spacing(60);
+			}
+		}
+	}
+
+	.tax-section {
+		border-top: 1px solid palette(grey, light);
+		margin: spacing(10) 0;
+		padding: spacing(20) 0;
+
+		@include responsive-max($screen-sm) {
+			padding: spacing(20) spacing(20) 0;
+		}
+	}
+
+	.useful-information {
+		padding: 0 $standard-spacing;
+
+		@include responsive-max($screen-sm) {
+			padding: 0;
+		}
+	}
+
+	.need-help-section {
+		border: 1px solid palette(grey);
+		padding: spacing(20);
+		margin-left: spacing(5);
+		margin-top: spacing(50);
+	}
+
+	.info-dot {
+		font-size: $font-size-small;
+		margin-bottom: spacing(5);
+	}
+
+	// This allows a piece of text in CurrentValuePane.js to right-allign to rows with info links
+	.special-margin-right {
+		margin-right: spacing(30);
+	}
+
+	.documents-list {
+		list-style: none;
+		margin: 0 0 spacing(20);
+		padding: 0;
+
+		li {
+			margin-bottom: spacing(20);
+		}
+	}
+
+	.section-divide {
+		padding: spacing(10) spacing(10) 0;
+	}
+
+	.list-item {
+		list-style: none;
+		margin: 0 0 spacing(15);
+		padding-left: spacing(20);
+	}
+
+	.edit-icon {
+		display: inline-block;
+		background-color: palette(white);
+		color: palette(white);
+		cursor: pointer;
+		height: 20px;
+		width: 20px;
+		text-align: center;
+		line-height: 22px;
+		vertical-align: baseline;
+	}
+}

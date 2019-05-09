@@ -1,0 +1,68 @@
+.progressbar {
+	background-color: palette(white);
+	padding-bottom: 10px;
+	padding-top: 10px;
+	text-align: center;
+	padding: spacing(10) 0;
+}
+
+.progressbar-values-container {
+	display: inline-block;
+	position: relative;
+	vertical-align: baseline;
+
+	.circle {
+		background-color: palette(grey, lightest);
+		border-radius: $standard-circle-border-radius;
+		color: palette(blue, sky);
+		display: inline-block;
+		position: relative;
+		z-index: $z-index-overlay-two;
+		text-align: center;
+		height: 36px;
+		width: 36px;
+		line-height: 36px;
+		vertical-align: middle;
+		margin: 0 0 0 spacing(10);
+	}
+
+	.first-circle {
+		background-color: palette(blue);
+		color: palette(white);
+		margin: 0 spacing(10) 0 0;
+	}
+
+	.oblong {
+		position: relative;
+		display: inline-block;
+		z-index: $z-index-overlay-two;
+		background-color: palette(blue, sky);
+		border-radius: $oblong-border-radius;
+		color: palette(white);
+		height: 36px;
+		text-align: left;
+		padding-right: spacing(20);
+		margin: 0 0 0 spacing(10);
+	}
+
+	.circle:first-child,
+	.oblong:first-child {
+		margin-left: 0;
+	}
+
+	.back-link {
+		padding-top: 6px;
+		text-align: left;
+		padding-left: 10px;
+	}
+
+	&::before {
+		content: ' ';
+		border-top: 1px solid palette(grey);
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		z-index: $z-index-overlay;
+	}
+}

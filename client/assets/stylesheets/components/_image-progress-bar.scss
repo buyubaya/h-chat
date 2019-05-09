@@ -1,0 +1,36 @@
+.img-progress-bar-container {
+	.img-progress-bar {
+		display: flex;
+		height: 100px;
+		justify-content: center;
+		text-align: center;
+		vertical-align: top;
+		margin-bottom: spacing(25);
+	}
+
+	.circle {
+		background-color: palette(grey, light);
+		background-position: center;
+		background-size: cover;
+		border-radius: $standard-circle-border-radius;
+		margin-left: spacing(15);
+		margin-top: spacing(25);
+		width: 75px;
+	}
+
+	.filled-circle {
+		background-color: palette(blue, sky);
+	}
+
+	.progress-text {
+		display: table;
+		height: 75px;
+		margin-right: spacing(10);
+		margin-top: spacing(25);
+	}
+
+	.your-pic {
+		display: table-cell;
+		vertical-align: middle;
+	}
+}

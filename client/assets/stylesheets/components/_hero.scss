@@ -1,0 +1,17 @@
+.hero {
+	@extend .magazine-featured-article;
+
+	.hero-image {
+		@extend .magazine-featured-article-image;
+	}
+
+	.hero-content-box {
+		@extend .magazine-featured-article-box;
+	}
+
+	.hero-label {
+		@extend .magazine-label;
+	}
+}
+
+

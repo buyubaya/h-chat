@@ -1,0 +1,64 @@
+// MAIN TAB
+.main-tab {
+    font-size: $font-size-medium;
+    background: none !important;
+    border-bottom: 5px solid palette(blue, light) !important;
+    margin-bottom: 20px !important;
+
+    li {
+        position: relative;
+        margin-right: 20px;
+
+        a {
+            color: palette(blue, light) !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            border: none !important;
+        }
+
+        .main-tab-sublist {
+            display: none;
+            padding: 0;
+            margin: 0;
+            @include position(absolute, 100% null null 0);
+            z-index: 100;
+
+            &.active {
+                display: table;
+            }
+
+            li {
+                display: table-cell;
+                min-width: 145px;
+
+                a {
+                    display: block;
+                    color: palette(grey, mid) !important;
+                    padding: 15px 0 !important;
+                    
+                    &:after {
+                        display: none;
+                    }
+                }
+
+                &.active > a {
+                    color: palette(grey, dark) !important;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    li.active a, li a:hover {
+        color: palette(grey, dark) !important;
+        background: none !important;
+
+        &:after {
+            content: '';
+            display: block;
+            height: 5px;
+            background: palette(grey, dark);
+            @include position(absolute, 100% 0 null 0);
+        }
+    }
+}

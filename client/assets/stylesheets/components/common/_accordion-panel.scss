@@ -1,0 +1,98 @@
+
+// Override Bootstrap Panel styles
+$accordion-panel-border-radius: 0;
+$accordion-panel-heading-height: 60px;
+
+.panel-group {
+	text-align: left;
+	margin-bottom: 0;
+
+	.fy6-panel.panel {
+		margin-bottom: 0;
+	}
+}
+
+.fy6-panel {
+	background-color: inherit;
+	border: 0;
+	box-shadow: none;
+	border-top: 1px solid #d8d8d8;
+
+
+	@include responsive-min($screen-sm) {
+		.panel-body {
+			padding-left: 0;
+		}
+	}
+
+	&.panel {
+		border-radius: $accordion-panel-border-radius;
+		margin-bottom: 0;
+	}
+
+	.panel-body {
+		padding: 30px 0 90px;
+
+		@include responsive-max($screen-md) {
+			padding-bottom: 70px;
+		}
+
+		@include responsive-max($screen-sm) {
+			padding-bottom: 30px;
+		}
+	}
+
+	>.panel-heading {
+		border: 0;
+		padding: 0;
+		height: $accordion-panel-heading-height;
+		background-color: inherit;
+		border-top-right-radius: $accordion-panel-border-radius;
+		border-top-left-radius: $accordion-panel-border-radius;
+	}
+
+	.fy6-panel-header {
+		position: relative;
+
+		> a {
+			display: block;
+			color: palette(grey, dark);
+			font-weight: 700;
+			line-height: $accordion-panel-heading-height;
+			font-size: get-font-size(base-fy6, large);
+
+			&::after,
+			&.collapsed::after {
+				font-family: planenquiry;
+				right: 0;
+				color: palette(blue, dark);
+				font-weight: lighter;
+				position: absolute;
+				content: 'S';
+			}
+
+			&::after {
+				transform: rotate(-90deg);
+			}
+
+			&.collapsed::after {
+				transform: rotate(90deg);
+			}
+		}
+	}
+
+	.checkbox label {
+		padding-left: 20px;
+	}
+}
+
+.value-your-world-main .fy6-panel {
+	.input-radio-switch input[type='radio'] + label,
+	input[type='checkbox'] + span {
+		@include responsive-max($screen-sm) {
+			width: auto;
+		}
+	}
+}
+
+

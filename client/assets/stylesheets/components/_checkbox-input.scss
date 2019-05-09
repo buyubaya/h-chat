@@ -1,0 +1,77 @@
+.#{pes}-checkbox-group {
+    &.group-inline {
+        .#{pes}-input-checkbox {
+            display: inline-block;
+            margin-right: 20px;
+        }
+    }
+}
+
+.#{pes}-input-checkbox {
+    // line-height: $pes-line-height-body;
+
+    input[type="checkbox"] {
+        display: none;
+
+        &:checked {
+            & + label:before {
+                border-color: $pes-input-checkbox-color-active;
+            }
+
+            & + label:after {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 7px;
+                border: 2px solid $pes-input-checkbox-color-active;
+                border-radius: 1px;
+                @include position(absolute, 4px null null 3px);
+                border-top: none;
+                border-right: none;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    label {
+        position: relative;
+        padding-left: $pes-input-checkbox-size + 10px;
+        cursor: pointer;
+        margin-bottom: 0;
+        min-height: $pes-input-checkbox-size;
+        vertical-align: middle;
+
+        &:before {
+            font-family: planenquiry;
+            content: '';
+            display: block;
+            width: $pes-input-checkbox-size;
+            height: $pes-input-checkbox-size;
+            text-align: center;
+            line-height: $pes-input-checkbox-size;
+            font-weight: bold;
+            border: 1px solid $pes-input-border-color;
+            border-radius: $pes-input-checkbox-border-radius;
+            @include position(absolute, 50% null null 0);
+            background: palette(white);
+            transform: translateY(-50%);
+        }
+
+        span {
+            margin-left: 35px;
+        }
+    }
+
+    input[type="checkbox"][disabled] {
+        & + label:before {
+            @extend %input-disabled;
+        }
+    }
+    
+}
+
+.#{pes}-input-checkbox-list {
+    .#{pes}-input-checkbox {
+        margin-bottom: $pes-input-checkbox-margin-bottom;
+    }
+}

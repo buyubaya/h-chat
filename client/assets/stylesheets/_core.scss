@@ -1,0 +1,102 @@
+// @include font-face(Swiss721, 700, '../fonts/swiss_721_bold-webfont');
+// @include font-face(Swiss721, 400, '../fonts/swiss_721-webfont');
+// @include font-face(Swiss721, 300, '../fonts/swiss_721_light-webfont');
+// @include font-face(Garamond, 400, '../fonts/Garamond_W01_Regular');
+@include font-face(Frutiger, 700, '../fonts/frutiger/frutiger65_bold');
+@include font-face(Frutiger, 400, '../fonts/frutiger/frutiger55_roman');
+@include font-face(Frutiger, 300, '../fonts/frutiger/frutiger45_light');
+
+body {
+	// scss-lint:disable ImportantRule
+	// background-color: palette(grey, lightest);
+	color: #3e3e3e;
+	font-family: $pes-font-family;
+	font-size: $pes-font-size;
+	font-weight: 400;
+	padding-right: 0 !important;
+	// scss-lint:enable ImportantRule
+}
+
+.serif {
+	font-family: $fy-font-serif;
+	font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	margin-top: 0;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+h1 {
+	font-size: $font-size-largest;
+	margin-bottom: 22px;
+
+	&.serif {
+		// scss-lint:disable VariableForProperty
+		font-size: 46px;
+		// scss-lint:enable VariableForProperty
+	}
+}
+
+h2 {
+	font-size: $font-size-large;
+	margin-bottom: 16px;
+
+	&.serif {
+		font-size: $font-size-largest;
+	}
+}
+
+h3 {
+	// scss-lint:disable VariableForProperty
+	font-size: 20px;
+	// scss-lint:enable VariableForProperty
+	margin-bottom: 16px;
+}
+
+h4 {
+	font-size: $font-size-medium;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+a {
+	color: palette(blue);
+	text-decoration: none;
+
+	&:hover {
+		color: palette(blue, dark);
+	}
+}
+
+label {
+	font-weight: normal;
+}
+
+.caption {
+	display: inline-block;
+	font-size: $font-size-small;
+	font-weight: 700;
+	letter-spacing: 1px;
+	line-height: 1;
+
+	&.uppercase {
+		text-transform: uppercase;
+		font-size: $font-size-smallest;
+	}
+}
+
+@include responsive-min($screen-md){
+	.container {
+		width: auto;
+		max-width: $pes-container-width;
+	}
+}
+
+.container {
+	width: auto !important;
+}

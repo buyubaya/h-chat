@@ -1,0 +1,292 @@
+//Three way carosel in results page
+
+.slick-slide {
+	position: relative;
+
+	.glyphicon-remove {
+		right: 0;
+	}
+}
+
+.slick-list {
+	min-height: 300px;
+	box-sizing: content-box;
+	padding: spacing(5) 0 spacing(10);
+}
+
+.clickable-icon {
+	position: absolute;
+	top: spacing(10);
+
+	&.edit,
+	&.remove {
+		background-repeat: no-repeat;
+		cursor: pointer;
+		height: 17px;
+		line-height: 17px;
+		vertical-align: middle;
+	}
+
+	&.edit {
+		left: spacing(10);
+		background-image: url('../../assets/images/icon_edit_mini_white.png');
+		background-size: 17px;
+		background-position: left top;
+		padding-left: spacing(20);
+	}
+
+	&.remove {
+		right: spacing(10);
+		background-image: url('../../assets/images/pictureTile_delete.png');
+		background-size: 14px;
+		background-position: right 2px;
+		padding-right: spacing(20);
+	}
+
+}
+
+.flipper-container {
+	display: block;
+	perspective: 1000px;
+
+	>button {
+		background-color: transparent;
+		background-size: cover;
+		height: 30px;
+		width: 30px;
+
+		&::before {
+			background-size: 30px;
+			content: '';
+			height: 30px;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 30px;
+
+		}
+	}
+
+	.slick-prev {
+		left: spacing(-40);
+
+		&::before {
+			background-image: url('../../assets/images/icon_carousel_left.png');
+		}
+	}
+
+	.slick-next {
+		right: spacing(-40);
+
+		&::before {
+			background-image: url('../../assets/images/icon_carousel_right.png');
+			content: '';
+		}
+	}
+
+	.clickable-icon {
+		color: white;
+	}
+
+	div.flipper {
+		position: relative;
+		transform-style: preserve-3d;
+		margin: 0 spacing(10);
+
+		.front,
+		.back {
+			@include backface-visibility(hidden);
+			float: left;
+			display: block;
+			position: absolute;
+			min-height: 300px;
+			top: 0;
+			left: 0;
+			transform-style: preserve-3d;
+			transition: -webkit-transform ease 500ms;
+			width: 100%;
+			bottom: 43px;
+			z-index: $z-index-overlay-two;
+		}
+
+		.front {
+			.option-holders {
+				@include background(linear-gradient(rgba(0, 0, 0, .36) 30%, rgba(0, 0, 0, 0) 100%));
+				position: absolute;
+				top: 0;
+				width: 100%;
+				height: 100px;
+			}
+        }
+
+		.back {
+			background-color: palette(white);
+			box-shadow: $standard-box-shadow;
+			padding: spacing(40) spacing(10) spacing(10);
+			width: 100%;
+
+			button {
+				margin-right: spacing(10);
+				margin-top: 15px;
+			}
+
+			div.form-group {
+				margin-bottom: spacing(20);
+				margin-top: 5px;
+
+				@include responsive-max($screen-sm) {
+					margin-bottom: spacing(10);
+				}
+
+			}
+
+			>div {
+				padding: 0 spacing(20);
+				font-size: $font-size-small;
+
+				@include responsive-max($screen-xs) {
+					padding: 0 spacing(10);
+				}
+			}
+
+			.duration-options {
+				padding: 0 35px;
+
+				@include responsive-max($screen-lg) {
+					padding: 0 spacing(20);
+				}
+
+				@include responsive-max($screen-sm) {
+					padding: 0 spacing(10);
+				}
+			}
+
+			.help-block {
+				margin: 0;
+			}
+		}
+	}
+
+	.estimated-cost {
+		span {
+			display: table-cell;
+		}
+
+		p {
+			margin: 0;
+			line-height: spacing(40);
+		}
+
+		>div:first-child {
+			margin-top: spacing(10);
+
+			@include responsive-max($screen-sm) {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.duration-options {
+		div {
+			padding: 0;
+		}
+	}
+
+
+	&.horizontal {
+		.front {
+			transform: rotateY(0deg);
+		}
+
+		.back {
+			transform: rotateY(-180deg);
+		}
+
+		div.flipper.flipped {
+			.front {
+				transform: rotateY(180deg);
+			}
+
+			.back {
+				transform: rotateY(0deg);
+			}
+		}
+	}
+}
+
+.image-deleted {
+	opacity: .3;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+}
+
+.carousel-indicators {
+	display: none;
+}
+
+.pay-option {
+	color: palette(blue);
+	margin-right: spacing(10);
+	cursor: pointer;
+	display: inline-block;
+}
+
+.duration-options {
+	p {
+		padding: 2px 4px;
+		color: palette(blue);
+
+		&:hover,
+		&.active {
+			background-color: palette(grey, light);
+			border-radius: $carousel-frequency-border-radius;
+			color: palette(black);
+		}
+	}
+}
+
+.duration-option {
+	cursor: pointer;
+}
+
+.add-image {
+	@include transform(translateY(-50%));
+	position: absolute;
+	top: 50%;
+	background: url('../../assets/images/icon_lifePlanner_tile_add.png') center bottom no-repeat;
+	background-size: 102px;
+	width: 100%;
+	padding-bottom: 102px;
+	z-index: $z-index-overlay-two;
+	opacity: 1;
+	display: none;
+
+	&.image-deleted {
+		display: block;
+	}
+
+	.add-image-text {
+		color: palette(blue);
+		position: absolute;
+		top: -24px;
+		left: 0;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+.card-image {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 300px;
+	background-size: cover;
+	background-position: center top;
+
+	&.image-deleted {
+		height: 300px;
+	}
+}

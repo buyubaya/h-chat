@@ -1,0 +1,6 @@
+.#{$pes}-card {
+    padding: $pes-card-padding;
+    border: 1px solid palette(grey, light);
+    background: palette(white);
+    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, .05);
+}

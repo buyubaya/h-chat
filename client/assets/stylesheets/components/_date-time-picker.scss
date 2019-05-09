@@ -1,0 +1,90 @@
+// This file is used to overwrite the styling coming from the react-widget scss file
+$date-time-picker-month-font-size: 18px;
+
+.date-time-picker {
+	margin-bottom: spacing(15);
+
+	.rw-popup {
+		padding: spacing(15);
+	}
+
+	.rw-popup-container.rw-calendar-popup,
+	.rw-popup-container.rw-calendar-popup .rw-calendar {
+		width: 268px;
+	}
+
+	.rw-header {
+		.rw-btn-view {
+			background-color: palette(white);
+			color: palette(blue, base);
+			font-size: $date-time-picker-month-font-size;
+		}
+	}
+
+	.rw-calendar thead {
+		tr {
+			border-bottom: 0;
+		}
+
+		th {
+			color: palette(blue, base);
+		}
+	}
+
+	.rw-calendar-grid {
+		th,
+		td,
+		td > span {
+			width: 34px;
+			height: 34px;
+			line-height: 34px;
+			text-align: center;
+		}
+
+		td.rw-btn.rw-off-range {
+			color: palette(grey, base);
+		}
+
+		.rw-btn {
+			padding: 0;
+			border-radius: $no-border-radius;
+		}
+
+		.rw-state-selected,
+		.rw-state-selected:hover {
+			border: 0;
+			background-color: palette(blue, base);
+			color: palette(white);
+			font-weight: normal;
+		}
+	}
+
+	.rw-btn-right,
+	.rw-btn-left {
+		height: 34px;
+		width: 34px;
+		line-height: 34px;
+
+		&:hover {
+			background-color: palette(grey, lightest);
+		}
+	}
+
+	.rw-i-caret-left::before,
+	.rw-i-caret-right::before {
+		color: palette(blue, base);
+		font-family: 'planenquiry';
+	}
+
+	.rw-i-caret-left::before {
+		content: '\50';
+	}
+
+	.rw-i-caret-right::before {
+		content: '\53';
+	}
+
+	.rw-footer {
+		display: none;
+	}
+}

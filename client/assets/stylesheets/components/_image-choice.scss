@@ -1,0 +1,105 @@
+.image-choice {
+
+	@include responsive-max($screen-sm) {
+		.image-hover-overlay:hover {
+			opacity: 0;
+		}
+	}
+
+	@include responsive-max($screen-md) {
+		&.description-bottom {
+			.image-description {
+				bottom: 0;
+				top: auto;
+			}
+
+			.image-selection-blur {
+				bottom: 0;
+				top: auto;
+				background-position: center bottom;
+			}
+		}
+	}
+
+	.image-container {
+		cursor: pointer;
+		display: block;
+		position: relative;
+		text-align: center;
+	}
+
+	.image-selection {
+		height: auto;
+		width: 100%;
+	}
+
+	.image-selection-blur {
+		@include filter(blur(4px));
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 68px;
+		background-size: cover;
+		background-position: center top;
+		overflow: hidden;
+		z-index: $z-index-overlay;
+
+		@include responsive-max($screen-md) {
+			bottom: auto;
+			top: 0;
+			background-position: center top;
+		}
+	}
+
+	.image-description {
+		background-color: palette(white, opaque);
+		color: palette(blue, dark);
+		font-size: $font-size-medium;
+		height: 68px;
+		line-height: 68px;
+		position: absolute;
+		text-align: center;
+		top: 0;
+		width: 100%;
+		z-index: $z-index-overlay-two;
+	}
+
+	.image-hover-overlay {
+		background-color: palette(blue, transparent);
+		bottom: 0;
+		color: white;
+		height: 100%;
+		left: 0;
+		opacity: 0;
+		position: absolute;
+		right: 0;
+		text-align: center;
+		top: 0;
+		transition: opacity .6s;
+		width: 100%;
+		z-index: $z-index-overlay;
+		cursor: pointer;
+	}
+
+	.image-hover-overlay-image:hover {
+		background: url('../../assets/images/icon-heart.png') no-repeat center center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	.image-hover-overlay:hover {
+		opacity: 1;
+	}
+
+	.image-hover-overlay-text {
+		color: white;
+		height: 100%;
+		padding-top: 35%;
+		position: absolute;
+		width: 100%;
+	}
+}

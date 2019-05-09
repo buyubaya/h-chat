@@ -1,0 +1,17 @@
+.#{$pes}-servicing-income-payment-page {
+    .pes-input-group{
+        width: 100%;
+        input{
+            width: 200px;
+        }
+    }
+   .input-label{
+	   text-transform: capitalize;
+   }
+   .no-capitalize{
+       text-transform: none;
+   }
+   .has-error .help-block{
+        text-transform: initial;
+    }
+}

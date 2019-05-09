@@ -1,0 +1,26 @@
+// Colours for errors
+.info-field {
+	text-align: left;
+	position: absolute;
+	z-index: $z-index-overlay-two;
+	min-width: 400px;
+
+	@include responsive-max($screen-md) {
+		min-width: 100%;
+	}
+
+	.well {
+		background-color: palette(grey, lightest);
+		border: 0;
+		color: palette(grey, dark);
+		margin-left: spacing(10);
+		padding: spacing(20);
+	}
+
+	.triangle {
+		border-right: 15px solid palette(grey, light);
+		left: -15px;
+		position: relative;
+		top: 60px;
+	}
+}

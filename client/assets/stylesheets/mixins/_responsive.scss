@@ -1,0 +1,17 @@
+@mixin responsive-max($width) {
+	@media only screen and (max-width : $width - 1) {
+		@content;
+	}
+}
+
+@mixin responsive-min($width) {
+	@media only screen and (min-width : $width) {
+		@content;
+	}
+}
+
+@mixin responsive-between($start, $end) {
+	@media only screen and (min-width : $start) and (max-width: $end) {
+		@content;
+	}
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { List, Modal } from 'antd';
 // APOLLO
 import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -34,7 +35,8 @@ const REMOVE_USER_SUBSCRIPTION = gql`
 class UserList extends Component {
     state = {
         userList: [],
-        isFirst: true
+        isFirst: true,
+        modalVisible: false
     };
 
     componentWillReceiveProps(newProps, newState){
@@ -99,21 +101,34 @@ class UserList extends Component {
         });
     }
 
+    handleMessageClick = (user) => {
+        this.setState({ modalVisible: true });
+        console.log('USER', user);
+    }
+
     render() {
         const { userList } = this.state;
 
         return (
-            <div>
-                {
-                    userList && userList.length > 0 &&
-                    <ul>
-                        {
-                            userList.map(item =>
-                                <li key={item.userId}>{item.userName}</li>
-                            )
-                        }
-                    </ul>
-                }
+            <div className='user-list-area'>
+                <List 
+                    dataSource={userList}
+                    renderItem={item => {
+                        return(
+                            <List.Item actions={[<a onClick={() => this.handleMessageClick(item)}>Message</a>]}>
+                                {item.userName}
+                            </List.Item>
+                        );
+                    }}
+                />
+                <Modal
+                    visible={this.state.modalVisible}
+                    onCancel={() => this.setState({ modalVisible: false })}
+                    footer={null}
+                    closable={false}
+                >
+                    HELLO {}
+                </Modal>
             </div>
         )
     }

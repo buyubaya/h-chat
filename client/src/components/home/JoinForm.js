@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
 // APOLLO
 import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
 // ANTD
 import {
     Comment, Avatar, Form, Button, List, Input, Alert, message, Icon, Card
 } from 'antd';
-import { checkPropTypes } from 'prop-types';
 // GRAPHQL
-const JOIN_ROOM_MUTATION = gql`
-    mutation joinRoom($userName: String!) {
-        joinRoom(userName: $userName) {
-            userId
-            userName
-            createdAt
-        }
-    }
-`;
+import { JOIN_ROOM_MUTATION } from '../../apollo/home/qms';
 
 
 export default class JoinForm extends Component {

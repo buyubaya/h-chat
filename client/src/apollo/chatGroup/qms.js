@@ -25,10 +25,25 @@ export const USER_STATUS_QUERY = gql`
 `;
 
 export const ADD_COMMENT_MUTATION = gql`
-    mutation addComment($userId: String!, $userName: String!, $groupId: String, $content: String!) {
-        addComment(userId: $userId, userName: $userName, groupId: $groupId, content: $content) {
+    mutation addComment(
+        $userId: String!, 
+        $userName: String!, 
+        $replyId: String,
+        $groupId: String, 
+        $content: String!
+    )
+    {
+        addComment(
+            userId: $userId, 
+            userName: $userName,
+            replyId: $replyId,
+            groupId: $groupId, 
+            content: $content
+        )
+        {
             userId
             userName
+            replyId
             groupId
             content
             createdAt
@@ -38,8 +53,8 @@ export const ADD_COMMENT_MUTATION = gql`
 `;
 
 export const COMMENTS_SUBSCRIPTION = gql`
-    subscription commentAdded($groupId: String){
-        commentAdded(groupId: $groupId) {
+    subscription commentAdded($groupId: String, $replyId: String){
+        commentAdded(groupId: $groupId, replyId: $replyId) {
             commentId
             userId
             userName
@@ -88,6 +103,52 @@ export const CREATE_CHAT_ROOM_MUTATION = gql`
     mutation {
         createChatRoom {
             groupId
+        }
+    }
+`;
+
+export const SEND_MESSAGE_MUTATION = gql`
+    mutation sendMessage(
+        $senderId: String!,
+        $senderName: String!,
+        $receiverId: String!,
+        $groupId: String!,
+        $content: String!
+    ) 
+    {
+        createChatRoom(
+            senderId: $senderId,
+            senderName: $senderName,
+            receiverId: $receiverId,
+            groupId: $groupId,
+            content: $content
+        ) 
+        {
+            sender{
+                userId
+                userName
+            }
+            receiver {
+                userId
+            }
+            groupId
+            content
+        }
+    }
+`;
+
+export const MESSAGE_RECEIVED_SUBSCRIPTION = gql`
+    subscription messageReceived($receiverId: String!){
+        messageReceived(receiverId: $receiverId){
+            sender{
+                userId
+                userName
+            }
+            receiver {
+                userId
+            }
+            groupId
+            content
         }
     }
 `;

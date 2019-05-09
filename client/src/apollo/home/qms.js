@@ -1,6 +1,16 @@
 import gql from 'graphql-tag';
 
 
+export const JOIN_ROOM_MUTATION = gql`
+    mutation joinRoom($userName: String!) {
+        joinRoom(userName: $userName) {
+            userId
+            userName
+            createdAt
+        }
+    }
+`;
+
 export const ADD_COMMENT_MUTATION = gql`
     mutation addComment($userId: String!, $userName: String!, $replyId: String, $content: String!) {
         addComment(userId: $userId, userName: $userName, replyId: $replyId, content: $content) {

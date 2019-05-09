@@ -9,6 +9,7 @@ const USER_ADDED = 'USER_ADDED';
 const USER_REMOVED = 'USER_REMOVED';
 const COMMENT_ADDED = 'COMMENT_ADDED';
 const USER_STATUS_UPDATED = 'USER_STATUS';
+const MESSAGE_RECEIVED = 'MESSAGE_RECEIVED';
 const pubsub = new PubSub();
 
 
@@ -34,6 +35,18 @@ const resolvers = {
         }
     },
     Mutation: {
+        createChatRoom: async () => {
+            const createdAt = Date.now();
+            const newRef = await ref('rooms').push({ createdAt });
+
+            // PUBLISH ROOM SUBSCRPTION
+            const room = { 
+                groupId: newRef.key, 
+                createdAt
+            };
+            
+            return room;
+        },
         joinRoom: async (_, { userName }) => {
             const createdAt = Date.now();
             const newRef = await ref('users').push({ userName, createdAt });
@@ -138,6 +151,27 @@ const resolvers = {
                 } 
             });
             return { userId, userName, createdAt, groupId, isTyping: isTyping ? true : false };
+        },
+
+        sendMessage: (_, { senderId, senderName, groupId, receiverId, content }) => {
+            const sender = {
+                userId: senderId,
+                userName: senderName
+            };
+            const receiver = {
+                userId: receiverId
+            };
+            const messageRecceived = {
+                sender,
+                receiver,
+                groupId,
+                content
+            };
+
+            // PUBLISH SUBSCRIPTION
+            pubsub.publish(MESSAGE_RECEIVED, { messageRecceived });
+
+            return messageRecceived;
         }
     },
     Subscription: {
@@ -147,7 +181,7 @@ const resolvers = {
                 (payload, variables, context, info) => {
                     const groupId = variables && variables.groupId;
                     const replyId = variables && variables.replyId;
-                    
+                    console.log('SUB', payload, replyId);
                     if(payload && groupId){
                         return payload.commentAdded.groupId === groupId;
                     }
@@ -172,13 +206,28 @@ const resolvers = {
                     const userId = variables && variables.userId;
                     const groupId = variables && variables.groupId;
                     const replyId = variables && variables.replyId;
-                    console.log('SUB', payload.userStatusUpdated.userId, userId);
+                    console.log('STATUS', payload, variables);
                     if(payload && groupId){
-                        return payload.userStatusUpdated.groupId === groupId && payload.userStatusUpdated.userId !== userId;
+                        return payload.userStatusUpdated.userId !== userId &&payload.userStatusUpdated.groupId === groupId;
                     }
                     if(payload && replyId){
-                        return payload.userStatusUpdated.replyId === replyId && payload.userStatusUpdated.userId !== userId;
+                        return payload.userStatusUpdated.userId !== userId && payload.userStatusUpdated.replyId === replyId;
                     }
+                    return true;
+                }
+            )
+        },
+
+        messageReceived: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator([MESSAGE_RECEIVED]),
+                (payload, variables) => {
+                    const receiverId = variables && variables.receiverId;
+                    console.log('SUB', payload, receiverId);
+                    if(payload && receiverId){
+                        return payload.messageRecceived.receiver.userId !== receiverId;
+                    }
+
                     return true;
                 }
             )

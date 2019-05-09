@@ -216,8 +216,8 @@ class ChatGroupPage extends Component {
 
 export default compose(
     graphql(COMMENT_QUERY, { name: 'commentQuery' }),
-    graphql(USER_STATUS_QUERY, { name: 'userStatusQuery' }),
     graphql(ADD_COMMENT_MUTATION, { name: 'addComment' }),
+    graphql(USER_STATUS_QUERY, { name: 'userStatusQuery' }),
     graphql(USER_STATUS_MUTATION, { name: 'updateUserStatus' }),
     graphql(CREATE_CHAT_ROOM_MUTATION, { name: 'createChatRoom' })
 )(ChatGroupPage);

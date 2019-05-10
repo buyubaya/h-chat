@@ -5,7 +5,7 @@ const withFilter = apolloServer.withFilter;
 // FIREBASE
 const { base, ref, getData } = require('../firebase/firebase');
 // CONSTANTS
-const USER_ADDED = 'USER_ADDED';
+const USER_UPDATED = 'USER_UPDATED';
 const USER_REMOVED = 'USER_REMOVED';
 const COMMENT_ADDED = 'COMMENT_ADDED';
 const USER_STATUS_UPDATED = 'USER_STATUS';
@@ -26,12 +26,15 @@ const resolvers = {
                 });
             });
 
-            return userList.reverse();
+            return userList;
         },
-        comment: () => {
+        message: () => {
             return [];
         },
         userStatus: () => {
+            return [];
+        },
+        room: () => {
             return [];
         }
     },
@@ -48,23 +51,30 @@ const resolvers = {
             
             return room;
         },
-        joinRoom: async (_, { userName }) => {
+        joinRoom: async (_, { userId, userName, isNew }) => {
             const createdAt = Date.now();
-            const newRef = await ref('users').push({ userName, createdAt });
-
-            // PUBLISH USER SUBSCRPTION
-            const userAdded = { 
-                userId: newRef.key, 
+            let userUpdated = {
+                userId, 
                 userName,
                 createdAt
             };
-            pubsub.publish(USER_ADDED, { userAdded });
+            if(isNew){
+                const newRef = await ref('users').push({ userName, createdAt });
+                userUpdated = { 
+                    userId: newRef.key, 
+                    userName,
+                    createdAt
+                };
+            }     
+
+            // PUBLISH USER SUBSCRPTION
+            pubsub.publish(USER_UPDATED, { userUpdated });
             
-            return userAdded;
+            return userUpdated;
         },
 
-        addComment: async (_, { userId, userName, replyId, groupId, content }) => {
-            const commentAdded = {
+        sendMessage: async (_, { userId, userName, replyId, groupId, content }) => {
+            const newMessage = {
                 userId,
                 userName, 
                 replyId: replyId || '',
@@ -73,23 +83,23 @@ const resolvers = {
                 createdAt: Date.now()
             };
             
-            let commentResponse;
+            let MESSAGE;
             if(content && content.trim()){
                 // ADD TO FIREBASE
-                const newRef = await ref('comments').push(commentAdded);
-                commentResponse = {
+                const newRef = await ref('comments').push(newMessage);
+                MESSAGE = {
                     commentId: newRef.key,
-                    ...commentAdded
+                    ...newMessage
                 };
             }
             else {
-                commentResponse = { error: 'Invalid Comment' };
+                MESSAGE = { error: 'Invalid Comment' };
             }
 
             // PUBLISH SUBSCRIPTION
-            pubsub.publish(COMMENT_ADDED, { commentAdded: commentResponse });
+            pubsub.publish(COMMENT_ADDED, { newMessage: MESSAGE });
 
-            return commentResponse;
+            return MESSAGE;
         },
 
         removeAllUsers: async () => {
@@ -155,27 +165,6 @@ const resolvers = {
             return { userId, userName, createdAt, groupId, isTyping: isTyping ? true : false };
         },
 
-        sendMessage: (_, { senderId, senderName, groupId, receiverId, content }) => {
-            const sender = {
-                userId: senderId,
-                userName: senderName
-            };
-            const receiver = {
-                userId: receiverId
-            };
-            const messageRecceived = {
-                sender,
-                receiver,
-                groupId,
-                content
-            };
-
-            // PUBLISH SUBSCRIPTION
-            pubsub.publish(MESSAGE_RECEIVED, { messageRecceived });
-
-            return messageRecceived;
-        },
-
         inviteToRoom: (_, { senderId, senderName, receiverId, roomId }) => {
             const roomInvited = {
                 senderId, 
@@ -184,7 +173,7 @@ const resolvers = {
                 roomId,
                 createdAt: Date.now()
             };
-            console.log('MU', roomInvited);
+            
             // PUBLISH SUBSCRIPTION
             pubsub.publish(ROOM_INVITED, { roomInvited });
 
@@ -192,7 +181,7 @@ const resolvers = {
         }
     },
     Subscription: {
-        commentAdded: {
+        newMessage: {
             subscribe: withFilter(
                 () => pubsub.asyncIterator([COMMENT_ADDED]),
                 (payload, variables, context, info) => {
@@ -200,20 +189,18 @@ const resolvers = {
                     const replyId = variables && variables.replyId;
                     
                     if(payload && groupId){
-                        return payload.commentAdded.groupId === groupId;
+                        return payload.newMessage.groupId === groupId;
                     }
                     if(payload && replyId){
-                        return payload.commentAdded.replyId === replyId;
+                        return payload.newMessage.replyId === replyId;
                     }
                     return true;
                 }
             )
         },
-        userAdded: {
-            subscribe: () => pubsub.asyncIterator([USER_ADDED])
-        },
-        userRemoved: {
-            subscribe: () => pubsub.asyncIterator([USER_REMOVED])
+
+        userUpdated: {
+            subscribe: (payload) => pubsub.asyncIterator([USER_UPDATED])
         },
 
         userStatusUpdated: {
@@ -230,21 +217,6 @@ const resolvers = {
                     if(payload && replyId){
                         return payload.userStatusUpdated.userId !== userId && payload.userStatusUpdated.replyId === replyId;
                     }
-                    return true;
-                }
-            )
-        },
-
-        messageReceived: {
-            subscribe: withFilter(
-                () => pubsub.asyncIterator([MESSAGE_RECEIVED]),
-                (payload, variables) => {
-                    const receiverId = variables && variables.receiverId;
-                    
-                    if(payload && receiverId){
-                        return payload.messageRecceived.receiver.userId !== receiverId;
-                    }
-
                     return true;
                 }
             )

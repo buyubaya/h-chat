@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 // APOLLO
 import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
 import {
-    COMMENT_QUERY,
-    ADD_COMMENT_MUTATION,
-    COMMENTS_SUBSCRIPTION,
+    MESSAGE_QUERY,
+    ADD_MESSAGE_MUTATION,
+    MESSAGE_SUBSCRIPTION,
 
     USER_STATUS_QUERY,
     USER_STATUS_MUTATION,
@@ -21,8 +21,8 @@ class ChatRoom extends Component {
     componentDidMount(){
         // MESSAGE
         const { userId, roomId } = this.props;
-        const { commentQuery } = this.props;
-        const msgSubscribeToMore = commentQuery && commentQuery.subscribeToMore;
+        const { messageQuery } = this.props;
+        const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;
 
         // USER STATUS
         const { userStatusQuery } = this.props;
@@ -30,16 +30,16 @@ class ChatRoom extends Component {
 
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
-                document: COMMENTS_SUBSCRIPTION,
+                document: MESSAGE_SUBSCRIPTION,
                 variables: { groupId: roomId },
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
                     }
                     
-                    const newItem = subscriptionData.data.commentAdded;
+                    const newItem = subscriptionData.data.newMessage;
                     return Object.assign({}, prev, {
-                        comment: [ ...prev.comment, newItem ]
+                        message: [ ...prev.message, newItem ]
                     });
                 }
             }),
@@ -77,9 +77,9 @@ class ChatRoom extends Component {
 
     handleMessageSend = (msgText) => {
         const { userId, userName, roomId } = this.props;
-        const { addComment } = this.props;
+        const { sendMessage } = this.props;
         
-        addComment && addComment({ variables: { 
+        sendMessage && sendMessage({ variables: { 
             userId, 
             userName, 
             groupId: roomId, 
@@ -90,6 +90,7 @@ class ChatRoom extends Component {
     handleMessageTyping = () => {
         const { userId, userName, roomId } = this.props;
         const { updateUserStatus } = this.props;
+
         updateUserStatus && updateUserStatus({
             variables: {
                 userId, userName, groupId: roomId, isTyping: true
@@ -100,6 +101,7 @@ class ChatRoom extends Component {
     handleMessageTypingStop = (msgText) => {
         const { userId, userName, roomId } = this.props;
         const { updateUserStatus } = this.props;
+        
         updateUserStatus && updateUserStatus({
             variables: {
                 userId, userName, groupId: roomId, isTyping: false
@@ -108,13 +110,14 @@ class ChatRoom extends Component {
     }
 
     render() {
-        const { userId, userName, roomId } = this.props;
-        const messageList = this.props.commentQuery && this.props.commentQuery.comment;
+        const { userId, userName, roomId, title } = this.props;
+        const messageList = this.props.messageQuery && this.props.messageQuery.message;
         let userTypingList = this.props.userStatusQuery && this.props.userStatusQuery.userStatus;
         userTypingList = userTypingList ? userTypingList.map(item => item.userName) : [];
 
         return (
             <ChatBox 
+                title={title}
                 userId={userId}
                 userName={userName}
                 roomId={roomId}
@@ -130,13 +133,13 @@ class ChatRoom extends Component {
 
 
 export default compose(
-    graphql(COMMENT_QUERY, { 
-        name: 'commentQuery',
+    graphql(MESSAGE_QUERY, { 
+        name: 'messageQuery',
         options: ({ roomId }) => ({
             variables: { roomId }
         })
     }),
-    graphql(ADD_COMMENT_MUTATION, { name: 'addComment' }),
+    graphql(ADD_MESSAGE_MUTATION, { name: 'sendMessage' }),
     graphql(USER_STATUS_QUERY, { 
         name: 'userStatusQuery',
         options: ({ roomId }) => ({

@@ -120,7 +120,7 @@ body {
 			border: none;
 			padding: 0 1rem;
 			line-height: 1.25rem;
-			border-top: 2px solid #ECEFF1;
+			border-top: 2px solid $chatbox-msg-v2-bg-color;
 			transition: 0.5s ease-in-out;
 			border-radius: 0 !important;
 			padding-top: 0 !important;
@@ -132,13 +132,14 @@ body {
 		.msg-input:focus,
 		.msg-input:active { 
 			outline: none!important; 
-			border-top: 2px solid #E91E63;
+			border-top: 2px solid $chatbox-msg-v1-bg-color;
 		}
 	}
 	
 	/*  LOADING MESSAGE CSS */
 	.pending {
 		margin: 0 !important;
+		min-height: 1.875rem;
 
 		.msg {
 			background: none;
@@ -169,4 +170,29 @@ body {
 			}
 		}
 	}
+
+	// ICON
+	.chat-header {
+		background: $chatbox-msg-v1-bg-color;
+		color: #fff;
+		padding: 0.25rem 0.75rem;
+		vertical-align: middle;
+
+		.anticon {
+			margin-right: 0.5rem;
+
+			svg {
+				width: 1rem;
+				height: 1rem;
+			}
+		}
+	}
+}
+
+
+// BADGE
+$icon-message-size: 30px;
+.anticon svg {
+	width: $icon-message-size;
+	height: $icon-message-size;
 }

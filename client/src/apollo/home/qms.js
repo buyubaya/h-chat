@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 
 
 export const JOIN_ROOM_MUTATION = gql`
-    mutation joinRoom($userName: String!) {
-        joinRoom(userName: $userName) {
+    mutation joinRoom($userId: String, $userName: String!, $isNew: Boolean!) {
+        joinRoom(userId: $userId, userName: $userName, isNew: $isNew) {
             userId
             userName
             createdAt

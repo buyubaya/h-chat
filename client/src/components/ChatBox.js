@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Icon } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -44,15 +44,20 @@ class ChatBox extends Component {
 
     render() {
         const { msgText, isMessageSending } = this.state;
-        const { userId, messageList, userTypingList, onMessageSend } = this.props;
+        const { userId, messageList, userTypingList, onMessageSend, title } = this.props;
 
         return (
             <div className='chat-area'>
                 <div className='chatbox'>
+                    <div className='chat-header'>
+                        <Icon type='message' className='icon-message' />
+                        {title ? title : 'Message'}
+                        <Icon type='close' className='icon-close' />
+                    </div>
                     <ul className='chats' ref={el => this.chatBody = el}>
                         {
-                            messageList && messageList.map(item =>
-                                <li key={item.commentId}>
+                            messageList && messageList.map((item, index) =>
+                                <li key={index}>
                                     <div className={`msg ${item.userId === userId ? 'v1' : 'v2'}`}>
                                         <span className='partner'>{item.userName}</span>
                                         {item.content}
@@ -61,9 +66,9 @@ class ChatBox extends Component {
                                 </li>
                             )
                         }
-                        {
-                            userTypingList && userTypingList.length > 0 &&
-                            <li className='pending'>
+                        <li className='pending'>
+                            {
+                                userTypingList && userTypingList.length > 0 &&
                                 <div className='msg v2'>
                                     <span className='partner'>
                                         {userTypingList.join(',')}
@@ -72,8 +77,8 @@ class ChatBox extends Component {
                                     <div className='dot'></div>
                                     <div className='dot'></div>
                                 </div>
-                            </li>
-                        }
+                            }
+                        </li>
                     </ul>
                     
                     <div className='sendbox'>

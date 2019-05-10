@@ -4,28 +4,26 @@ const gql = require('apollo-server-express').gql;
 const typeDefs = gql`
     type Query {
         user: [User]
-        comment(roomId: String!): [CommentResponse]
+        message(roomId: String): [Message]
         userStatus(roomId: String!): [UserStatus]
+        room(receiverId: String!): [RoomInvited]
     }
 
     type Mutation {
         createChatRoom: ChatRoom
-        joinRoom(userName: String!): User
-        addComment(userId: String!, userName: String!, replyId: String, groupId: String, content: String!): CommentResponse
+        joinRoom(userId: String, userName: String!, isNew: Boolean!): User
+        sendMessage(userId: String!, userName: String!, replyId: String, groupId: String, content: String!): Message
         removeAllUsers: Boolean
         removeUserById(userId: String): Boolean
         login(userId: String!, password: String!): LoginResponse
         updateUserStatus(userId: String!, userName: String!, groupId: String, isTyping: Boolean): UserStatus
-        sendMessage(senderId: String!, senderName: String!, groupId: String!, receiverId: String!, content: String!): MessageReceived
-        inviteToRoom(senderId: String!, senderName: String!, receiverId: String!, roomId: String!): RoomInvited 
+        inviteToRoom(senderId: String!, senderName: String!, receiverId: String!, roomId: String!): RoomInvited
     }
 
     type Subscription {
-        userAdded: User
-        userRemoved: User
-        commentAdded(groupId: String, replyId: String): CommentResponse
+        userUpdated: User
+        newMessage(groupId: String, replyId: String): Message
         userStatusUpdated(userId: String, groupId: String, isTyping: Boolean): UserStatus
-        messageReceived(receiverId: String!): MessageReceived
         roomInvited(receiverId: String!): RoomInvited
     }
 
@@ -40,7 +38,7 @@ const typeDefs = gql`
         error: String
     }
 
-    type CommentResponse {
+    type Message {
         commentId: String!
         userId: String!
         userName: String!
@@ -62,22 +60,6 @@ const typeDefs = gql`
     type ChatRoom {
         groupId: ID!
         createdAt: String
-    }
-
-    type Sender {
-        userId: String!
-        userName: String!
-    }
-
-    type Receiver {
-        userId: String!
-    }
-
-    type MessageReceived {
-        sender: Sender!
-        receiver: Receiver!
-        groupId: String!
-        content: String!
     }
 
     type RoomInvited {

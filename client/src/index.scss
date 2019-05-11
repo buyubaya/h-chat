@@ -319,7 +319,9 @@ $icon-message-size: 30px;
 	.ant-menu-item-selected {
 		background: $chatbox-msg-v2-bg-color !important;
 		color: $chatbox-msg-v2-color;
+	}
 
+	.ant-menu-item {
 		&:after {
 			border-right: 3px solid $chatbox-msg-v2-color;
 		}

@@ -5,14 +5,14 @@ import * as _ from 'lodash';
 import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
 import {
     MESSAGE_QUERY,
-    ADD_MESSAGE_MUTATION,
+    SEND_MESSAGE_MUTATION,
     MESSAGE_SUBSCRIPTION,
 
     USER_STATUS_QUERY,
     USER_STATUS_MUTATION,
     USER_STATUS_SUBSCRIPTION
-} from '../apollo/chatGroup/qms';
-import { Badge, List, Icon } from 'antd';
+} from '../apollo/qms';
+import { Tabs, Badge, List, Icon } from 'antd';
 import ChatRoom from '../components/ChatRoom';
 
 
@@ -42,7 +42,7 @@ class InboxPage extends Component {
                     
                     const newItem = subscriptionData.data.newMessage;
                     
-                    if(newItem.userId === userId){
+                    if(newItem.senderId === userId){
                         return prev;
                     }
 
@@ -54,21 +54,28 @@ class InboxPage extends Component {
         ];
     }
 
-    componentWillUnmount(){
-        this.unsubscribe();
-    }
-
     _isChatExisted(userId, chatList){
-        const roomId = `ROOM_${userId}`;
-        return chatList.includes(roomId);
+        let x = false;
+
+        chatList.forEach(item => {
+            if(item.receiverId === userId){
+                x = true;
+            }
+        });
+
+        return x;
     }
 
     handleMessageClick = (msg) => {
         const { chatList } = this.state;
-        const roomId = `ROOM_${msg.userId}`;
+        const newRoom = {
+            receiverId: msg.senderId,
+            receiverName: msg.senderName,
+            roomId: `ROOM_${msg.senderId}`
+        };
 
-        if(!this._isChatExisted(msg.userId, chatList)){
-            this.setState(state => ({ chatList: [...state.chatList, roomId] }));
+        if(!this._isChatExisted(msg.senderId, chatList)){
+            this.setState(state => ({ chatList: [...state.chatList, newRoom] }));
         }
     }
 
@@ -79,14 +86,17 @@ class InboxPage extends Component {
         return (
             <div>
                 <h1>INBOX</h1>
-                <Badge 
-                    count={messageList ? messageList.length : 0}
-                    onClick={() => {
-                        this.setState(state => ({ chatListVisible: !state.chatListVisible }));
-                    }}
-                >
-                    <Icon type='message' />
-                </Badge>
+                <div className='cta-contact-bottom'>
+                    <Badge 
+                        count={messageList ? messageList.length : 0}
+                        onClick={() => {
+                            this.setState(state => ({ chatListVisible: !state.chatListVisible }));
+                        }}
+                        style={{ backgroundColor: '#52c41a' }}
+                    >
+                        <Icon type='message' className='icon-message' />
+                    </Badge>
+                </div>
 
                 {
                     chatListVisible &&
@@ -104,15 +114,24 @@ class InboxPage extends Component {
                     />
                 }
                 {
-                    chatList && chatList.length > 0 && chatList.map(item =>
-                        <ChatRoom
-                            key={item}
-                            title={item}
-                            userId={userId}
-                            userName={userName}
-                            roomId={item}
-                        />
-                    )
+                    chatList && chatList.length > 0 &&
+                    <Tabs tabPosition={this.state.tabPosition}>
+                        {
+                            chatList.map(item =>
+                                <Tabs.TabPane
+                                    key={item.roomId} 
+                                    tab={<span><Icon type='message' className='icon-message' />{item.receiverName}</span>}
+                                >
+                                    <ChatRoom
+                                        title={item.receiverName}
+                                        senderId={userId}
+                                        senderName={userName}
+                                        roomId={item.roomId}
+                                    />
+                                </Tabs.TabPane>
+                            )
+                        }
+                    </Tabs>
                 }
             </div>
         )
@@ -122,5 +141,5 @@ class InboxPage extends Component {
 
 export default compose(
     graphql(MESSAGE_QUERY, { name: 'messageQuery' }),
-    graphql(ADD_MESSAGE_MUTATION, { name: 'sendMessage' })
+    graphql(SEND_MESSAGE_MUTATION, { name: 'sendMessage' })
 )(InboxPage);

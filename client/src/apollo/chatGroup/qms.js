@@ -4,9 +4,9 @@ import gql from 'graphql-tag';
 export const MESSAGE_QUERY = gql`
     query message($roomId: String){
         message(roomId: $roomId) {
-            commentId
-            userId
-            userName
+            messageId
+            senderId
+            senderName
             content
             createdAt
         }
@@ -16,9 +16,9 @@ export const MESSAGE_QUERY = gql`
 export const USER_STATUS_QUERY = gql`
     query userStatus($roomId: String!){
         userStatus(roomId: $roomId) {
-            userId
-            userName
-            groupId
+            senderId
+            senderName
+            roomId
             isTyping
         }
     }
@@ -26,25 +26,25 @@ export const USER_STATUS_QUERY = gql`
 
 export const ADD_MESSAGE_MUTATION = gql`
     mutation sendMessage(
-        $userId: String!, 
-        $userName: String!, 
-        $replyId: String,
-        $groupId: String, 
+        $senderId: String!, 
+        $senderName: String!, 
+        $receiverId: String,
+        $roomId: String, 
         $content: String!
     )
     {
         sendMessage(
-            userId: $userId, 
-            userName: $userName,
-            replyId: $replyId,
-            groupId: $groupId, 
+            senderId: $senderId, 
+            senderName: $senderName,
+            receiverId: $receiverId,
+            roomId: $roomId, 
             content: $content
         )
         {
-            userId
-            userName
-            replyId
-            groupId
+            senderId
+            senderName
+            receiverId
+            roomId
             content
             createdAt
             error
@@ -53,13 +53,13 @@ export const ADD_MESSAGE_MUTATION = gql`
 `;
 
 export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newMessage($groupId: String, $replyId: String){
-        newMessage(groupId: $groupId, replyId: $replyId) {
-            commentId
-            userId
-            userName
-            replyId
-            groupId
+    subscription newMessage($roomId: String, $receiverId: String){
+        newMessage(roomId: $roomId, receiverId: $receiverId) {
+            messageId
+            senderId
+            senderName
+            receiverId
+            roomId
             content
             createdAt
             error
@@ -69,134 +69,134 @@ export const MESSAGE_SUBSCRIPTION = gql`
 
 export const USER_STATUS_MUTATION = gql`
     mutation updateUserStatus(
-        $userId: String!, 
-        $userName: String!, 
-        $groupId: String, 
+        $senderId: String!, 
+        $senderName: String!, 
+        $roomId: String, 
         $isTyping: Boolean
     ){
         updateUserStatus(
-            userId: $userId, 
-            userName: $userName, 
-            groupId: $groupId, 
+            senderId: $senderId, 
+            senderName: $senderName, 
+            roomId: $roomId, 
             isTyping: $isTyping
         ) {
-            userId
-            userName
-            groupId
+            senderId
+            senderName
+            roomId
             isTyping
         }
     }
 `;
 
 export const USER_STATUS_SUBSCRIPTION = gql`
-    subscription userStatusUpdated($userId: String, $groupId: String){
-        userStatusUpdated(userId: $userId, groupId: $groupId) {
-            userId
-            userName
-            groupId
+    subscription userStatusUpdated($senderId: String, $roomId: String){
+        userStatusUpdated(senderId: $senderId, roomId: $roomId) {
+            senderId
+            senderName
+            roomId
             isTyping
         }
     }
 `;
 
-export const CREATE_CHAT_ROOM_MUTATION = gql`
-    mutation {
-        createChatRoom {
-            groupId
-        }
-    }
-`;
+// export const CREATE_CHAT_ROOM_MUTATION = gql`
+//     mutation {
+//         createChatRoom {
+//             groupId
+//         }
+//     }
+// `;
 
-export const SEND_MESSAGE_MUTATION = gql`
-    mutation sendMessage(
-        $senderId: String!,
-        $senderName: String!,
-        $receiverId: String!,
-        $groupId: String!,
-        $content: String!
-    ) 
-    {
-        createChatRoom(
-            senderId: $senderId,
-            senderName: $senderName,
-            receiverId: $receiverId,
-            groupId: $groupId,
-            content: $content
-        ) 
-        {
-            sender{
-                userId
-                userName
-            }
-            receiver {
-                userId
-            }
-            groupId
-            content
-        }
-    }
-`;
+// export const SEND_MESSAGE_MUTATION = gql`
+//     mutation sendMessage(
+//         $senderId: String!,
+//         $senderName: String!,
+//         $receiverId: String!,
+//         $roomId: String!,
+//         $content: String!
+//     ) 
+//     {
+//         createChatRoom(
+//             senderId: $senderId,
+//             senderName: $senderName,
+//             receiverId: $receiverId,
+//             roomId: $roomId,
+//             content: $content
+//         ) 
+//         {
+//             sender{
+//                 userId
+//                 userName
+//             }
+//             receiver {
+//                 userId
+//             }
+//             groupId
+//             content
+//         }
+//     }
+// `;
 
-export const MESSAGE_RECEIVED_SUBSCRIPTION = gql`
-    subscription messageReceived($receiverId: String!){
-        messageReceived(receiverId: $receiverId){
-            sender{
-                userId
-                userName
-            }
-            receiver {
-                userId
-            }
-            groupId
-            content
-        }
-    }
-`;
+// // export const MESSAGE_RECEIVED_SUBSCRIPTION = gql`
+// //     subscription messageReceived($receiverId: String!){
+// //         messageReceived(receiverId: $receiverId){
+// //             sender{
+// //                 userId
+// //                 userName
+// //             }
+// //             receiver {
+// //                 userId
+// //             }
+// //             groupId
+// //             content
+// //         }
+// //     }
+// // `;
 
-export const INVITE_TO_ROOM_MUTATION = gql`
-    mutation inviteToRoom(
-        $senderId: String!, 
-        $senderName: String!, 
-        $receiverId: String!,
-        $roomId: String!
-    )
-    {
-        inviteToRoom(
-            senderId: $senderId, 
-            senderName: $senderName,
-            receiverId: $receiverId,
-            roomId: $roomId
-        )
-        {
-            senderId
-            senderName
-            receiverId
-            roomId
-            createdAt
-        }
-    }
-`;
+// export const INVITE_TO_ROOM_MUTATION = gql`
+//     mutation inviteToRoom(
+//         $senderId: String!, 
+//         $senderName: String!, 
+//         $receiverId: String!,
+//         $roomId: String!
+//     )
+//     {
+//         inviteToRoom(
+//             senderId: $senderId, 
+//             senderName: $senderName,
+//             receiverId: $receiverId,
+//             roomId: $roomId
+//         )
+//         {
+//             senderId
+//             senderName
+//             receiverId
+//             roomId
+//             createdAt
+//         }
+//     }
+// `;
 
-export const ROOM_QUERY = gql`
-    query room($receiverId: String!){
-        room(receiverId: $receiverId){
-            senderId
-            senderName
-            receiverId
-            roomId
-            createdAt
-        }
-    }
-`;
+// export const ROOM_QUERY = gql`
+//     query room($receiverId: String!){
+//         room(receiverId: $receiverId){
+//             senderId
+//             senderName
+//             receiverId
+//             roomId
+//             createdAt
+//         }
+//     }
+// `;
 
-export const ROOM_INVITED_SUBSCRIPTION = gql`
-    subscription roomInvited($receiverId: String!){
-        roomInvited(receiverId: $receiverId){
-            senderId
-            senderName
-            receiverId
-            roomId
-            createdAt
-        }
-    }
-`;
+// export const ROOM_INVITED_SUBSCRIPTION = gql`
+//     subscription roomInvited($receiverId: String!){
+//         roomInvited(receiverId: $receiverId){
+//             senderId
+//             senderName
+//             receiverId
+//             roomId
+//             createdAt
+//         }
+//     }
+// `;

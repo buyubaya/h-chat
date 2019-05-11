@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Icon } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import classnames from 'classnames';
 
 
 class ChatBox extends Component {
@@ -44,42 +45,44 @@ class ChatBox extends Component {
 
     render() {
         const { msgText, isMessageSending } = this.state;
-        const { userId, messageList, userTypingList, onMessageSend, title } = this.props;
+        const { senderId, messageList, userTypingList, onMessageSend, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
 
         return (
-            <div className='chat-area'>
+            <div style={chatBoxWrapperStyle} className={classnames('chatbox-wrapper', chatBoxWrapperClassName)}>
                 <div className='chatbox'>
                     <div className='chat-header'>
                         <Icon type='message' className='icon-message' />
                         {title ? title : 'Message'}
-                        <Icon type='close' className='icon-close' />
+                        <Icon type='close' className='icon-close' onClick={onHide} />
                     </div>
-                    <ul className='chats' ref={el => this.chatBody = el}>
-                        {
-                            messageList && messageList.map((item, index) =>
-                                <li key={index}>
-                                    <div className={`msg ${item.userId === userId ? 'v1' : 'v2'}`}>
-                                        <span className='partner'>{item.userName}</span>
-                                        {item.content}
-                                        <span className='time'>{moment(item.createdAt*1).format('HH:mm')}</span>
-                                    </div>
-                                </li>
-                            )
-                        }
-                        <li className='pending'>
+                    <div className='chats' ref={el => this.chatBody = el}>
+                        <ul className='message-list'>
                             {
-                                userTypingList && userTypingList.length > 0 &&
-                                <div className='msg v2'>
-                                    <span className='partner'>
-                                        {userTypingList.join(',')}
-                                    </span>
-                                    <div className='dot'></div>
-                                    <div className='dot'></div>
-                                    <div className='dot'></div>
-                                </div>
+                                messageList && messageList.map((item, index) =>
+                                    <li className='message-row' key={index}>
+                                        <div className={`msg ${item.senderId === senderId ? 'v1' : 'v2'}`}>
+                                            <span className='partner'>{item.senderName}</span>
+                                            {item.content}
+                                            <span className='time'>{moment(item.createdAt*1).format('HH:mm')}</span>
+                                        </div>
+                                    </li>
+                                )
                             }
-                        </li>
-                    </ul>
+                            <li className='message-row pending'>
+                                {
+                                    userTypingList && userTypingList.length > 0 &&
+                                    <div className='msg v2'>
+                                        <span className='partner'>
+                                            {userTypingList.join(',')}
+                                        </span>
+                                        <div className='dot'></div>
+                                        <div className='dot'></div>
+                                        <div className='dot'></div>
+                                    </div>
+                                }
+                            </li>
+                        </ul>
+                    </div>
                     
                     <div className='sendbox'>
                         <Input
@@ -100,6 +103,7 @@ class ChatBox extends Component {
                             disabled={isMessageSending}
                             value={msgText}
                         />
+                        {/* <Icon className='icon-message-enter' type='smile' theme='twoTone' twoToneColor='#E91E63' /> */}
                     </div>
                 </div>
             </div>

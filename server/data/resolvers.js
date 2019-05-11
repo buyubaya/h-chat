@@ -34,23 +34,23 @@ const resolvers = {
         userStatus: () => {
             return [];
         },
-        room: () => {
-            return [];
-        }
+        // room: () => {
+        //     return [];
+        // }
     },
     Mutation: {
-        createChatRoom: async () => {
-            const createdAt = Date.now();
-            const newRef = await ref('rooms').push({ createdAt });
+        // createChatRoom: async () => {
+        //     const createdAt = Date.now();
+        //     const newRef = await ref('rooms').push({ createdAt });
 
-            // PUBLISH ROOM SUBSCRPTION
-            const room = { 
-                groupId: newRef.key, 
-                createdAt
-            };
+        //     // PUBLISH ROOM SUBSCRPTION
+        //     const room = { 
+        //         groupId: newRef.key, 
+        //         createdAt
+        //     };
             
-            return room;
-        },
+        //     return room;
+        // },
         joinRoom: async (_, { userId, userName, isNew }) => {
             const createdAt = Date.now();
             let userUpdated = {
@@ -73,12 +73,12 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { userId, userName, replyId, groupId, content }) => {
+        sendMessage: async (_, { senderId, senderName, receiverId, roomId, content }) => {
             const newMessage = {
-                userId,
-                userName, 
-                replyId: replyId || '',
-                groupId: groupId || '', 
+                senderId,
+                senderName, 
+                receiverId: receiverId || '',
+                roomId: roomId || '', 
                 content, 
                 createdAt: Date.now()
             };
@@ -88,7 +88,7 @@ const resolvers = {
                 // ADD TO FIREBASE
                 const newRef = await ref('comments').push(newMessage);
                 MESSAGE = {
-                    commentId: newRef.key,
+                    messageId: newRef.key,
                     ...newMessage
                 };
             }
@@ -150,49 +150,48 @@ const resolvers = {
             // }
         },
 
-        updateUserStatus: (_, { userId, userName, groupId, isTyping }) => {
+        updateUserStatus: (_, { senderId, senderName, roomId, isTyping }) => {
             const createdAt = Date.now();
+            const userStatusUpdated = {
+                senderId,
+                senderName,
+                roomId,
+                isTyping: isTyping ? true : false,
+                createdAt
+            };
 
-            pubsub.publish(USER_STATUS_UPDATED, { 
-                userStatusUpdated: { 
-                    userId,
-                    userName,
-                    createdAt,
-                    groupId,
-                    isTyping: isTyping ? true : false 
-                } 
-            });
-            return { userId, userName, createdAt, groupId, isTyping: isTyping ? true : false };
+            pubsub.publish(USER_STATUS_UPDATED, { userStatusUpdated });
+            return userStatusUpdated;
         },
 
-        inviteToRoom: (_, { senderId, senderName, receiverId, roomId }) => {
-            const roomInvited = {
-                senderId, 
-                senderName, 
-                receiverId, 
-                roomId,
-                createdAt: Date.now()
-            };
+        // inviteToRoom: (_, { senderId, senderName, receiverId, roomId }) => {
+        //     const roomInvited = {
+        //         senderId, 
+        //         senderName, 
+        //         receiverId, 
+        //         roomId,
+        //         createdAt: Date.now()
+        //     };
             
-            // PUBLISH SUBSCRIPTION
-            pubsub.publish(ROOM_INVITED, { roomInvited });
+        //     // PUBLISH SUBSCRIPTION
+        //     pubsub.publish(ROOM_INVITED, { roomInvited });
 
-            return roomInvited;
-        }
+        //     return roomInvited;
+        // }
     },
     Subscription: {
         newMessage: {
             subscribe: withFilter(
                 () => pubsub.asyncIterator([COMMENT_ADDED]),
                 (payload, variables, context, info) => {
-                    const groupId = variables && variables.groupId;
-                    const replyId = variables && variables.replyId;
+                    const roomId = variables && variables.roomId;
+                    const receiverId = variables && variables.receiverId;
                     
-                    if(payload && groupId){
-                        return payload.newMessage.groupId === groupId;
+                    if(payload && roomId){
+                        return payload.newMessage.roomId === roomId;
                     }
-                    if(payload && replyId){
-                        return payload.newMessage.replyId === replyId;
+                    if(payload && receiverId){
+                        return payload.newMessage.receiverId === receiverId;
                     }
                     return true;
                 }
@@ -207,35 +206,35 @@ const resolvers = {
             subscribe: withFilter(
                 () => pubsub.asyncIterator([USER_STATUS_UPDATED]),
                 (payload, variables) => {
-                    const userId = variables && variables.userId;
-                    const groupId = variables && variables.groupId;
-                    const replyId = variables && variables.replyId;
+                    const senderId = variables && variables.senderId;
+                    const roomId = variables && variables.roomId;
+                    const receiverId = variables && variables.receiverId;
                     
-                    if(payload && groupId){
-                        return payload.userStatusUpdated.userId !== userId &&payload.userStatusUpdated.groupId === groupId;
+                    if(payload && roomId){
+                        return payload.userStatusUpdated.senderId !== senderId &&payload.userStatusUpdated.roomId === roomId;
                     }
-                    if(payload && replyId){
-                        return payload.userStatusUpdated.userId !== userId && payload.userStatusUpdated.replyId === replyId;
+                    if(payload && receiverId){
+                        return payload.userStatusUpdated.senderId !== senderId && payload.userStatusUpdated.receiverId === receiverId;
                     }
                     return true;
                 }
             )
         },
 
-        roomInvited: {
-            subscribe: withFilter(
-                () => pubsub.asyncIterator([ROOM_INVITED]),
-                (payload, variables) => {
-                    const receiverId = variables && variables.receiverId;
+        // roomInvited: {
+        //     subscribe: withFilter(
+        //         () => pubsub.asyncIterator([ROOM_INVITED]),
+        //         (payload, variables) => {
+        //             const receiverId = variables && variables.receiverId;
                     
-                    if(payload && receiverId){
-                        return payload.roomInvited.receiverId === receiverId;
-                    }
+        //             if(payload && receiverId){
+        //                 return payload.roomInvited.receiverId === receiverId;
+        //             }
 
-                    return true;
-                }
-            )
-        }
+        //             return true;
+        //         }
+        //     )
+        // }
     }
 };
 

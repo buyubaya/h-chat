@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { Button, Input, Modal } from 'antd';
+import { Button, Input, Modal, Badge, Icon } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Subscription, compose, graphql } from 'react-apollo';
 import {
     JOIN_ROOM_MUTATION
-} from '../apollo/home/qms';
+} from '../apollo/qms';
 import {
-    ROOM_QUERY,
-    INVITE_TO_ROOM_MUTATION,
-    ROOM_INVITED_SUBSCRIPTION, 
+    // ROOM_QUERY,
+    // INVITE_TO_ROOM_MUTATION,
+    // ROOM_INVITED_SUBSCRIPTION, 
     MESSAGE_SUBSCRIPTION
 } from '../apollo/chatGroup/qms';
 // COMPONENTS
 import ChatRoom from '../components/ChatRoom';
 import UserList from '../components/home/UserList';
+import ContactMeChatBox from '../components/ContactMeChatBox';
 
 
 class ChatPrivatePage extends Component {
@@ -22,7 +23,8 @@ class ChatPrivatePage extends Component {
         userId: null,
         userName: null,
         isChatting: false,
-        chattingRoom: []
+        chattingRoom: [],
+        chatBoxVisible: false
     };
 
     componentWillMount() {
@@ -79,31 +81,31 @@ class ChatPrivatePage extends Component {
         return x;
     }
 
-    handleUserClick = (user) => {
-        const { userId, userName, chattingRoom } = this.state;
+    // handleUserClick = (user) => {
+    //     const { userId, userName, chattingRoom } = this.state;
         
-        if(!this._roomExisted(userId, user.userId, chattingRoom)){
-            const roomId = [userId, user.userId].join('_');
-            const { inviteToRoom } = this.props;
-            // this.setState(state => ({ chattingRoom: [...state.chattingRoom, roomId] }));
+    //     if(!this._roomExisted(userId, user.userId, chattingRoom)){
+    //         const roomId = [userId, user.userId].join('_');
+    //         const { inviteToRoom } = this.props;
+    //         // this.setState(state => ({ chattingRoom: [...state.chattingRoom, roomId] }));
 
-            inviteToRoom && inviteToRoom({
-                variables: {
-                    senderId: userId,
-                    senderName: userName,
-                    receiverId: user.userId,
-                    roomId
-                }
-            })
-            .then(res => {
-                console.log('RES', res);
-                this.setState(state => ({ chattingRoom: [...state.chattingRoom, roomId] }));
-            });
-        }
-    }
+    //         inviteToRoom && inviteToRoom({
+    //             variables: {
+    //                 senderId: userId,
+    //                 senderName: userName,
+    //                 receiverId: user.userId,
+    //                 roomId
+    //             }
+    //         })
+    //         .then(res => {
+    //             console.log('RES', res);
+    //             this.setState(state => ({ chattingRoom: [...state.chattingRoom, roomId] }));
+    //         });
+    //     }
+    // }
 
     render() {
-        const { userId, userName, chattingRoom } = this.state;
+        const { userId, userName, chattingRoom, chatBoxVisible } = this.state;
 
         if(!userId || !userName){
             return null;
@@ -148,10 +150,10 @@ class ChatPrivatePage extends Component {
                         );
                     })
                 } */}
-                <ChatRoom
-                    userId={userId}
-                    userName={userName}
-                    roomId={`ROOM_${userId}`}
+                <ContactMeChatBox 
+                    senderId={userId}
+                    senderName={userName}
+                    messageCount={10}
                 />
             </div>
         );
@@ -161,5 +163,5 @@ class ChatPrivatePage extends Component {
 
 export default compose(
     graphql(JOIN_ROOM_MUTATION, { name: 'joinRoom' }),
-    graphql(INVITE_TO_ROOM_MUTATION, { name: 'inviteToRoom' })
+    // graphql(INVITE_TO_ROOM_MUTATION, { name: 'inviteToRoom' })
 )(ChatPrivatePage);

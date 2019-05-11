@@ -31,7 +31,7 @@ class ChatRoom extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { roomId },
+                variables: { receiverId: senderId, roomId },
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -50,13 +50,21 @@ class ChatRoom extends Component {
                 document: USER_STATUS_SUBSCRIPTION,
                 variables: { senderId, roomId },
                 updateQuery: (prev, { subscriptionData }) => {
+                    // CHECK DATA
                     if(!subscriptionData){
                         return prev;
                     }
                     
+                    // CHECK SAME EMITTER
                     const newItem = subscriptionData.data.userStatusUpdated;
-                    const checkExist = prev.userStatus.filter(item => item.senderId === newItem.senderId);
+                    if(newItem.senderId === senderId){
+                        return prev;
+                    }
+
+                    // ADD USER TYPING
                     if(newItem.isTyping){
+                        // CHECK EXISTED
+                        const checkExist = prev.userStatus.filter(item => item.senderId === newItem.senderId);
                         if(checkExist.length < 1){
                             return Object.assign({}, prev, {
                                 userStatus: [ newItem, ...prev.userStatus ]
@@ -64,6 +72,7 @@ class ChatRoom extends Component {
                         }
                         return prev;
                     }
+                    // REMOVE USER STOP TYPING
                     else {
                         return Object.assign({}, prev, {
                             userStatus: prev.userStatus.filter(item => item.senderId !== newItem.senderId)
@@ -75,7 +84,7 @@ class ChatRoom extends Component {
     }
 
     componentWillUnmount(){
-        this.unsubscribe.forEach(item => {
+        this.unsubscribe && this.unsubscribe.forEach(item => {
             item();
         });
     }
@@ -147,7 +156,12 @@ export default compose(
             variables: { roomId }
         })
     }),
-    graphql(SEND_MESSAGE_MUTATION, { name: 'sendMessage' }),
+    graphql(SEND_MESSAGE_MUTATION, { 
+        name: 'sendMessage',
+        options: ({ receiverId }) => ({
+            variables: { receiverId }
+        })
+    }),
     graphql(USER_STATUS_QUERY, { 
         name: 'userStatusQuery',
         options: ({ roomId }) => ({

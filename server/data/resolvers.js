@@ -187,12 +187,19 @@ const resolvers = {
                     const roomId = variables && variables.roomId;
                     const receiverId = variables && variables.receiverId;
                     
+                    if(payload && roomId && receiverId){
+                        return payload.newMessage.roomId === roomId || payload.newMessage.receiverId === receiverId;
+                    }
                     if(payload && roomId){
                         return payload.newMessage.roomId === roomId;
                     }
                     if(payload && receiverId){
                         return payload.newMessage.receiverId === receiverId;
                     }
+                    if(!roomId && !receiverId){
+                        return false;
+                    }
+                    
                     return true;
                 }
             )
@@ -210,12 +217,22 @@ const resolvers = {
                     const roomId = variables && variables.roomId;
                     const receiverId = variables && variables.receiverId;
                     
+                    if(roomId === 'ROOM_admin'){
+                        return false;
+                    }
+                    if(payload && roomId && receiverId){
+                        return payload.newMessage.roomId === roomId || payload.newMessage.receiverId === receiverId;
+                    }
                     if(payload && roomId){
                         return payload.userStatusUpdated.senderId !== senderId &&payload.userStatusUpdated.roomId === roomId;
                     }
                     if(payload && receiverId){
                         return payload.userStatusUpdated.senderId !== senderId && payload.userStatusUpdated.receiverId === receiverId;
                     }
+                    if(!roomId && !receiverId){
+                        return false;
+                    }
+                    
                     return true;
                 }
             )

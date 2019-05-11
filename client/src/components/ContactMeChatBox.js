@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { Badge, Icon } from 'antd';
 import ChatRoom from './ChatRoom';
 
 
 class ContactMeChatBox extends Component {
     state = {
+        receiverId: 'admin',
         chatBoxTitle: null,
         chatBoxVisible: false,
         messageCount: 0
@@ -19,48 +21,55 @@ class ContactMeChatBox extends Component {
 
     handleNewMessage = msg => {
         const { chatBoxVisible } = this.state;
-        const { senderId } = this.props;
+        const { receiverId } = this.state;
         
-        if(!chatBoxVisible && msg.senderId !== senderId){
-            this.setState(state => ({ messageCount: state.messageCount + 1, chatBoxTitle: msg.senderName }));
+        if(!chatBoxVisible && msg.senderId === receiverId){
+            this.setState(state => ({ 
+                messageCount: state.messageCount + 1, 
+                chatBoxTitle: msg.senderName,
+                receiverId: ''
+            }));
         }
-        if(chatBoxVisible && msg.senderId !== senderId){
-            this.setState(state => ({ messageCount: 0, chatBoxTitle: msg.senderName }));
+        if(chatBoxVisible && msg.senderId === receiverId){
+            this.setState(state => ({ 
+                messageCount: 0, 
+                chatBoxTitle: msg.senderName,
+                receiverId: ''
+            }));
         }
-        if(chatBoxVisible && msg.senderId === senderId){
-            this.setState(state => ({ messageCount: 0 }));
+        if(chatBoxVisible && msg.senderId !== receiverId){
+            this.setState(state => ({ 
+                messageCount: 0
+            }));
         }
     }
 
     render() {
-        const { chatBoxTitle, chatBoxVisible, messageCount } = this.state;
+        const { receiverId, chatBoxTitle, chatBoxVisible, messageCount } = this.state;
         const { senderId, senderName } = this.props;
 
         return (
             <div>
-                {
-                    !chatBoxVisible &&
-                    <div className='cta-contact-bottom'>
-                        <Badge 
-                            count={messageCount}
-                            onClick={() => {
-                                this.setState(state => ({ chatBoxVisible: !state.chatBoxVisible }));
-                            }}
-                            style={{ backgroundColor: '#52c41a' }}
-                        >
-                            <Icon type='message' className='icon-message' />
-                        </Badge>
-                    </div>
-                }
+                <div className={classnames('cta-contact-bottom', { 'is-hidden': chatBoxVisible })}>
+                    <Badge 
+                        count={messageCount}
+                        onClick={() => {
+                            this.setState(state => ({ chatBoxVisible: !state.chatBoxVisible }));
+                        }}
+                        style={{ backgroundColor: '#52c41a' }}
+                    >
+                        <Icon type='message' className='icon-message' />
+                    </Badge>
+                </div>
                 <ChatRoom
                     title={chatBoxTitle}
                     senderId={senderId}
                     senderName={senderName}
+                    receiverId={receiverId}
                     roomId={`ROOM_${senderId}`}
                     onHide={this.handleChatBoxHide}
                     onMessageReceive={this.handleNewMessage}
-                    chatBoxWrapperClassName={'contact-me-chatbox'}
-                    chatBoxWrapperStyle={!chatBoxVisible ? { width: 0, height: 0 } : null}
+                    chatBoxWrapperClassName={classnames('contact-me-chatbox', { 'is-hidden': !chatBoxVisible })}
                 />
             </div>
         );

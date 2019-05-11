@@ -43,9 +43,25 @@ class ChatBox extends Component {
         }
     , 500);
 
+    handleMsgChange = e => {
+        this.handleMsgTyping();
+        this.handleMsgTypingStop();
+        this.setState({ msgText: e.target.value });
+    }
+
+    handleMsgEnter = () => {
+        const { msgText } = this.state;
+        const { onMessageSend } = this.props;
+
+        if (msgText && msgText.trim()) {
+            this.setState({ msgText: '' });
+            onMessageSend && onMessageSend(msgText);
+        }
+    }
+
     render() {
         const { msgText, isMessageSending } = this.state;
-        const { senderId, messageList, userTypingList, onMessageSend, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
+        const { senderId, messageList, userTypingList, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
 
         return (
             <div style={chatBoxWrapperStyle} className={classnames('chatbox-wrapper', chatBoxWrapperClassName)}>
@@ -55,7 +71,7 @@ class ChatBox extends Component {
                         {title ? title : 'Message'}
                         <Icon type='close' className='icon-close' onClick={onHide} />
                     </div>
-                    <div className='chats' ref={el => this.chatBody = el}>
+                    <div className='chat-body' ref={el => this.chatBody = el}>
                         <ul className='message-list'>
                             {
                                 messageList && messageList.map((item, index) =>
@@ -89,17 +105,8 @@ class ChatBox extends Component {
                             ref={el => this.msgInput = el}
                             className='msg-input'
                             placeholder='Your text...'
-                            onChange={e => {
-                                this.handleMsgTyping();
-                                this.handleMsgTypingStop();
-                                this.setState({ msgText: e.target.value });
-                            }}
-                            onPressEnter={() => {
-                                if (msgText && msgText.trim()) {
-                                    this.setState({ msgText: '' });
-                                    onMessageSend && onMessageSend(msgText);
-                                }
-                            }}
+                            onChange={this.handleMsgChange}
+                            onPressEnter={this.handleMsgEnter}
                             disabled={isMessageSending}
                             value={msgText}
                         />

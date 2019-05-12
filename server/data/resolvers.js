@@ -6,51 +6,21 @@ const withFilter = apolloServer.withFilter;
 const { base, ref, getData } = require('../firebase/firebase');
 // CONSTANTS
 const USER_UPDATED = 'USER_UPDATED';
-const USER_REMOVED = 'USER_REMOVED';
-const COMMENT_ADDED = 'COMMENT_ADDED';
+const NEW_MESSAGE = 'NEW_MESSAGE';
 const USER_STATUS_UPDATED = 'USER_STATUS';
-const MESSAGE_RECEIVED = 'MESSAGE_RECEIVED';
-const ROOM_INVITED = 'ROOM_INVITED';
 const pubsub = new PubSub();
 
 
 const resolvers = {
     Query: {
-        user: async () => {
-            let userList = await getData('users');
-            userList = userList.map(item => {
-                return({
-                    userId: item.id,
-                    userName: item.userName,
-                    createdAt: item.createdAt   
-                });
-            });
-
-            return userList;
-        },
         message: () => {
             return [];
         },
         userStatus: () => {
             return [];
-        },
-        // room: () => {
-        //     return [];
-        // }
+        }
     },
     Mutation: {
-        // createChatRoom: async () => {
-        //     const createdAt = Date.now();
-        //     const newRef = await ref('rooms').push({ createdAt });
-
-        //     // PUBLISH ROOM SUBSCRPTION
-        //     const room = { 
-        //         groupId: newRef.key, 
-        //         createdAt
-        //     };
-            
-        //     return room;
-        // },
         joinRoom: async (_, { userId, userName, isNew }) => {
             const createdAt = Date.now();
             let userUpdated = {
@@ -73,13 +43,19 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { senderId, senderName, receiverId, roomId, content }) => {
+        sendMessage: async (_, { sender: { userId: senderId, userName: senderName }, receiver: { userId: receiverId, userName: receiverName }, roomId, groupId, content }) => {
             const newMessage = {
-                senderId,
-                senderName, 
-                receiverId: receiverId || '',
-                roomId: roomId || '', 
-                content, 
+                sender: {
+                    userId: senderId || '',
+                    userName: senderName || ''
+                },
+                receiver: {
+                    userId: receiverId || '',
+                    userName: receiverName || ''
+                },
+                roomId: roomId || '',
+                groupId: groupId || '',
+                content: content || '', 
                 createdAt: Date.now()
             };
             
@@ -97,57 +73,9 @@ const resolvers = {
             }
 
             // PUBLISH SUBSCRIPTION
-            pubsub.publish(COMMENT_ADDED, { newMessage: MESSAGE });
+            pubsub.publish(NEW_MESSAGE, { newMessage: MESSAGE });
 
             return MESSAGE;
-        },
-
-        removeAllUsers: async () => {
-            try {
-                await ref('users').remove();
-                return true;
-            }
-            catch(error) {
-                return false;
-            }
-        },
-        removeUserById: async (_, { userId }) => {
-            try {
-                await ref('users').child(userId).remove();
-                pubsub.publish(USER_REMOVED, { userRemoved: { userId, createdAt: Date.now() } });
-
-                // CHECK CURRENT USER LIST
-                const currentUserList = await getData('users');
-                if(currentUserList.length < 1){
-                    await ref('comments').remove();
-                }
-
-                return true;
-            }
-            catch(error){
-                return false;
-            }
-        },
-
-        login: async (_, { userId, password }) => {
-            if(userId === 'admin' && password === 'P@ssword123'){
-                // JWT
-                const token = jwt.sign({ userId, password }, 'Chat Secret', { expiresIn: 60 });
-                return { token };
-            }
-            else {
-                return { error: 'Invalid Username or Password' };
-            }
-
-            // try{
-            //     const decoded = await jwt.verify(token, 'Chat Secret');
-            //     if(decoded.userId === 'admin' && decoded.password === 'P@ssword123'){
-            //         return { token };
-            //     }
-            // }
-            // catch(err){
-            //     return { error: 'Invalid Username or Password' };
-            // }
         },
 
         updateUserStatus: (_, { senderId, senderName, roomId, isTyping }) => {
@@ -162,51 +90,24 @@ const resolvers = {
 
             pubsub.publish(USER_STATUS_UPDATED, { userStatusUpdated });
             return userStatusUpdated;
-        },
-
-        // inviteToRoom: (_, { senderId, senderName, receiverId, roomId }) => {
-        //     const roomInvited = {
-        //         senderId, 
-        //         senderName, 
-        //         receiverId, 
-        //         roomId,
-        //         createdAt: Date.now()
-        //     };
-            
-        //     // PUBLISH SUBSCRIPTION
-        //     pubsub.publish(ROOM_INVITED, { roomInvited });
-
-        //     return roomInvited;
-        // }
+        }
     },
     Subscription: {
         newMessage: {
             subscribe: withFilter(
-                () => pubsub.asyncIterator([COMMENT_ADDED]),
-                (payload, variables, context, info) => {
-                    const roomId = variables && variables.roomId;
-                    const receiverId = variables && variables.receiverId;
-                    
-                    if(payload && roomId && receiverId){
-                        return payload.newMessage.roomId === roomId && payload.newMessage.receiverId === receiverId;
-                    }
-                    if(payload && roomId){
-                        return payload.newMessage.roomId === roomId;
-                    }
-                    if(payload && receiverId){
-                        return payload.newMessage.receiverId === receiverId;
-                    }
-                    if(!roomId && !receiverId){
-                        return false;
+                () => pubsub.asyncIterator([NEW_MESSAGE]),
+                (payload, { userId, roomId, groupId }, context, info) => {
+                    if(payload){
+                        const isUserIdValid = userId && userId.includes(payload.newMessage.sender.userId);
+                        const isRoomIdValid = roomId && roomId.includes(payload.newMessage.roomId);
+                        const isGroupIdValid = groupId && groupId.includes(payload.newMessage.groupId);
+
+                        return isUserIdValid || isRoomIdValid || isGroupIdValid;
                     }
                     
-                    return true;
+                    return false;
                 }
             )
-        },
-
-        userUpdated: {
-            subscribe: (payload) => pubsub.asyncIterator([USER_UPDATED])
         },
 
         userStatusUpdated: {
@@ -236,22 +137,7 @@ const resolvers = {
                     return true;
                 }
             )
-        },
-
-        // roomInvited: {
-        //     subscribe: withFilter(
-        //         () => pubsub.asyncIterator([ROOM_INVITED]),
-        //         (payload, variables) => {
-        //             const receiverId = variables && variables.receiverId;
-                    
-        //             if(payload && receiverId){
-        //                 return payload.roomInvited.receiverId === receiverId;
-        //             }
-
-        //             return true;
-        //         }
-        //     )
-        // }
+        }
     }
 };
 

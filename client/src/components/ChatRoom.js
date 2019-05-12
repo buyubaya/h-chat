@@ -20,7 +20,8 @@ class ChatRoom extends Component {
 
     componentDidMount(){
         // MESSAGE
-        const { sender, roomId } = this.props;
+        let { sender, roomId, listenTo } = this.props;
+        listenTo = listenTo ? {...listenTo, roomId: [...listenTo.roomId, roomId]} : { roomId };
         const senderId = sender && sender.userId;
         const { messageQuery } = this.props;
         const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;
@@ -32,7 +33,7 @@ class ChatRoom extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { roomId },
+                variables: listenTo,
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -91,15 +92,21 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        const { sender, roomId, sendMessage } = this.props;
+        let { sender, roomId, sendMessage, sendTo } = this.props;
+        let variables = { 
+            sender,
+            content: msgText,
+            roomId
+        };
 
-        sendMessage && sendMessage({
-            variables: { 
-                sender,
-                roomId, 
-                content: msgText
-            }
-        });
+        if(sendTo){
+            variables = {
+                ...variables,
+                ...sendTo
+            };
+        }
+
+        sendMessage && sendMessage({ variables });
     }
 
     handleMessageTyping = () => {

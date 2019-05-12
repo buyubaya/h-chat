@@ -1,213 +1,89 @@
 import React, { Component } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Modal, Badge, Icon } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-// APOLLO
-import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
+import { Subscription, compose, graphql } from 'react-apollo';
 import {
-    COMMENT_QUERY,
-    USER_STATUS_QUERY,
-    ADD_COMMENT_MUTATION,
-    COMMENTS_SUBSCRIPTION,
-    USER_STATUS_MUTATION,
-    USER_STATUS_SUBSCRIPTION,
-    CREATE_CHAT_ROOM_MUTATION
-
+    JOIN_ROOM_MUTATION
+} from '../apollo/qms';
+import {
+    // ROOM_QUERY,
+    // INVITE_TO_ROOM_MUTATION,
+    // ROOM_INVITED_SUBSCRIPTION, 
+    MESSAGE_SUBSCRIPTION
 } from '../apollo/chatGroup/qms';
+// COMPONENTS
+import ChatRoom from '../components/ChatRoom';
 
 
-class ChatGroupPage extends Component {
+class ChatPrivatePage extends Component {
     state = {
-        userId: '' + Date.now(),
-        userName: 'AAAAA',
-        groupId: 'G1',
-        msgList: [],
-        msgText: null,
-        isTyping: false
+        userId: null,
+        userName: null
     };
 
-    componentDidMount(){
-        // COMMENT
-        const { groupId } = this.state;
-        const { commentQuery } = this.props;
-        const subscribeToMore = commentQuery && commentQuery.subscribeToMore;
-        subscribeToMore && subscribeToMore({
-            document: COMMENTS_SUBSCRIPTION,
-            variables: { groupId },
-            updateQuery: (prev, { subscriptionData }) => {
-                if(!subscriptionData){
-                    return prev;
-                }
-                
-                const newItem = subscriptionData.data.commentAdded;
-                return Object.assign({}, prev, {
-                    comment: [ ...prev.comment, newItem ]
-                });
-            }
-        });
-
-        // USER STATUS
-        const { userId } = this.state;
-        const { userStatusQuery } = this.props;
-        const userStatusSubscribeToMore = userStatusQuery && userStatusQuery.subscribeToMore;
-        userStatusSubscribeToMore && userStatusSubscribeToMore({
-            document: USER_STATUS_SUBSCRIPTION,
-            variables: { userId, groupId },
-            updateQuery: (prev, { subscriptionData }) => {
-                if(!subscriptionData){
-                    return prev;
-                }
-                
-                const newItem = subscriptionData.data.userStatusUpdated;
-                const checkExist = prev.userStatus.filter(item => item.userId === newItem.userId);
-                if(newItem.isTyping){
-                    if(checkExist.length < 1){
-                        return Object.assign({}, prev, {
-                            userStatus: [ newItem, ...prev.userStatus ]
-                        });
-                    }
-                    return prev;
-                }
-                else {
-                    return Object.assign({}, prev, {
-                        userStatus: prev.userStatus.filter(item => item.userId !== newItem.userId)
-                    });
-                }
-            }
-        });
-    }
-    
-    componentWillReceiveProps(newProps){
-        // COMMENT
-        const { commentQuery: oldCommentQuery } = this.props;
-        const oldCommentList = oldCommentQuery && oldCommentQuery.comment;
-        const { commentQuery: newCommentQuery } = newProps;
-        const newCommentList = newCommentQuery && newCommentQuery.comment;
-        
-        if(oldCommentList && newCommentList && oldCommentList.length < newCommentList.length){
-            setTimeout(() => {
-                this.chatBody.scrollTop = this.chatBody.scrollHeight;
-            }, 0);
-        }
-    }
-
-    handleMsgTextChange = () => {
-        const { userId, userName, groupId, isTyping } = this.state;
-        if(!isTyping){
-            const { updateUserStatus } = this.props;
-
-            this.setState({ isTyping: true });
-            updateUserStatus && updateUserStatus({
-                variables: {
-                    userId, userName, groupId, isTyping: true
-                }
-            });
-        }
-    } 
-
-    handleMsgTextUnchange = _.debounce(
-        () => {
-            const { userId, userName, groupId } = this.state;
-            const { updateUserStatus } = this.props;
-
-            this.setState({ isTyping: false });
-            updateUserStatus && updateUserStatus({
-                variables: {
-                    userId, userName, groupId, isTyping: false
-                }
-            });
-        }
-    , 1000);
-
-    handleCreateChatRoom = () => {
-        const { createChatRoom } = this.props;
-        createChatRoom && 
-        createChatRoom()
-        .then(res => {
-            const groupId = _.get(res, 'data.createChatRoom.groupId');
-            
+    componentWillMount() {
+        // CHECK SESSION STORAGE
+        let guest_session = sessionStorage.getItem('chat_guest_user');
+        let guest_data = {
+            userId: null,
+            userName: 'GUEST_' + moment(Date.now()).format('HH:mm:ss'),
+            isNew: true
+        };
+        if(guest_session){
+            guest_session = JSON.parse(guest_session);
             this.setState({
-                groupId
+                userId: guest_session.userId,
+                userName: guest_session.userName
             });
-        });
+            guest_data = {
+                userId: guest_session.userId,
+                userName: guest_session.userName,
+                isNew: false
+            };
+        }
+
+        // JOIN ROOM
+        const { joinRoom } = this.props;
+
+        joinRoom && joinRoom({ variables: { ...guest_data } })
+            .then(res => {
+                const guest = {
+                    userId: _.get(res, 'data.joinRoom.userId'),
+                    userName: _.get(res, 'data.joinRoom.userName')
+                };
+
+                this.setState(
+                    {
+                        userId: guest.userId,
+                        userName: guest.userName
+                    },
+                    () => {
+                        sessionStorage.setItem('chat_guest_user', JSON.stringify(guest));
+                    }
+                );
+            });
     }
 
     render() {
-        const { userId, userName, groupId, msgText } = this.state;
-        const { commentQuery, userStatusQuery, updateUserStatus } = this.props;
-        const comment = commentQuery && commentQuery.comment;
-        let userTypingList = userStatusQuery && userStatusQuery.userStatus;
-        userTypingList = userTypingList ? userTypingList.map(item => item.userName) : [];
-        
+        const { userId, userName } = this.state;
+        const sender = { userId, userName };
+        const sendTo = { groupId: 'ADMIN' };
+        const listenTo = { roomId: ['ROOM_1', 'ROOM_2'] };
+
+        if(!userId || !userName){
+            return null;
+        }
+
         return (
             <div>
-                <Button onClick={this.handleCreateChatRoom}>Crate a Room</Button>
-                <div className='chat-area'>
-                    <div className='chatbox'>
-                        <ul className='chats' ref={el => this.chatBody = el}>
-                            {
-                                comment && comment.map(item =>
-                                    <li key={item.commentId}>
-                                        <div className={`msg ${item.userId === userId ? 'v1' : 'v2'}`}>
-                                            <span className='partner'>{item.userName}</span>
-                                            {item.content}
-                                            <span className='time'>{moment(item.createdAt*1).format('HH:mm')}</span>
-                                        </div>
-                                    </li>
-                                )
-                            }
-                            {
-                                userTypingList && userTypingList.length > 0 &&
-                                <li className='pending'>
-                                    <div className='msg v2'>
-                                        <span className='partner'>
-                                            {userTypingList.join(',')}
-                                        </span>
-                                        <div className='dot'></div>
-                                        <div className='dot'></div>
-                                        <div className='dot'></div>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
-                        
-                        <Mutation mutation={ADD_COMMENT_MUTATION}>
-                            {(addComment, { data, error, loading }) => {
-                                return (
-                                    <div className='sendbox'>
-                                        <Input
-                                            ref={el => this.msgInput = el}
-                                            className='msg-input'
-                                            placeholder='Your text...'
-                                            onChange={e => {
-                                                this.handleMsgTextChange();
-                                                this.handleMsgTextUnchange();
-                                                this.setState({ msgText: e.target.value });
-                                            }}
-                                            onPressEnter={() => {
-                                                if (msgText && msgText.trim()) {
-                                                    addComment({ variables: { userId, userName, groupId, content: msgText } })
-                                                    .then(res => {
-                                                        updateUserStatus({
-                                                            variables: {
-                                                                userId, userName, groupId, isTyping: false
-                                                            }
-                                                        });
-                                                        this.setState({ msgText: '' });
-                                                        this.msgInput.focus();
-                                                    });
-                                                }
-                                            }}
-                                            disabled={loading}
-                                            value={msgText}
-                                        />
-                                    </div>
-                                );
-                            }}
-                        </Mutation>
-
-                    </div>
-                </div>
+                <ChatRoom 
+                    title='HELLO'
+                    sender={sender}
+                    roomId={`ROOM_ADMIN`}
+                    sendTo={sendTo}
+                    listenTo={listenTo}
+                />
             </div>
         );
     }
@@ -215,9 +91,5 @@ class ChatGroupPage extends Component {
 
 
 export default compose(
-    graphql(COMMENT_QUERY, { name: 'commentQuery' }),
-    graphql(ADD_COMMENT_MUTATION, { name: 'addComment' }),
-    graphql(USER_STATUS_QUERY, { name: 'userStatusQuery' }),
-    graphql(USER_STATUS_MUTATION, { name: 'updateUserStatus' }),
-    graphql(CREATE_CHAT_ROOM_MUTATION, { name: 'createChatRoom' })
-)(ChatGroupPage);
+    graphql(JOIN_ROOM_MUTATION, { name: 'joinRoom' })
+)(ChatPrivatePage);

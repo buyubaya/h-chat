@@ -9,12 +9,12 @@ const typeDefs = gql`
 
     type Mutation {
         joinRoom(userId: String, userName: String!, isNew: Boolean!): User
-        sendMessage(sender: Sender, receiver: Receiver, roomId: String, groupId: String, content: String!): Message
+        sendMessage(sender: Sender, receiverId: [String], roomId: String, groupId: String, content: String!): Message
         updateUserStatus(senderId: String!, senderName: String!, roomId: String, isTyping: Boolean): UserStatus
     }
 
     type Subscription {
-        newMessage(userId: [String], roomId: [String], groupId: [String]): Message
+        newMessage(userId: [String], roomId: [String], groupId: [String], receiverId: String): Message
         userStatusUpdated(senderId: String, roomId: String, isTyping: Boolean): UserStatus
     }
 
@@ -36,7 +36,7 @@ const typeDefs = gql`
     type Message {
         messageId: String!
         sender: SenderOutput
-        receiver: ReceiverOutput
+        receiverId: [String]
         roomId: String
         groupId: String
         content: String!

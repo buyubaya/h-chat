@@ -43,16 +43,13 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { sender, receiver, roomId, groupId, content }) => {
+        sendMessage: async (_, { sender, receiverId, roomId, groupId, content }) => {
             const newMessage = {
                 sender: {
                     userId: sender ? sender.userId : '',
                     userName: sender ? sender.userName : ''
                 },
-                receiver: {
-                    userId: receiver ? receiver.userId : '',
-                    userName: receiver ? receiver.userName : ''
-                },
+                receiverId: receiverId || [],
                 roomId: roomId || '',
                 groupId: groupId || '',
                 content: content || '', 
@@ -101,14 +98,15 @@ const resolvers = {
                         return false;
                     }
 
-                    const { userId, roomId, groupId } = variables;
+                    const { userId, roomId, groupId, receiverId } = variables;
 
                     if(payload){
                         const isUserIdValid = userId && userId.includes(payload.newMessage.sender.userId);
                         const isRoomIdValid = roomId && roomId.includes(payload.newMessage.roomId);
                         const isGroupIdValid = groupId && groupId.includes(payload.newMessage.groupId);
+                        const isReceiverValid = payload.newMessage.receiverId.includes(receiverId);
 
-                        return isUserIdValid || isRoomIdValid || isGroupIdValid;
+                        return isUserIdValid || isRoomIdValid || isGroupIdValid || isReceiverValid;
                     }
                     
                     return false;

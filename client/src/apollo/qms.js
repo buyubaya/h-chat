@@ -21,9 +21,7 @@ export const MESSAGE_QUERY = gql`
                 userId
                 userName
             }
-            receiver {
-                userId
-            }
+            receiverId
             content
             createdAt
         }
@@ -33,7 +31,7 @@ export const MESSAGE_QUERY = gql`
 export const SEND_MESSAGE_MUTATION = gql`
     mutation sendMessage(
         $sender: Sender
-        $receiver: Receiver,
+        $receiverId: [String],
         $roomId: String,
         $groupId: String,
         $content: String!
@@ -41,7 +39,7 @@ export const SEND_MESSAGE_MUTATION = gql`
     {
         sendMessage(
             sender: $sender, 
-            receiver: $receiver,
+            receiverId: $receiverId,
             roomId: $roomId,
             groupId: $groupId,
             content: $content
@@ -51,9 +49,7 @@ export const SEND_MESSAGE_MUTATION = gql`
                 userId
                 userName
             }
-            receiver {
-                userId
-            }
+            receiverId
             roomId
             groupId
             content
@@ -71,10 +67,7 @@ export const MESSAGE_SUBSCRIPTION = gql`
                 userId
                 userName
             }
-            receiver {
-                userId
-                userName
-            }
+            receiverId
             roomId
             groupId
             content

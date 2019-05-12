@@ -21,10 +21,7 @@ import ContactMeChatBox from '../components/ContactMeChatBox';
 class ChatPrivatePage extends Component {
     state = {
         userId: null,
-        userName: null,
-        receiver: {
-            userId: 'admin'
-        }
+        userName: null
     };
 
     componentWillMount() {
@@ -71,8 +68,10 @@ class ChatPrivatePage extends Component {
     }
 
     render() {
-        const { userId, userName, receiver } = this.state;
+        const { userId, userName } = this.state;
         const sender = { userId, userName };
+        const sendTo = { groupId: 'ADMIN' };
+        const listenTo = { receiverId: 'USER_1', roomId: ['ROOM_1', 'ROOM_2'], groupId: 'ADMIN' };
 
         if(!userId || !userName){
             return null;
@@ -81,9 +80,11 @@ class ChatPrivatePage extends Component {
         return (
             <div>
                 <ChatRoom 
-                    itle='HELLO'
+                    title='HELLO'
                     sender={sender}
                     roomId={`ROOM_1`}
+                    sendTo={sendTo}
+                    listenTo={listenTo}
                 />
             </div>
         );

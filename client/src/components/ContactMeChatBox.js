@@ -26,14 +26,14 @@ class ContactMeChatBox extends Component {
             this.setState(state => ({ 
                 messageCount: state.messageCount + 1, 
                 chatBoxTitle: msg.senderName,
-                receiverId: ''
+                // receiverId: ''
             }));
         }
         if(chatBoxVisible){
             this.setState(state => ({ 
                 messageCount: 0, 
                 chatBoxTitle: msg.senderId === receiverId ? msg.senderName: state.chatBoxTitle,
-                receiverId: ''
+                // receiverId: ''
             }));
         }
     }

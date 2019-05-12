@@ -90,15 +90,18 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        const { senderId, senderName, roomId } = this.props;
+        const { senderId, senderName, roomId, receiverId } = this.props;
         const { sendMessage } = this.props;
         
-        sendMessage && sendMessage({ variables: { 
-            senderId, 
-            senderName, 
-            roomId, 
-            content: msgText
-        } });
+        sendMessage && sendMessage({
+            variables: { 
+                senderId, 
+                senderName, 
+                receiverId,
+                roomId, 
+                content: msgText
+            }
+        });
     }
 
     handleMessageTyping = () => {
@@ -163,12 +166,7 @@ export default compose(
             variables: { roomId }
         })
     }),
-    graphql(SEND_MESSAGE_MUTATION, { 
-        name: 'sendMessage',
-        options: ({ receiverId }) => ({
-            variables: { receiverId }
-        })
-    }),
+    graphql(SEND_MESSAGE_MUTATION, { name: 'sendMessage' }),
     graphql(USER_STATUS_QUERY, { 
         name: 'userStatusQuery',
         options: ({ roomId }) => ({

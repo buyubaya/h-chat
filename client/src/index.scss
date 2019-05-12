@@ -398,7 +398,10 @@ $icon-message-size: 30px;
 			}
 	
 			.ant-tabs-ink-bar {
-				display: none !important;
+				width: 0.5rem !important;
+				border-radius: 0 0.25rem 0.25rem 0;
+				background: $chatbox-msg-v2-color;
+				margin-right: 1rem;
 			}
 		}
 

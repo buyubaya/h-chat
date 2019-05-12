@@ -188,7 +188,7 @@ const resolvers = {
                     const receiverId = variables && variables.receiverId;
                     
                     if(payload && roomId && receiverId){
-                        return payload.newMessage.roomId === roomId || payload.newMessage.receiverId === receiverId;
+                        return payload.newMessage.roomId === roomId && payload.newMessage.receiverId === receiverId;
                     }
                     if(payload && roomId){
                         return payload.newMessage.roomId === roomId;

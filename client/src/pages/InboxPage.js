@@ -64,20 +64,20 @@ class InboxPage extends Component {
                     // CHECK ROOM EXIST IN ROOMLIST
                     this.setState(state => {
                         const { roomList, messageOrder } = state;
-
+                        
                         if(!this._isRoomInRoomList(newItem.roomId, messageOrder)){
                             return(
                                 {
-                                    roomList: [
-                                        {
-                                            title: newItem.senderName,
-                                            roomId: newItem.roomId,
-                                            senderId: state.userId,
-                                            senderName: state.userName,
-                                            initialMessageList: [newItem]
-                                        },
-                                        ...state.roomList
-                                    ],
+                                    // roomList: [
+                                    //     {
+                                    //         title: newItem.senderName,
+                                    //         roomId: newItem.roomId,
+                                    //         senderId: state.userId,
+                                    //         senderName: state.userName,
+                                    //         initialMessageList: [newItem]
+                                    //     },
+                                    //     ...state.roomList
+                                    // ],
                                     unreadMessageCount: {
                                         ...state.unreadMessageCount,
                                         [newItem.roomId]: 1
@@ -103,7 +103,7 @@ class InboxPage extends Component {
                         
                         return {
                             ...state,
-                            messageOrder: [newItem, ...state.messageOrder.filter(item => item.roomId !== newItem.roomId)]
+                            messageOrder: [...state.messageOrder]
                         };
                     });
                     // if(!this._isRoomInRoomList(newItem.roomId, roomList)){
@@ -136,15 +136,17 @@ class InboxPage extends Component {
     }
 
     _isRoomInRoomList(roomId, roomList=[]){
-        let x = false;
+        if(roomId === 'ROOM_admin'){
+           return true;
+        }
 
         roomList.forEach(item => {
             if(item.roomId === roomId){
-                x = true;
+                return true;
             }
         });
         
-        return x;
+        return false;
     }
 
     // handleMessageClick = (userMsg) => {
@@ -209,7 +211,7 @@ class InboxPage extends Component {
             roomRendering 
         } = this.state;
         // const messageList = this.props.messageQuery && this.props.messageQuery.message;
-        console.log('ROOM', messageOrder);
+        
         return (
             <div className='inbox-page'>
                 <Layout>
@@ -237,9 +239,9 @@ class InboxPage extends Component {
                                 <ChatRoom
                                     chatBoxWrapperClassName='big-chatbox'
                                     title='Message'
-                                    roomId='ROOM_admin'
                                     senderId='admin'
                                     senderName='ADMINISTRATOR'
+                                    roomId='ROOM_admin'
                                 />
                             </Tabs.TabPane>
                             {

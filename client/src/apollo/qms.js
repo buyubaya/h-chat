@@ -12,34 +12,18 @@ export const JOIN_ROOM_MUTATION = gql`
     }
 `;
 
-// USER
-export const USER_QUERY = gql`
-    query {
-        user {
-            userId
-            userName
-            createdAt
-        }
-    }
-`;
-
-export const USER_SUBSCRIPTION = gql`
-    subscription {
-        userUpdated {
-            userId
-            userName
-            createdAt
-        }
-    }
-`;
-
 // MESSAGE
 export const MESSAGE_QUERY = gql`
     query message($roomId: String){
         message(roomId: $roomId) {
             messageId
-            senderId
-            senderName
+            sender {
+                userId
+                userName
+            }
+            receiver {
+                userId
+            }
             content
             createdAt
         }
@@ -48,25 +32,30 @@ export const MESSAGE_QUERY = gql`
 
 export const SEND_MESSAGE_MUTATION = gql`
     mutation sendMessage(
-        $senderId: String!, 
-        $senderName: String!, 
-        $receiverId: String,
-        $roomId: String, 
+        $sender: Sender
+        $receiver: Receiver,
+        $roomId: String,
+        $groupId: String,
         $content: String!
     )
     {
         sendMessage(
-            senderId: $senderId, 
-            senderName: $senderName,
-            receiverId: $receiverId,
-            roomId: $roomId, 
+            sender: $sender, 
+            receiver: $receiver,
+            roomId: $roomId,
+            groupId: $groupId,
             content: $content
         )
         {
-            senderId
-            senderName
-            receiverId
+            sender {
+                userId
+                userName
+            }
+            receiver {
+                userId
+            }
             roomId
+            groupId
             content
             createdAt
             error
@@ -75,13 +64,19 @@ export const SEND_MESSAGE_MUTATION = gql`
 `;
 
 export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newMessage($roomId: String, $receiverId: String){
-        newMessage(roomId: $roomId, receiverId: $receiverId) {
+    subscription newMessage($userId: [String], $roomId: [String], $groupId: [String]) {
+        newMessage(userId: $userId, roomId: $roomId, groupId: $groupId) {
             messageId
-            senderId
-            senderName
-            receiverId
+            sender {
+                userId
+                userName
+            }
+            receiver {
+                userId
+                userName
+            }
             roomId
+            groupId
             content
             createdAt
             error

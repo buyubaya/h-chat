@@ -1,79 +1,90 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
-// ANTD
+import { Button, Input, Modal, Badge, Icon } from 'antd';
+import * as moment from 'moment';
+import * as _ from 'lodash';
+import { Subscription, compose, graphql } from 'react-apollo';
 import {
-    Comment, Avatar, Form, Button, List, Input, Layout
-} from 'antd';
-import moment from 'moment';
-const { Header, Content, Sider } = Layout;
+    JOIN_ROOM_MUTATION
+} from '../apollo/qms';
+import {
+    // ROOM_QUERY,
+    // INVITE_TO_ROOM_MUTATION,
+    // ROOM_INVITED_SUBSCRIPTION, 
+    MESSAGE_SUBSCRIPTION
+} from '../apollo/chatGroup/qms';
 // COMPONENTS
+import ChatRoom from '../components/ChatRoom';
 import UserList from '../components/home/UserList';
-import JoinForm from '../components/home/JoinForm';
-import ChatBox from '../components/home/ChatBox';
-import {
-    REMOVE_USER_MUTATION
-} from '../apollo/home/qms';
+import ContactMeChatBox from '../components/ContactMeChatBox';
 
 
-class HomePage extends Component {
+class ChatPrivatePage extends Component {
     state = {
-        userId: '',
-        userName: '',
-        joinedRoom: false
+        userId: null,
+        userName: null,
+        receiver: {
+            userId: 'admin'
+        }
     };
 
     componentWillMount() {
-        window.addEventListener('unload', this.handleUnLoad);
-    }
+        // CHECK SESSION STORAGE
+        let guest_session = sessionStorage.getItem('chat_guest_user');
+        let guest_data = {
+            userId: null,
+            userName: 'GUEST_' + moment(Date.now()).format('HH:mm:ss'),
+            isNew: true
+        };
+        if(guest_session){
+            guest_session = JSON.parse(guest_session);
+            this.setState({
+                userId: guest_session.userId,
+                userName: guest_session.userName
+            });
+            guest_data = {
+                userId: guest_session.userId,
+                userName: guest_session.userName,
+                isNew: false
+            };
+        }
 
-    componentWillUnMount() {
-        window.removeEventListener('unload', this.handleUnLoad);
-    }
+        // JOIN ROOM
+        const { joinRoom } = this.props;
 
-    handleUnLoad = () => {
-        this.removeUserFromRoom();
-    }
+        joinRoom && joinRoom({ variables: { ...guest_data } })
+            .then(res => {
+                const guest = {
+                    userId: _.get(res, 'data.joinRoom.userId'),
+                    userName: _.get(res, 'data.joinRoom.userName')
+                };
 
-    removeUserFromRoom = () => {
-        const { userId } = this.state;
-        const { removeUserMutation } = this.props;
-        removeUserMutation && removeUserMutation({ variables: { userId } })
-            .then(() => this.setState({
-                userName: '',
-                joinedRoom: false
-            }));
+                this.setState(
+                    {
+                        userId: guest.userId,
+                        userName: guest.userName
+                    },
+                    () => {
+                        sessionStorage.setItem('chat_guest_user', JSON.stringify(guest));
+                    }
+                );
+            });
     }
 
     render() {
-        const { userId, userName, joinedRoom } = this.state;
-        const user = { userId, userName };
+        const { userId, userName, receiver } = this.state;
+        const sender = { userId, userName };
+
+        if(!userId || !userName){
+            return null;
+        }
 
         return (
             <div>
-                <h1>CHAT ROOM</h1>
-                <div>
-                    {
-                        !joinedRoom &&
-                        <JoinForm onJoinRoom={({ data }) => {
-                            const userId = data && data.joinRoom.userId;
-                            const userName = data && data.joinRoom.userName;
-                            this.setState({ userId, userName, joinedRoom: true });
-                        }} />
-                    }
-                    {
-                        joinedRoom &&
-                        <div>
-                            <Button onClick={this.removeUserFromRoom}>
-                                Leave Chat Room
-                            </Button>
-
-                            <ChatBox user={user} />
-                            <UserList />
-                        </div>
-                    }
-                </div>
+                <ChatRoom 
+                    itle='HELLO'
+                    sender={sender}
+                    roomId={`ROOM_1`}
+                />
             </div>
         );
     }
@@ -81,5 +92,5 @@ class HomePage extends Component {
 
 
 export default compose(
-    graphql(REMOVE_USER_MUTATION, { name: 'removeUserMutation' })
-)(HomePage);
+    graphql(JOIN_ROOM_MUTATION, { name: 'joinRoom' })
+)(ChatPrivatePage);

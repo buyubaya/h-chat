@@ -61,7 +61,7 @@ class ChatBox extends Component {
 
     render() {
         const { msgText, isMessageSending } = this.state;
-        const { senderId, messageList, userTypingList, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
+        const { sender, messageList, userTypingList, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
 
         return (
             <div style={chatBoxWrapperStyle} className={classnames('chatbox-wrapper', chatBoxWrapperClassName)}>
@@ -76,8 +76,8 @@ class ChatBox extends Component {
                             {
                                 messageList && messageList.map((item, index) =>
                                     <li className='message-row' key={index}>
-                                        <div className={`msg ${item.senderId === senderId ? 'v1' : 'v2'}`}>
-                                            <span className='partner'>{item.senderName}</span>
+                                        <div className={`msg ${item.sender.userId === sender.userId ? 'v1' : 'v2'}`}>
+                                            <span className='partner'>{item.sender.userName}</span>
                                             {item.content}
                                             <span className='time'>{moment(item.createdAt*1).format('HH:mm')}</span>
                                         </div>
@@ -110,7 +110,6 @@ class ChatBox extends Component {
                             disabled={isMessageSending}
                             value={msgText}
                         />
-                        {/* <Icon className='icon-message-enter' type='smile' theme='twoTone' twoToneColor='#E91E63' /> */}
                     </div>
                 </div>
             </div>

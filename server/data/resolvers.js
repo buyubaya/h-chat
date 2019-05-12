@@ -43,15 +43,15 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { sender: { userId: senderId, userName: senderName }, receiver: { userId: receiverId, userName: receiverName }, roomId, groupId, content }) => {
+        sendMessage: async (_, { sender, receiver, roomId, groupId, content }) => {
             const newMessage = {
                 sender: {
-                    userId: senderId || '',
-                    userName: senderName || ''
+                    userId: sender ? sender.userId : '',
+                    userName: sender ? sender.userName : ''
                 },
                 receiver: {
-                    userId: receiverId || '',
-                    userName: receiverName || ''
+                    userId: receiver ? receiver.userId : '',
+                    userName: receiver ? receiver.userName : ''
                 },
                 roomId: roomId || '',
                 groupId: groupId || '',
@@ -60,7 +60,7 @@ const resolvers = {
             };
             
             let MESSAGE;
-            if(content && content.trim()){
+            if(newMessage.content && newMessage.content.trim()){
                 // ADD TO FIREBASE
                 const newRef = await ref('comments').push(newMessage);
                 MESSAGE = {
@@ -71,7 +71,7 @@ const resolvers = {
             else {
                 MESSAGE = { error: 'Invalid Comment' };
             }
-
+            
             // PUBLISH SUBSCRIPTION
             pubsub.publish(NEW_MESSAGE, { newMessage: MESSAGE });
 
@@ -96,7 +96,13 @@ const resolvers = {
         newMessage: {
             subscribe: withFilter(
                 () => pubsub.asyncIterator([NEW_MESSAGE]),
-                (payload, { userId, roomId, groupId }, context, info) => {
+                (payload, variables={}, context, info) => {
+                    if(!variables){
+                        return false;
+                    }
+
+                    const { userId, roomId, groupId } = variables;
+
                     if(payload){
                         const isUserIdValid = userId && userId.includes(payload.newMessage.sender.userId);
                         const isRoomIdValid = roomId && roomId.includes(payload.newMessage.roomId);
@@ -114,9 +120,11 @@ const resolvers = {
             subscribe: withFilter(
                 () => pubsub.asyncIterator([USER_STATUS_UPDATED]),
                 (payload, variables) => {
-                    const senderId = variables && variables.senderId;
-                    const roomId = variables && variables.roomId;
-                    const receiverId = variables && variables.receiverId;
+                    if(!variables){
+                        return false;
+                    }
+
+                    const { senderId, receiverId, roomId } = variables;
                     
                     if(roomId === 'ROOM_admin'){
                         return false;

@@ -333,42 +333,6 @@ $icon-message-size: 30px;
 		flex-direction: column;
 	}
 
-	// TABS
-	.admin-room-tabs {
-		.ant-tabs-bar {
-			margin-bottom: 0;
-		}
-
-		.ant-tabs-nav {
-			.ant-tabs-tab {
-				margin-right: 0;
-				padding: 0.5rem 1rem 0.75rem 1rem;
-				vertical-align: middle;
-				position: relative;
-			}
-
-			.ant-tabs-tab-active {
-				background: $chatbox-msg-v1-bg-color;
-				color: #fff !important;
-				box-shadow: 0 0.25rem 2rem rgba(233, 30, 99, 0.5);
-			}
-
-			.icon-message svg, .icon-close svg {
-				width: 1rem;
-				height: 1rem;
-			}
-
-			.icon-close {
-				margin: 0 0 0 0.5rem;
-				vertical-align: sub;
-			}
-
-			.ant-tabs-ink-bar {
-				display: none !important;
-			}
-		}
-	}
-
 	.big-chatbox {
 		flex-grow: 1;
 
@@ -393,20 +357,193 @@ $icon-message-size: 30px;
 	}
 
 	// TABS
-	.ant-tabs {
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
+	.admin-room-tabs {
+		flex: 1;
+
+		// TAB NAV
+		.ant-tabs-nav {
+			padding-top: 1rem;
+			padding-right: 1rem;
+
+			.ant-tabs-tab {
+				padding: 0.5rem 1rem 0.75rem 1rem;
+				margin-bottom: 1rem;
+				vertical-align: middle;
+				position: relative;
+				background: #fff;
+				text-align: left;
+				border: 1px solid $chatbox-msg-v2-color;
+				border-left: none;
+				border-radius: 0 0.25rem 0.25rem 0;
+
+				&.ant-tabs-tab-active, &:hover {
+					color: $chatbox-msg-v2-color;
+				}
+			}
+	
+			.icon-message svg, .icon-close svg {
+				width: 1rem;
+				height: 1rem;
+			}
+	
+			.icon-close {
+				margin: 0 0 0 0.5rem;
+				vertical-align: sub;
+			}
+
+			.icon-message-count {
+				position: absolute;
+				top: -0.5rem;
+				right: -0.5rem;
+			}
+	
+			.ant-tabs-ink-bar {
+				display: none !important;
+			}
+		}
+
+		.ant-tabs-left-bar {
+			width: 200px;
+		}
+		.ant-tabs-nav-container-scrolling {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+
+			.ant-tabs-tab-arrow-show {
+				display: none;
+			}
+		}
+
+		.ant-tabs-nav-wrap {
+			overflow-y: scroll;
+
+			&::-webkit-scrollbar { width: 0.25rem; }
+			&::-webkit-scrollbar-thumb { background: $chatbox-msg-v2-color; }
+			&::-webkit-scrollbar-thumb:hover { background: $chatbox-msg-v2-color; }
+		}
+
+		// TAB CONTENT
+		.ant-tabs-content {
+			display: flex;
+			flex-direction: column;
+			padding-left: 0;
+			height: 100%;
+
+			.ant-tabs-tabpane-inactive {
+				flex: 0;
+			}
+
+			.ant-tabs-tabpane-active {
+				display: flex;
+				flex-direction: column;
+				flex: 1;
+
+				.big-chatbox {
+					flex: 1;
+				}
+			}
+		}
 	}
 
-	.ant-tabs-content {
-		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
-	}
+	
 
-	.ant-tabs-tabpane {
-		display: flex;
-		flex-direction: column;
-	}
+
+	// .ant-tabs {
+	// 	flex-grow: 1;
+	// 	display: flex;
+	// 	flex-direction: column;
+	// }
+
+	// .ant-tabs-content {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	flex-grow: 1;
+	// }
+
+	// .ant-tabs-tabpane {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// }
+	// .admin-room-tabs {
+	// 	.ant-tabs-bar {
+	// 		margin-bottom: 0;
+	// 	}
+
+	// 	.ant-tabs-nav-wrap {
+	// 		padding-top: 1rem;
+	// 	}
+
+	// 	.ant-tabs-nav {
+	// 		display: flex;
+
+	// 		.ant-tabs-tab {
+	// 			margin: 0 0.2rem;
+	// 			padding: 0.5rem 1rem 0.75rem 1rem;
+	// 			vertical-align: middle;
+	// 			position: relative;
+	// 			border: 1px solid $chatbox-msg-v2-color;
+	// 			border-radius: 0.25rem 0.25rem 0 0;
+	// 			background: #fff;
+
+	// 			&:before, &:after {
+	// 				content: '';
+	// 				display: block;
+	// 				position: absolute;
+	// 				bottom: 0;
+	// 				height: 1px;
+	// 				width: 0.4rem;
+	// 				background: $chatbox-msg-v2-color;
+	// 			}
+
+	// 			&:before {
+	// 				right: 100%;
+	// 			}
+
+	// 			&:after {
+	// 				left: 100%;
+	// 			}
+
+	// 			&:first-child {
+	// 				margin-left: 0;
+	// 				border-left: none;
+	// 				&:before {
+	// 					display: none;
+	// 				}
+	// 			}
+
+	// 			&:last-child:after {
+	// 				display: none;
+	// 			}
+
+	// 			&:hover {
+	// 				color: $chatbox-msg-v2-color !important;
+	// 			}
+
+	// 			&.ant-tabs-tab-active {
+	// 				background: #fff;
+	// 			}
+	// 		}
+
+	// 		.ant-tabs-tab-active {
+	// 			// background: $chatbox-msg-v1-bg-color;
+	// 			color: $chatbox-msg-v2-color !important;
+	// 			// box-shadow: 0 0.25rem 2rem rgba(233, 30, 99, 0.5);
+	// 		}
+
+	// 		.icon-message svg, .icon-close svg {
+	// 			width: 1rem;
+	// 			height: 1rem;
+	// 		}
+
+	// 		.icon-close {
+	// 			margin: 0 0 0 0.5rem;
+	// 			vertical-align: sub;
+	// 		}
+
+	// 		.ant-tabs-ink-bar {
+	// 			display: none !important;
+	// 			// background: $chatbox-msg-v2-color;
+	// 		}
+	// 	}
+	// }
 }

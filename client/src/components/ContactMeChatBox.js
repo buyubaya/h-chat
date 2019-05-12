@@ -20,28 +20,26 @@ class ContactMeChatBox extends Component {
     }
 
     handleNewMessage = msg => {
-        const { chatBoxVisible } = this.state;
-        const { receiverId } = this.state;
+        const { chatBoxVisible, receiverId } = this.state;
         
-        if(!chatBoxVisible && msg.senderId === receiverId){
+        if(!chatBoxVisible){
             this.setState(state => ({ 
                 messageCount: state.messageCount + 1, 
                 chatBoxTitle: msg.senderName,
                 receiverId: ''
             }));
         }
-        if(chatBoxVisible && msg.senderId === receiverId){
+        if(chatBoxVisible){
             this.setState(state => ({ 
                 messageCount: 0, 
-                chatBoxTitle: msg.senderName,
+                chatBoxTitle: msg.senderId === receiverId ? msg.senderName: state.chatBoxTitle,
                 receiverId: ''
             }));
         }
-        if(chatBoxVisible && msg.senderId !== receiverId){
-            this.setState(state => ({ 
-                messageCount: 0
-            }));
-        }
+    }
+
+    handleCtaClick = () => {
+        this.setState(state => ({ chatBoxVisible: !state.chatBoxVisible }));
     }
 
     render() {
@@ -50,12 +48,12 @@ class ContactMeChatBox extends Component {
 
         return (
             <div>
-                <div className={classnames('cta-contact-bottom', { 'is-hidden': chatBoxVisible })}>
+                <div 
+                    className={classnames('cta-contact-bottom', { 'is-hidden': chatBoxVisible })}
+                    onClick={this.handleCtaClick}
+                >
                     <Badge 
                         count={messageCount}
-                        onClick={() => {
-                            this.setState(state => ({ chatBoxVisible: !state.chatBoxVisible }));
-                        }}
                         style={{ backgroundColor: '#52c41a' }}
                     >
                         <Icon type='message' className='icon-message' />

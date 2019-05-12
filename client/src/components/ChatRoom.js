@@ -31,7 +31,7 @@ class ChatRoom extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { receiverId: senderId, roomId },
+                variables: { roomId },
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -124,11 +124,18 @@ class ChatRoom extends Component {
     }
 
     render() {
-        const { senderId, senderName, roomId, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
-        const messageList = this.props.messageQuery && this.props.messageQuery.message;
-        let userTypingList = this.props.userStatusQuery && this.props.userStatusQuery.userStatus;
+        const {
+            messageQuery, initialMessageList,
+            userStatusQuery,
+            senderId, senderName, roomId, title,
+            onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
+        let messageList = messageQuery && messageQuery.message;
+        if(initialMessageList){
+            messageList = messageList ? [...initialMessageList, ...messageList] : [];
+        }
+        let userTypingList = userStatusQuery && userStatusQuery.userStatus;
         userTypingList = userTypingList ? userTypingList.map(item => item.senderName) : [];
-
+       
         return (
             <ChatBox 
                 title={title}

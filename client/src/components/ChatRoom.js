@@ -20,7 +20,9 @@ class ChatRoom extends Component {
 
     componentDidMount(){
         // MESSAGE
-        const { senderId, roomId } = this.props;
+        let { sender, roomId, listenTo } = this.props;
+        listenTo = listenTo ? {...listenTo, roomId: [...listenTo.roomId, roomId]} : { roomId };
+        const senderId = sender && sender.userId;
         const { messageQuery } = this.props;
         const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;
 
@@ -31,7 +33,7 @@ class ChatRoom extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { roomId },
+                variables: listenTo,
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -90,22 +92,27 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        const { senderId, senderName, roomId, receiverId } = this.props;
-        const { sendMessage } = this.props;
-        
-        sendMessage && sendMessage({
-            variables: { 
-                senderId, 
-                senderName, 
-                receiverId,
-                roomId, 
-                content: msgText
-            }
-        });
+        let { sender, roomId, sendMessage, sendTo } = this.props;
+        let variables = { 
+            sender,
+            content: msgText,
+            roomId
+        };
+
+        if(sendTo){
+            variables = {
+                ...variables,
+                ...sendTo
+            };
+        }
+
+        sendMessage && sendMessage({ variables });
     }
 
     handleMessageTyping = () => {
-        const { senderId, senderName, roomId } = this.props;
+        const { sender, roomId } = this.props;
+        const senderId = sender && sender.userId;
+        const senderName = sender && sender.userName;
         const { updateUserStatus } = this.props;
 
         updateUserStatus && updateUserStatus({
@@ -116,7 +123,9 @@ class ChatRoom extends Component {
     }
 
     handleMessageTypingStop = (msgText) => {
-        const { senderId, senderName, roomId } = this.props;
+        const { sender, roomId } = this.props;
+        const senderId = sender && sender.userId;
+        const senderName = sender && sender.userName;
         const { updateUserStatus } = this.props;
         
         updateUserStatus && updateUserStatus({
@@ -130,7 +139,7 @@ class ChatRoom extends Component {
         const {
             messageQuery, initialMessageList,
             userStatusQuery,
-            senderId, senderName, roomId, title,
+            sender, roomId, title,
             onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
         let messageList = messageQuery && messageQuery.message;
         if(initialMessageList){
@@ -142,8 +151,7 @@ class ChatRoom extends Component {
         return (
             <ChatBox 
                 title={title}
-                senderId={senderId}
-                senderName={senderName}
+                sender={sender}
                 roomId={roomId}
                 messageList={messageList}
                 onMessageSend={this.handleMessageSend}

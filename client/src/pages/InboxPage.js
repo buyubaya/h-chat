@@ -6,11 +6,7 @@ import { Query, Mutation, Subscription, graphql, compose } from 'react-apollo';
 import {
     MESSAGE_QUERY,
     SEND_MESSAGE_MUTATION,
-    MESSAGE_SUBSCRIPTION,
-
-    USER_STATUS_QUERY,
-    USER_STATUS_MUTATION,
-    USER_STATUS_SUBSCRIPTION
+    MESSAGE_SUBSCRIPTION
 } from '../apollo/qms';
 import { Layout, Menu, Tabs, Badge, List, Icon } from 'antd';
 import ChatRoom from '../components/ChatRoom';
@@ -38,7 +34,7 @@ class InboxPage extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { receiverId: 'admin' },
+                variables: { groupId: 'ADMIN' },
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -63,21 +59,12 @@ class InboxPage extends Component {
 
                     // CHECK ROOM EXIST IN ROOMLIST
                     this.setState(state => {
-                        const { roomList, messageOrder } = state;
-                        
+                        const { userId, userName, messageOrder } = state;
+                        const sender = { userId, userName };
+                        console.log('MSG', newItem, messageOrder);
                         if(!this._isRoomInRoomList(newItem.roomId, messageOrder)){
                             return(
                                 {
-                                    // roomList: [
-                                    //     {
-                                    //         title: newItem.senderName,
-                                    //         roomId: newItem.roomId,
-                                    //         senderId: state.userId,
-                                    //         senderName: state.userName,
-                                    //         initialMessageList: [newItem]
-                                    //     },
-                                    //     ...state.roomList
-                                    // ],
                                     unreadMessageCount: {
                                         ...state.unreadMessageCount,
                                         [newItem.roomId]: 1
@@ -88,10 +75,9 @@ class InboxPage extends Component {
                                         [newItem.roomId]: (
                                             <ChatRoom
                                                 chatBoxWrapperClassName='big-chatbox'
-                                                title={newItem.senderName}
+                                                title={newItem.sender.userName}
                                                 roomId={newItem.roomId}
-                                                senderId={state.userId}
-                                                senderName={state.userName}
+                                                sender={sender}
                                                 initialMessageList={[newItem]}
                                                 onMessageReceive={this.handleNewRoomMessage}
                                             />
@@ -106,20 +92,6 @@ class InboxPage extends Component {
                             messageOrder: [...state.messageOrder]
                         };
                     });
-                    // if(!this._isRoomInRoomList(newItem.roomId, roomList)){
-                    //     console.log('AAAAA', newItem.roomId, roomList);
-                        
-                    // }
-                    // else {
-                    //     console.log('RL EXIST', this.state.roomList);
-                    //     this.setState(state => ({
-                    //         messageOrder: [newItem.roomId, ...state.messageOrder.filter(item => item !== newItem.roomId)]
-                    //     }));
-
-                    //     return Object.assign({}, prev, {
-                    //         message: [ ...prev.message, newItem ]
-                    //     });
-                    // }
 
                     return Object.assign({}, prev, {
                         message: [ ...prev.message, newItem ]
@@ -149,28 +121,6 @@ class InboxPage extends Component {
         return false;
     }
 
-    // handleMessageClick = (userMsg) => {
-    //     const roomId = `ROOM_${userMsg.senderId}`;
-        
-    //     this.setState(state => ({
-    //         roomList: 
-    //         this._isRoomInRoomList(userMsg.senderId, state.roomList) 
-    //         ? 
-    //         [
-    //             ...state.roomList, 
-    //             {
-    //                 title: userMsg.senderName,
-    //                 roomId,
-    //                 senderId: state.userId,
-    //                 senderName: state.userName
-    //             }
-    //         ] 
-    //         : 
-    //         state.roomList,
-    //         currentRoomId: roomId
-    //     }));
-    // }
-
     handleTabClick = (key, e) => {
         this.setState(state => ({
             currentRoomId: key,
@@ -180,14 +130,6 @@ class InboxPage extends Component {
             }
         }));
     }
-
-    // handleTabClose = (e, roomInfo) => {
-    //     e.stopPropagation();
-    //     this.setState(state => ({
-    //         roomList: state.roomList.filter(item => item.roomId !== roomInfo.roomId),
-    //         currentRoomId: 'all'
-    //     }));
-    // }
 
     handleNewRoomMessage = (msg) => {
         this.setState(state => {            
@@ -251,7 +193,7 @@ class InboxPage extends Component {
                                             key={item.roomId}
                                             tab={
                                                 <span>
-                                                    <Icon type='user' className='icon-message' />{item.senderName}
+                                                    <Icon type='user' className='icon-message' />{item.sender.userName}
                                                     <Badge 
                                                         className='icon-message-count'
                                                         count={unreadMessageCount[item.roomId]}
@@ -266,62 +208,11 @@ class InboxPage extends Component {
                                     );
                                 })
                             }
-                            {/* {
-                                roomList && roomList.map(item => {
-                                    return(
-                                        <Tabs.TabPane 
-                                            key={item.roomId}
-                                            tab={
-                                                <span>
-                                                    <Icon type='user' className='icon-message' />{item.title}
-                                                    <Badge 
-                                                        className='icon-message-count'
-                                                        count={unreadMessageCount[item.roomId]}
-                                                        style={{ backgroundColor: '#52c41a' }}
-                                                    />
-                                                </span>
-                                            }
-                                            forceRender={true}
-                                        >
-                                            <ChatRoom
-                                                chatBoxWrapperClassName='big-chatbox'
-                                                {...item}
-                                                onMessageReceive={this.handleNewRoomMessage}
-                                            />
-                                        </Tabs.TabPane>
-                                    );
-                                })
-                            } */}
-                            {
-                                Array(10).fill(null).map((item, index) =>
-                                    <Tabs.TabPane 
-                                        key={index}
-                                        tab={
-                                            <span>
-                                                <Icon type='user' className='icon-message' />
-                                            </span>
-                                        }
-                                    >
-                                        HELLO
-                                    </Tabs.TabPane>    
-                                )
-                            }
                         </Tabs>
                     </Layout.Content>
                 </Layout>
-                {/* <div className='cta-contact-bottom'>
-                    <Badge 
-                        count={messageList ? messageList.length : 0}
-                        onClick={() => {
-                            this.setState(state => ({ chatListVisible: !state.chatListVisible }));
-                        }}
-                        style={{ backgroundColor: '#52c41a' }}
-                    >
-                        <Icon type='message' className='icon-message' />
-                    </Badge>
-                </div> */}
             </div>
-        )
+        );
     }
 }
 

@@ -49,19 +49,27 @@ class ChatBox extends Component {
         this.setState({ msgText: e.target.value });
     }
 
-    handleMsgEnter = () => {
+    handleMsgEnter = (e) => {
+        if(e.shiftKey){
+            this.sendMessage();
+        }
+    }
+
+    sendMessage = () => {
         const { msgText } = this.state;
         const { onMessageSend } = this.props;
 
         if (msgText && msgText.trim()) {
-            this.setState({ msgText: '' });
+            setTimeout(() => {
+                this.setState({ msgText: '' });
+            }, 0)
             onMessageSend && onMessageSend(msgText);
         }
     }
 
     render() {
         const { msgText, isMessageSending } = this.state;
-        const { senderId, messageList, userTypingList, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
+        const { sender, messageList, userTypingList, title, onHide, chatBoxWrapperClassName, chatBoxWrapperStyle } = this.props;
 
         return (
             <div style={chatBoxWrapperStyle} className={classnames('chatbox-wrapper', chatBoxWrapperClassName)}>
@@ -76,9 +84,9 @@ class ChatBox extends Component {
                             {
                                 messageList && messageList.map((item, index) =>
                                     <li className='message-row' key={index}>
-                                        <div className={`msg ${item.senderId === senderId ? 'v1' : 'v2'}`}>
-                                            <span className='partner'>{item.senderName}</span>
-                                            {item.content}
+                                        <div className={`msg ${item.sender.userId === sender.userId ? 'v1' : 'v2'}`}>
+                                            <span className='partner'>{item.sender.userName}</span>
+                                            <pre className='msg-text'>{item.content}</pre>
                                             <span className='time'>{moment(item.createdAt*1).format('HH:mm')}</span>
                                         </div>
                                     </li>
@@ -101,16 +109,19 @@ class ChatBox extends Component {
                     </div>
                     
                     <div className='sendbox'>
-                        <Input
+                        <Input.TextArea
                             ref={el => this.msgInput = el}
                             className='msg-input'
-                            placeholder='Your text...'
+                            placeholder='Press SHIFT + ENTER to send your text'
                             onChange={this.handleMsgChange}
                             onPressEnter={this.handleMsgEnter}
                             disabled={isMessageSending}
                             value={msgText}
                         />
-                        {/* <Icon className='icon-message-enter' type='smile' theme='twoTone' twoToneColor='#E91E63' /> */}
+                        <button className='btn-send' onClick={this.sendMessage}>
+                            <Icon type='smile' className='icon-message-enter' title='Send' />
+                            <div>Shift + Enter</div>
+                        </button>
                     </div>
                 </div>
             </div>

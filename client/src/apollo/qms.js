@@ -12,34 +12,16 @@ export const JOIN_ROOM_MUTATION = gql`
     }
 `;
 
-// USER
-export const USER_QUERY = gql`
-    query {
-        user {
-            userId
-            userName
-            createdAt
-        }
-    }
-`;
-
-export const USER_SUBSCRIPTION = gql`
-    subscription {
-        userUpdated {
-            userId
-            userName
-            createdAt
-        }
-    }
-`;
-
 // MESSAGE
 export const MESSAGE_QUERY = gql`
     query message($roomId: String){
         message(roomId: $roomId) {
             messageId
-            senderId
-            senderName
+            sender {
+                userId
+                userName
+            }
+            receiverId
             content
             createdAt
         }
@@ -48,25 +30,28 @@ export const MESSAGE_QUERY = gql`
 
 export const SEND_MESSAGE_MUTATION = gql`
     mutation sendMessage(
-        $senderId: String!, 
-        $senderName: String!, 
-        $receiverId: String,
-        $roomId: String, 
+        $sender: Sender
+        $receiverId: [String],
+        $roomId: String,
+        $groupId: String,
         $content: String!
     )
     {
         sendMessage(
-            senderId: $senderId, 
-            senderName: $senderName,
+            sender: $sender, 
             receiverId: $receiverId,
-            roomId: $roomId, 
+            roomId: $roomId,
+            groupId: $groupId,
             content: $content
         )
         {
-            senderId
-            senderName
+            sender {
+                userId
+                userName
+            }
             receiverId
             roomId
+            groupId
             content
             createdAt
             error
@@ -75,13 +60,16 @@ export const SEND_MESSAGE_MUTATION = gql`
 `;
 
 export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newMessage($roomId: String, $receiverId: String){
-        newMessage(roomId: $roomId, receiverId: $receiverId) {
+    subscription newMessage($userId: [String], $roomId: [String], $groupId: [String]) {
+        newMessage(userId: $userId, roomId: $roomId, groupId: $groupId) {
             messageId
-            senderId
-            senderName
+            sender {
+                userId
+                userName
+            }
             receiverId
             roomId
+            groupId
             content
             createdAt
             error

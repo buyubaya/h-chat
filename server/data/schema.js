@@ -3,50 +3,25 @@ const gql = require('apollo-server-express').gql;
 
 const typeDefs = gql`
     type Query {
-        user: [User]
         message(roomId: String): [Message]
         userStatus(roomId: String!): [UserStatus]
-        # room(receiverId: String!): [RoomInvited]
     }
 
     type Mutation {
-        # createChatRoom: ChatRoom
         joinRoom(userId: String, userName: String!, isNew: Boolean!): User
-        sendMessage(senderId: String!, senderName: String!, receiverId: String, roomId: String, content: String!): Message
-        removeAllUsers: Boolean
-        removeUserById(userId: String): Boolean
-        login(userId: String!, password: String!): LoginResponse
+        sendMessage(sender: Sender, receiverId: [String], roomId: String, groupId: String, content: String!): Message
         updateUserStatus(senderId: String!, senderName: String!, roomId: String, isTyping: Boolean): UserStatus
-        # inviteToRoom(senderId: String!, senderName: String!, receiverId: String!, roomId: String!): RoomInvited
     }
 
     type Subscription {
-        userUpdated: User
-        newMessage(roomId: String, receiverId: String): Message
+        newMessage(userId: [String], roomId: [String], groupId: [String], receiverId: String): Message
         userStatusUpdated(senderId: String, roomId: String, isTyping: Boolean): UserStatus
-        # roomInvited(receiverId: String!): RoomInvited
     }
 
     type User {
         userId: String!
         userName: String!
         createdAt: String!
-    }
-
-    type LoginResponse {
-        token: String
-        error: String
-    }
-
-    type Message {
-        messageId: String!
-        senderId: String!
-        senderName: String!
-        receiverId: String
-        roomId: String
-        content: String!
-        createdAt: String!
-        error: String
     }
 
     type UserStatus {
@@ -57,18 +32,37 @@ const typeDefs = gql`
         createdAt: String!
     }
 
-    # type ChatRoom {
-    #     groupId: ID!
-    #     createdAt: String
-    # }
+    # SEND MESSAGE
+    type Message {
+        messageId: String!
+        sender: SenderOutput
+        receiverId: [String]
+        roomId: String
+        groupId: String
+        content: String!
+        createdAt: String!
+        error: String
+    }
 
-    # type RoomInvited {
-    #     senderId: String!
-    #     senderName: String!
-    #     receiverId: String!
-    #     roomId: String!
-    #     createdAt: String
-    # }
+    input Sender {
+        userId: String
+        userName: String
+    }
+
+    type SenderOutput {
+        userId: String
+        userName: String
+    }
+
+    input Receiver {
+        userId: String
+        userName: String
+    }
+
+    type ReceiverOutput {
+        userId: String
+        userName: String
+    }
 `;
 
 

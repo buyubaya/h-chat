@@ -157,40 +157,59 @@ body {
 	.msg.v1 > span { right: 0; }
 	.msg.v2 > span { left: 0; }
 
+	.msg-text {
+		margin: 0;
+	}
+
 	// SEND BOX
 	.sendbox {
 		background: white;
+		position: relative;
 
 		.msg-input {
 			display: block;
 			width: 100%;
 			border: none;
-			padding: 0 1rem;
+			padding: 0.5rem 1rem;
 			line-height: 1.25rem;
 			border-top: 2px solid $chatbox-msg-v2-bg-color;
 			transition: 0.5s ease-in-out;
 			border-radius: 0 !important;
-			padding-top: 0 !important;
-			padding-bottom: 0 !important;
 			height: $chatbox-msg-input-height;
-			line-height: $chatbox-msg-input-height;
 			overflow: hidden;
+			resize: none;
 		}
 		.msg-input:hover,
 		.msg-input:focus,
 		.msg-input:active { 
-			outline: none!important; 
+			outline: none !important;
 			border-top: 2px solid $chatbox-msg-v1-bg-color;
 		}
 
-		.icon-message-enter {
+		.btn-send {
+			background: $chatbox-msg-v2-bg-color;
+			color: $chatbox-msg-v2-color;
+			padding: 0.5rem 1rem;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 			position: absolute;
-			top: 0.5rem;
-			right: 1rem;
+			top: 2px;
+			right: 0;
+			bottom: 0;
+			cursor: pointer;
+			border: none;
+			box-shadow: none;
+			outline: none !important;
+			font-size: 0.7rem;
+		}
 
+		.icon-message-enter {
 			svg {
 				width: 1.5rem;
 				height: 1.5rem;
+				color: $chatbox-msg-v2-color;
 			}
 		}
 	}
@@ -352,6 +371,7 @@ $icon-message-size: 30px;
 		.sendbox {
 			.msg-input {
 				height: 100%;
+				resize: none;
 			}
 		}
 	}

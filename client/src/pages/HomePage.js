@@ -71,18 +71,18 @@ class ChatPrivatePage extends Component {
         const { userId, userName } = this.state;
         const sender = { userId, userName };
         const sendTo = { groupId: 'ADMIN' };
-        const listenTo = { receiverId: 'USER_1', roomId: ['ROOM_1', 'ROOM_2'], groupId: 'ADMIN' };
+        const listenTo = { receiverId: 'USER_1', roomId: ['ROOM_1', 'ROOM_2'] };
 
         if(!userId || !userName){
             return null;
         }
-
+        
         return (
             <div>
                 <ChatRoom 
                     title='HELLO'
                     sender={sender}
-                    roomId={`ROOM_1`}
+                    roomId={`ROOM_${userId}`}
                     sendTo={sendTo}
                     listenTo={listenTo}
                 />

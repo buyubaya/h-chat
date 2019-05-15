@@ -21,7 +21,7 @@ class ChatRoom extends Component {
     componentDidMount(){
         // MESSAGE
         let { sender, roomId, listenTo } = this.props;
-        listenTo = listenTo ? {...listenTo, roomId: [...listenTo.roomId, roomId]} : { roomId };
+        listenTo = listenTo;
         const senderId = sender && sender.userId;
         const { messageQuery } = this.props;
         const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;
@@ -42,7 +42,7 @@ class ChatRoom extends Component {
                     const newItem = subscriptionData.data.newMessage;
                     const { onMessageReceive } = this.props;
                     onMessageReceive && onMessageReceive(newItem);
-
+                    
                     return Object.assign({}, prev, {
                         message: [ ...prev.message, newItem ]
                     });
@@ -92,20 +92,19 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        let { sender, roomId, sendMessage, sendTo } = this.props;
+        let { sender, sendMessage, sendTo } = this.props;
         let variables = { 
             sender,
-            content: msgText,
-            roomId
+            content: msgText
         };
 
         if(sendTo){
             variables = {
                 ...variables,
-                ...sendTo
+                receiver: sendTo.receiver || {} 
             };
         }
-
+        
         sendMessage && sendMessage({ variables });
     }
 

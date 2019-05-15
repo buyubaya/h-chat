@@ -21,7 +21,11 @@ export const MESSAGE_QUERY = gql`
                 userId
                 userName
             }
-            receiverId
+            receiver {
+                userId
+                roomId
+                groupId
+            }
             content
             createdAt
         }
@@ -29,13 +33,14 @@ export const MESSAGE_QUERY = gql`
 `;
 
 export const SEND_MESSAGE_MUTATION = gql`
-    mutation sendMessage($from: MessageFromInput, $to: MessageToInput, $content: String!){
-        sendMessage(from: $from, to: $to, content: $content){
-            from {
+    mutation sendMessage($sender: MessageFromInput, $receiver: MessageToInput, $content: String!){
+        sendMessage(sender: $sender, receiver: $receiver, content: $content){
+            messageId
+            sender {
                 userId
                 userName
             }
-            to {
+            receiver {
                 userId
                 roomId
                 groupId
@@ -60,13 +65,14 @@ export const SEND_MESSAGE_MUTATION = gql`
 // }
 
 export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newdMessage($from: MessageFromSubscriptionInput, $to: MessageToSubscriptionInput){
-        newMessage(from: $from, to: $to){
-            from {
+    subscription newdMessage($sender: MessageFromSubscriptionInput, $receiver: MessageToSubscriptionInput){
+        newMessage(sender: $sender, receiver: $receiver){
+            messageId
+            sender {
                 userId
                 userName
             }
-            to {
+            receiver {
                 userId
                 roomId
                 groupId

@@ -49,6 +49,7 @@ const resolvers = {
                     userName,
                     createdAt
                 };
+                newRef.remove();
             }     
 
             // PUBLISH USER SUBSCRPTION
@@ -57,16 +58,16 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { from, to, content }) => {
+        sendMessage: async (_, { sender, receiver, content }) => {
             const newMessage = {
-                from: {
-                    userId: from ? from.userId : '',
-                    userName: from ? from.userName : ''
+                sender: {
+                    userId: (sender && sender.userId) ? sender.userId : '',
+                    userName: (sender && sender.userName) ? sender.userName : ''
                 },
-                to: {
-                    userId: to ? to.userId : [],
-                    roomId: to ? to.roomId : [],
-                    groupId: to ? to.groupId : []
+                receiver: {
+                    userId: (receiver && receiver.userId) ? receiver.userId : [],
+                    roomId: (receiver && receiver.roomId) ? receiver.roomId : [],
+                    groupId: (receiver && receiver.groupId) ? receiver.groupId : []
                 },
                 content: content || '', 
                 createdAt: Date.now()
@@ -75,11 +76,12 @@ const resolvers = {
             let MESSAGE;
             if(newMessage.content && newMessage.content.trim()){
                 // ADD TO FIREBASE
-                const newRef = await ref('comments').push(newMessage);
+                const newRef = await ref('messages').push(newMessage);
                 MESSAGE = {
                     messageId: newRef.key,
                     ...newMessage
                 };
+                newRef.remove();
             }
             else {
                 MESSAGE = { error: 'Invalid Comment' };
@@ -114,21 +116,17 @@ const resolvers = {
                         return false;
                     }
 
-                    const fromUserId = variables && variables.from && variables.from.userId;
-                    const toUserId = variables && variables.to && variables.to.userId;
-                    const toRoomId = variables && variables.to && variables.to.roomId;
-                    const toGroupId = variables && variables.to && variables.to.groupId;
+                    const fromUserId = variables && variables.sender && variables.sender.userId;
+                    const toUserId = variables && variables.receiver && variables.receiver.userId;
+                    const toRoomId = variables && variables.receiver && variables.receiver.roomId;
+                    const toGroupId = variables && variables.receiver && variables.receiver.groupId;
 
                     if(payload){
-                        const isFromUserIdValid = fromUserId && fromUserId.includes(payload.newMessage.from.userId);
-                        const isToUserIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.userId, toUserId);
-                        const isToRoomIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.roomId, toRoomId);
-                        const isToGroupIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.groupId, toGroupId);
+                        const isFromUserIdValid = fromUserId && fromUserId.includes(payload.newMessage.sender.userId);
+                        const isToUserIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.userId, toUserId);
+                        const isToRoomIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.roomId, toRoomId);
+                        const isToGroupIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.groupId, toGroupId);
 
-                        console.log('MES SUB', payload.newMessage.to.userId, toUserId);
-                        console.log('MES SUB', payload.newMessage.to.roomId, toRoomId);
-                        console.log('MES SUB', payload.newMessage.to.groupId, toGroupId);
-                        console.log('MES SUB', isFromUserIdValid, isToUserIdValid, isToRoomIdValid, isToGroupIdValid);
                         return isFromUserIdValid || isToUserIdValid || isToRoomIdValid || isToGroupIdValid;
                     }
                     

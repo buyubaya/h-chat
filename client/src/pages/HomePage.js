@@ -70,8 +70,21 @@ class ChatPrivatePage extends Component {
     render() {
         const { userId, userName } = this.state;
         const sender = { userId, userName };
-        const sendTo = { groupId: 'ADMIN' };
-        const listenTo = { receiverId: 'USER_1', roomId: ['ROOM_1', 'ROOM_2'] };
+        const sendTo = {
+            receiver: {
+                groupId: ['GROUP_ADMIN']
+            }
+        };
+        const listenTo = {
+            sender: {
+                userId: ['22222']
+            },
+            receiver: {
+                userId: ['USER_1'], 
+                roomId: ['ROOM_1', 'ROOM_2'],
+                groupId: ['GROUP_ADMIN']
+            }
+        };
 
         if(!userId || !userName){
             return null;
@@ -82,7 +95,7 @@ class ChatPrivatePage extends Component {
                 <ChatRoom 
                     title='HELLO'
                     sender={sender}
-                    roomId={`ROOM_${userId}`}
+                    roomId={`ROOM_1`}
                     sendTo={sendTo}
                     listenTo={listenTo}
                 />

@@ -29,53 +29,64 @@ export const MESSAGE_QUERY = gql`
 `;
 
 export const SEND_MESSAGE_MUTATION = gql`
-    mutation sendMessage(
-        $sender: Sender
-        $receiverId: [String],
-        $roomId: String,
-        $groupId: String,
-        $content: String!
-    )
-    {
-        sendMessage(
-            sender: $sender, 
-            receiverId: $receiverId,
-            roomId: $roomId,
-            groupId: $groupId,
-            content: $content
-        )
-        {
-            sender {
+    mutation sendMessage($from: MessageFromInput, $to: MessageToInput, $content: String!){
+        sendMessage(from: $from, to: $to, content: $content){
+            from {
                 userId
                 userName
             }
-            receiverId
-            roomId
-            groupId
+            to {
+                userId
+                roomId
+                groupId
+            }
             content
             createdAt
             error
         }
     }
 `;
+// {
+//     "from": {
+//         "userId": "11111",
+//         "userName": "NAME 01"
+//     },
+//     "to": {
+//         "userId": "22222",
+//         "roomId": "ROOM_ADMIN",
+//         "groupId": "GROUP_ADMIN"
+//     },
+//     "content": "HAHAHA"
+// }
 
 export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newMessage($userId: [String], $roomId: [String], $groupId: [String]) {
-        newMessage(userId: $userId, roomId: $roomId, groupId: $groupId) {
-            messageId
-            sender {
+    subscription newdMessage($from: MessageFromSubscriptionInput, $to: MessageToSubscriptionInput){
+        newMessage(from: $from, to: $to){
+            from {
                 userId
                 userName
             }
-            receiverId
-            roomId
-            groupId
+            to {
+                userId
+                roomId
+                groupId
+            }
             content
             createdAt
             error
         }
     }
 `;
+// {
+//     "from": {
+//       "userId": ["22222"]
+//     },
+//     "to": {
+//       "userId": ["55555"],
+//       "roomId": ["ROOM_ABC"],
+//       "groupId": ["GROUP_XYZ"]
+//     }
+// }
 
 // USER STATUS
 export const USER_STATUS_QUERY = gql`

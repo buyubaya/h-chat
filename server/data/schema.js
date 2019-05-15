@@ -9,12 +9,12 @@ const typeDefs = gql`
 
     type Mutation {
         joinRoom(userId: String, userName: String!, isNew: Boolean!): User
-        sendMessage(sender: Sender, receiverId: [String], roomId: String, groupId: String, content: String!): Message
+        sendMessage(from: MessageFromInput, to: MessageToInput, content: String!): Message
         updateUserStatus(senderId: String!, senderName: String!, roomId: String, isTyping: Boolean): UserStatus
     }
 
     type Subscription {
-        newMessage(userId: [String], roomId: [String], groupId: [String], receiverId: String): Message
+        newMessage(from: MessageFromSubscriptionInput, to: MessageToSubscriptionInput): Message
         userStatusUpdated(senderId: String, roomId: String, isTyping: Boolean): UserStatus
     }
 
@@ -35,33 +35,43 @@ const typeDefs = gql`
     # SEND MESSAGE
     type Message {
         messageId: String!
-        sender: SenderOutput
-        receiverId: [String]
-        roomId: String
-        groupId: String
+        from: MessageFromOutput
+        to: MessageToOutput
         content: String!
         createdAt: String!
         error: String
     }
 
-    input Sender {
+    input MessageFromInput {
         userId: String
         userName: String
     }
 
-    type SenderOutput {
+    type MessageFromOutput {
         userId: String
         userName: String
     }
 
-    input Receiver {
-        userId: String
-        userName: String
+    input MessageToInput {
+        userId: [String]
+        roomId: [String]
+        groupId: [String]
     }
 
-    type ReceiverOutput {
-        userId: String
-        userName: String
+    type MessageToOutput {
+        userId: [String]
+        roomId: [String]
+        groupId: [String]
+    }
+
+    input MessageFromSubscriptionInput {
+        userId: [String]
+    }
+
+    input MessageToSubscriptionInput {
+        userId: [String]
+        roomId: [String]
+        groupId: [String]
     }
 `;
 

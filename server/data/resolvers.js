@@ -9,6 +9,20 @@ const USER_UPDATED = 'USER_UPDATED';
 const NEW_MESSAGE = 'NEW_MESSAGE';
 const USER_STATUS_UPDATED = 'USER_STATUS';
 const pubsub = new PubSub();
+// FUNCTIONS
+function isTwoArrayHasCommon(a1, a2){
+    let x = false;
+    a1 && a1.forEach(item => {
+        if(a2){
+            if(a2.includes(item)){
+                x = true;
+                return;
+            }
+        }
+        return false;
+    });
+    return x;
+}
 
 
 const resolvers = {
@@ -43,15 +57,17 @@ const resolvers = {
             return userUpdated;
         },
 
-        sendMessage: async (_, { sender, receiverId, roomId, groupId, content }) => {
+        sendMessage: async (_, { from, to, content }) => {
             const newMessage = {
-                sender: {
-                    userId: sender ? sender.userId : '',
-                    userName: sender ? sender.userName : ''
+                from: {
+                    userId: from ? from.userId : '',
+                    userName: from ? from.userName : ''
                 },
-                receiverId: receiverId || [],
-                roomId: roomId || '',
-                groupId: groupId || '',
+                to: {
+                    userId: to ? to.userId : [],
+                    roomId: to ? to.roomId : [],
+                    groupId: to ? to.groupId : []
+                },
                 content: content || '', 
                 createdAt: Date.now()
             };
@@ -98,15 +114,22 @@ const resolvers = {
                         return false;
                     }
 
-                    const { userId, roomId, groupId, receiverId } = variables;
+                    const fromUserId = variables && variables.from && variables.from.userId;
+                    const toUserId = variables && variables.to && variables.to.userId;
+                    const toRoomId = variables && variables.to && variables.to.roomId;
+                    const toGroupId = variables && variables.to && variables.to.groupId;
 
                     if(payload){
-                        const isUserIdValid = userId && userId.includes(payload.newMessage.sender.userId);
-                        const isRoomIdValid = roomId && roomId.includes(payload.newMessage.roomId);
-                        const isGroupIdValid = groupId && groupId.includes(payload.newMessage.groupId);
-                        const isReceiverValid = payload.newMessage.receiverId.includes(receiverId);
+                        const isFromUserIdValid = fromUserId && fromUserId.includes(payload.newMessage.from.userId);
+                        const isToUserIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.userId, toUserId);
+                        const isToRoomIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.roomId, toRoomId);
+                        const isToGroupIdValid = variables && variables.to && isTwoArrayHasCommon(payload.newMessage.to.groupId, toGroupId);
 
-                        return isUserIdValid || isRoomIdValid || isGroupIdValid || isReceiverValid;
+                        console.log('MES SUB', payload.newMessage.to.userId, toUserId);
+                        console.log('MES SUB', payload.newMessage.to.roomId, toRoomId);
+                        console.log('MES SUB', payload.newMessage.to.groupId, toGroupId);
+                        console.log('MES SUB', isFromUserIdValid, isToUserIdValid, isToRoomIdValid, isToGroupIdValid);
+                        return isFromUserIdValid || isToUserIdValid || isToRoomIdValid || isToGroupIdValid;
                     }
                     
                     return false;

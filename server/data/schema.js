@@ -45,11 +45,15 @@ const typeDefs = gql`
     input MessageFromInput {
         userId: String
         userName: String
+        roomId: String
+        groupId: String
     }
 
     type MessageFromOutput {
         userId: String
         userName: String
+        roomId: String
+        groupId: String
     }
 
     input MessageToInput {
@@ -66,6 +70,8 @@ const typeDefs = gql`
 
     input MessageFromSubscriptionInput {
         userId: [String]
+        roomId: [String]
+        groupId: [String]
     }
 
     input MessageToSubscriptionInput {

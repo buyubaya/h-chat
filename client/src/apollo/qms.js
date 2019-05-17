@@ -20,6 +20,8 @@ export const MESSAGE_QUERY = gql`
             sender {
                 userId
                 userName
+                roomId
+                groupId
             }
             receiver {
                 userId
@@ -39,6 +41,8 @@ export const SEND_MESSAGE_MUTATION = gql`
             sender {
                 userId
                 userName
+                roomId
+                groupId
             }
             receiver {
                 userId
@@ -71,6 +75,8 @@ export const MESSAGE_SUBSCRIPTION = gql`
             sender {
                 userId
                 userName
+                roomId
+                groupId
             }
             receiver {
                 userId

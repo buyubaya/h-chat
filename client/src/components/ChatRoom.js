@@ -21,7 +21,20 @@ class ChatRoom extends Component {
     componentDidMount(){
         // MESSAGE
         let { sender, roomId, listenTo } = this.props;
-        listenTo = listenTo;
+        const listenToSenderRoomId = _.get(listenTo, 'sender.roomId');
+        const listenToReceiverRoomId = _.get(listenTo, 'receiver.roomId');
+        if(listenToSenderRoomId){
+            _.set(listenTo, 'sender.roomId', [...listenToSenderRoomId, roomId]);
+        }
+        else {
+            _.set(listenTo, 'sender.roomId', [roomId]);
+        }
+        if(listenToReceiverRoomId){
+            _.set(listenTo, 'receiver.roomId', [...listenToReceiverRoomId, roomId]);
+        }
+        else {
+            _.set(listenTo, 'receiver.roomId', [roomId]);
+        }
         const senderId = sender && sender.userId;
         const { messageQuery } = this.props;
         const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;

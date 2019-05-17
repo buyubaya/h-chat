@@ -570,3 +570,17 @@ $icon-message-size: 30px;
 	// 	}
 	// }
 }
+
+
+// TABLE
+.msg-info-table {
+	width: 100%;
+	thead {
+		background: $chatbox-msg-v2-bg-color;
+	}
+	tr>th {
+		width: 200px;
+		min-width: 200px;
+		max-width: 200px;
+	}
+}

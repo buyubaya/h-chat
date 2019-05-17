@@ -62,7 +62,9 @@ const resolvers = {
             const newMessage = {
                 sender: {
                     userId: (sender && sender.userId) ? sender.userId : '',
-                    userName: (sender && sender.userName) ? sender.userName : ''
+                    userName: (sender && sender.userName) ? sender.userName : '',
+                    roomId: (sender && sender.roomId) ? sender.roomId : '',
+                    groupId: (sender && sender.groupId) ? sender.groupId : ''
                 },
                 receiver: {
                     userId: (receiver && receiver.userId) ? receiver.userId : [],
@@ -117,17 +119,23 @@ const resolvers = {
                     }
 
                     const fromUserId = variables && variables.sender && variables.sender.userId;
+                    const fromRoomId = variables && variables.sender && variables.sender.roomId;
+                    const fromGroupId = variables && variables.sender && variables.sender.groupId;
+
                     const toUserId = variables && variables.receiver && variables.receiver.userId;
                     const toRoomId = variables && variables.receiver && variables.receiver.roomId;
                     const toGroupId = variables && variables.receiver && variables.receiver.groupId;
 
                     if(payload){
                         const isFromUserIdValid = fromUserId && fromUserId.includes(payload.newMessage.sender.userId);
+                        const isFromRoomIdValid = fromRoomId && fromRoomId.includes(payload.newMessage.sender.roomId);
+                        const isFromGroupIdValid = fromGroupId && fromGroupId.includes(payload.newMessage.sender.groupId);
+
                         const isToUserIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.userId, toUserId);
                         const isToRoomIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.roomId, toRoomId);
                         const isToGroupIdValid = variables && variables.receiver && isTwoArrayHasCommon(payload.newMessage.receiver.groupId, toGroupId);
 
-                        return isFromUserIdValid || isToUserIdValid || isToRoomIdValid || isToGroupIdValid;
+                        return isFromUserIdValid || isFromRoomIdValid || isFromGroupIdValid || isToUserIdValid || isToRoomIdValid || isToGroupIdValid;
                     }
                     
                     return false;

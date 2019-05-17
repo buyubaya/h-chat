@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Modal, Badge, Icon } from 'antd';
+import { Button, Input, Modal, Badge, Icon, Card, Divider, Form } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Subscription, compose, graphql } from 'react-apollo';
@@ -21,7 +21,24 @@ import ContactMeChatBox from '../components/ContactMeChatBox';
 class ChatPrivatePage extends Component {
     state = {
         userId: null,
-        userName: null
+        userName: 'GUEST_USER',
+        groupId: 'GUEST_USER',
+        sendTo: {
+            receiver: {
+                roomId: ['ADMIN'],
+                groupId: ['ADMIN']
+            }
+        },
+        listenTo: {
+            sender: {
+                roomId: ['ROOM_GUEST'],
+                groupId: ['ADMIN']
+            },
+            receiver: {
+                roomId: ['ROOM_GUEST'],
+                groupId: ['GUEST_USER']
+            }
+        }
     };
 
     componentWillMount() {
@@ -36,7 +53,8 @@ class ChatPrivatePage extends Component {
             guest_session = JSON.parse(guest_session);
             this.setState({
                 userId: guest_session.userId,
-                userName: guest_session.userName
+                userName: guest_session.userName,
+                roomId: `ROOM_${guest_session.userId}`
             });
             guest_data = {
                 userId: guest_session.userId,
@@ -58,7 +76,8 @@ class ChatPrivatePage extends Component {
                 this.setState(
                     {
                         userId: guest.userId,
-                        userName: guest.userName
+                        userName: guest.userName,
+                        roomId: `ROOM_${guest.userId}`
                     },
                     () => {
                         sessionStorage.setItem('chat_guest_user', JSON.stringify(guest));
@@ -68,34 +87,77 @@ class ChatPrivatePage extends Component {
     }
 
     render() {
-        const { userId, userName } = this.state;
-        const sender = { userId, userName };
-        const sendTo = {
-            receiver: {
-                groupId: ['GROUP_ADMIN']
-            }
-        };
-        const listenTo = {
-            sender: {
-                userId: ['22222']
-            },
-            receiver: {
-                userId: ['USER_1'], 
-                roomId: ['ROOM_1', 'ROOM_2'],
-                groupId: ['GROUP_ADMIN']
-            }
-        };
+        const { userId, userName, roomId, groupId, sendTo, listenTo } = this.state;
+        const sender = { userId, userName, roomId, groupId };
 
-        if(!userId || !userName){
+        if(!userId){
             return null;
         }
         
         return (
-            <div>
+            <div className='msg-info-area'>
+                <Card>
+                    <Form>
+                        <table className='msg-info-table'>
+                            <thead>
+                                <tr>
+                                    <th colSpan={2}>User Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>{userId}</th>
+                                </tr>
+                                <tr>
+                                    <th>User Name</th>
+                                    <td>
+                                        <Input 
+                                            value={userName} 
+                                            placeholder='User Name' 
+                                            onChange={e => this.setState({ userName: e.target.value })}
+                                            onBlur={e => {
+                                                e.persist();
+                                                const value = e.target.value;
+                                                this.setState(state => {
+                                                    if(value && value.trim()){
+                                                        return({ userName: value });
+                                                    }
+                                                    return({ userName: 'GUEST_USER' });
+                                                });
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>User Room ID</th>
+                                    <td>
+                                        <Input 
+                                            value={roomId} 
+                                            placeholder='User Room ID' 
+                                            onChange={e => this.setState({ roomId: e.target.value })}
+                                            onBlur={e => {
+                                                e.persist();
+                                                const value = e.target.value;
+                                                this.setState(state => {
+                                                    if(value && value.trim()){
+                                                        return({ roomId: value });
+                                                    }
+                                                    return({ roomId: 'ROOM_GLOBAL' });
+                                                });
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </Form>
+                </Card>
+
                 <ChatRoom 
                     title='HELLO'
+                    roomId={roomId}
                     sender={sender}
-                    roomId={`ROOM_1`}
                     sendTo={sendTo}
                     listenTo={listenTo}
                 />

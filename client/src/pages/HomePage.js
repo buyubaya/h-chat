@@ -22,6 +22,8 @@ class ChatPrivatePage extends Component {
     state = {
         userId: null,
         userName: 'GUEST_USER',
+        roomId: null,
+        roomTitle: 'HELLO',
         groupId: 'GUEST_USER',
         sendTo: {
             receiver: {
@@ -86,8 +88,14 @@ class ChatPrivatePage extends Component {
             });
     }
 
+    handleMessageReceive = msg => {
+        if(msg.sender.userId !== this.state.userId){
+            this.setState({ roomTitle: msg.sender.userName });
+        }
+    }
+
     render() {
-        const { userId, userName, roomId, groupId, sendTo, listenTo } = this.state;
+        const { userId, userName, roomId, roomTitle, groupId, sendTo, listenTo } = this.state;
         const sender = { userId, userName, roomId, groupId };
 
         if(!userId){
@@ -155,11 +163,12 @@ class ChatPrivatePage extends Component {
                 </Card>
 
                 <ChatRoom 
-                    title='HELLO'
+                    title={roomTitle}
                     roomId={roomId}
                     sender={sender}
                     sendTo={sendTo}
                     listenTo={listenTo}
+                    onMessageReceive={this.handleMessageReceive}
                 />
             </div>
         );

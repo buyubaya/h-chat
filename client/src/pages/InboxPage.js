@@ -19,7 +19,7 @@ class InboxPage extends Component {
         userId: 'admin',
         userName: 'ADMINISTRATOR',
         roomList: [],
-        currentRoomId: 'all',
+        currentRoomId: 'ALL',
         unreadMessageCount: {},
         messageOrder: [],
         roomRendering: {}
@@ -34,7 +34,7 @@ class InboxPage extends Component {
         this.unsubscribe = [
             msgSubscribeToMore && msgSubscribeToMore({
                 document: MESSAGE_SUBSCRIPTION,
-                variables: { groupId: 'ADMIN' },
+                variables: { receiver: { groupId: 'ADMIN' } },
                 updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData){
                         return prev;
@@ -43,7 +43,7 @@ class InboxPage extends Component {
                     const newItem = subscriptionData.data.newMessage;
                     
                     // NOT RECEIVE SELF-MESSAGE
-                    if(newItem.senderId === userId){
+                    if(newItem.sender.userId === userId){
                         return prev;
                     }
                     
@@ -60,26 +60,43 @@ class InboxPage extends Component {
                     // CHECK ROOM EXIST IN ROOMLIST
                     this.setState(state => {
                         const { userId, userName, messageOrder } = state;
-                        const sender = { userId, userName };
-                        console.log('MSG', newItem, messageOrder);
-                        if(!this._isRoomInRoomList(newItem.roomId, messageOrder)){
+                        const newMsgRoomId = newItem && newItem.sender && newItem.sender.roomId;
+                        const sender = { userId, userName, roomId: newMsgRoomId };
+                        
+                        if(!this._isRoomInRoomList(newMsgRoomId, messageOrder)){
+                            const sendTo = {
+                                receiver: {
+                                    roomId: [newMsgRoomId]
+                                }
+                            };
+                            const listenTo = {
+                                sender: {
+                                    roomId: [newMsgRoomId]
+                                },
+                                receiver: {
+                                    roomId: [newMsgRoomId]
+                                }
+                            };
+
                             return(
                                 {
                                     unreadMessageCount: {
                                         ...state.unreadMessageCount,
-                                        [newItem.roomId]: 1
+                                        [newMsgRoomId]: 1
                                     },
-                                    messageOrder: [newItem, ...state.messageOrder.filter(item => item.roomId !== newItem.roomId)],
+                                    messageOrder: [newItem, ...state.messageOrder],
                                     roomRendering: {
                                         ...state.roomRendering,
-                                        [newItem.roomId]: (
+                                        [newMsgRoomId]: (
                                             <ChatRoom
-                                                chatBoxWrapperClassName='big-chatbox'
                                                 title={newItem.sender.userName}
-                                                roomId={newItem.roomId}
+                                                roomId={newMsgRoomId}
                                                 sender={sender}
+                                                sendTo={sendTo}
+                                                listenTo={listenTo}
                                                 initialMessageList={[newItem]}
                                                 onMessageReceive={this.handleNewRoomMessage}
+                                                chatBoxWrapperClassName='big-chatbox'
                                             />
                                         )
                                     }
@@ -87,9 +104,10 @@ class InboxPage extends Component {
                             );
                         }
                         
+                        // SORT MESSAGE BY LATEST
                         return {
                             ...state,
-                            messageOrder: [...state.messageOrder]
+                            messageOrder: [newItem, ...state.messageOrder.filter(item => item.sender.roomId !== newMsgRoomId)]
                         };
                     });
 
@@ -108,17 +126,20 @@ class InboxPage extends Component {
     }
 
     _isRoomInRoomList(roomId, roomList=[]){
+        let x = false;
+
         if(roomId === 'ROOM_admin'){
            return true;
         }
 
         roomList.forEach(item => {
-            if(item.roomId === roomId){
-                return true;
+            if(item.sender.roomId === roomId){
+                x = true;
+                return;
             }
         });
         
-        return false;
+        return x;
     }
 
     handleTabClick = (key, e) => {
@@ -132,11 +153,13 @@ class InboxPage extends Component {
     }
 
     handleNewRoomMessage = (msg) => {
-        this.setState(state => {            
+        const roomId = msg.sender.roomId;
+        
+        this.setState(state => {
             return({
                 unreadMessageCount: {
                     ...state.unreadMessageCount,
-                    [msg.roomId]: state.currentRoomId === msg.roomId ? 0 : state.unreadMessageCount[msg.roomId] + 1
+                    [roomId]: state.currentRoomId === roomId ? 0 : state.unreadMessageCount[roomId] + 1
                 }
             });
         });
@@ -165,14 +188,14 @@ class InboxPage extends Component {
                             tabPosition={'left'}
                         >
                             <Tabs.TabPane 
-                                key={'all'}
+                                key={'ALL'}
                                 tab={
                                     <span>
                                         <Icon type='message' className='icon-message' />
                                         All Chats
                                         <Badge 
                                             className='icon-message-count'
-                                            count={10}
+                                            count={0}
                                             style={{ backgroundColor: '#52c41a' }}
                                         />
                                     </span>
@@ -180,30 +203,31 @@ class InboxPage extends Component {
                             >
                                 <ChatRoom
                                     chatBoxWrapperClassName='big-chatbox'
-                                    title='Message'
-                                    senderId='admin'
-                                    senderName='ADMINISTRATOR'
-                                    roomId='ROOM_admin'
+                                    title='All Chats'
+                                    roomId='ROOM_ALL'
+                                    sender={{ userId, userName }}
                                 />
                             </Tabs.TabPane>
                             {
                                 messageOrder && messageOrder.map(item => {
+                                    const roomId = item.sender.roomId;
+
                                     return(
                                         <Tabs.TabPane 
-                                            key={item.roomId}
+                                            key={roomId}
                                             tab={
                                                 <span>
                                                     <Icon type='user' className='icon-message' />{item.sender.userName}
                                                     <Badge 
                                                         className='icon-message-count'
-                                                        count={unreadMessageCount[item.roomId]}
+                                                        count={unreadMessageCount[roomId]}
                                                         style={{ backgroundColor: '#52c41a' }}
                                                     />
                                                 </span>
                                             }
                                             forceRender={true}
                                         >
-                                            {roomRendering[item.roomId]}
+                                            {roomRendering[roomId]}
                                         </Tabs.TabPane>
                                     );
                                 })

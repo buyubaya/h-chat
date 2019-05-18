@@ -20,8 +20,14 @@ export const MESSAGE_QUERY = gql`
             sender {
                 userId
                 userName
+                roomId
+                groupId
             }
-            receiverId
+            receiver {
+                userId
+                roomId
+                groupId
+            }
             content
             createdAt
         }
@@ -29,53 +35,70 @@ export const MESSAGE_QUERY = gql`
 `;
 
 export const SEND_MESSAGE_MUTATION = gql`
-    mutation sendMessage(
-        $sender: Sender
-        $receiverId: [String],
-        $roomId: String,
-        $groupId: String,
-        $content: String!
-    )
-    {
-        sendMessage(
-            sender: $sender, 
-            receiverId: $receiverId,
-            roomId: $roomId,
-            groupId: $groupId,
-            content: $content
-        )
-        {
-            sender {
-                userId
-                userName
-            }
-            receiverId
-            roomId
-            groupId
-            content
-            createdAt
-            error
-        }
-    }
-`;
-
-export const MESSAGE_SUBSCRIPTION = gql`
-    subscription newMessage($userId: [String], $roomId: [String], $groupId: [String]) {
-        newMessage(userId: $userId, roomId: $roomId, groupId: $groupId) {
+    mutation sendMessage($sender: MessageFromInput, $receiver: MessageToInput, $content: String!){
+        sendMessage(sender: $sender, receiver: $receiver, content: $content){
             messageId
             sender {
                 userId
                 userName
+                roomId
+                groupId
             }
-            receiverId
-            roomId
-            groupId
+            receiver {
+                userId
+                roomId
+                groupId
+            }
             content
             createdAt
             error
         }
     }
 `;
+// {
+//     "from": {
+//         "userId": "11111",
+//         "userName": "NAME 01"
+//     },
+//     "to": {
+//         "userId": "22222",
+//         "roomId": "ROOM_ADMIN",
+//         "groupId": "GROUP_ADMIN"
+//     },
+//     "content": "HAHAHA"
+// }
+
+export const MESSAGE_SUBSCRIPTION = gql`
+    subscription newdMessage($sender: MessageFromSubscriptionInput, $receiver: MessageToSubscriptionInput){
+        newMessage(sender: $sender, receiver: $receiver){
+            messageId
+            sender {
+                userId
+                userName
+                roomId
+                groupId
+            }
+            receiver {
+                userId
+                roomId
+                groupId
+            }
+            content
+            createdAt
+            error
+        }
+    }
+`;
+// {
+//     "from": {
+//       "userId": ["22222"]
+//     },
+//     "to": {
+//       "userId": ["55555"],
+//       "roomId": ["ROOM_ABC"],
+//       "groupId": ["GROUP_XYZ"]
+//     }
+// }
 
 // USER STATUS
 export const USER_STATUS_QUERY = gql`

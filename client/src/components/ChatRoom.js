@@ -21,7 +21,14 @@ class ChatRoom extends Component {
     componentDidMount(){
         // MESSAGE
         let { sender, roomId, listenTo } = this.props;
-        listenTo = listenTo ? {...listenTo, roomId: [...listenTo.roomId, roomId]} : { roomId };
+        const listenToReceiverRoomId = _.get(listenTo, 'receiver.roomId');
+        listenTo = listenTo ? listenTo : {};
+        if(listenToReceiverRoomId){
+            _.set(listenTo, 'receiver.roomId', [...listenToReceiverRoomId, roomId]);
+        }
+        else {
+            _.set(listenTo, 'receiver.roomId', [roomId]);
+        }
         const senderId = sender && sender.userId;
         const { messageQuery } = this.props;
         const msgSubscribeToMore = messageQuery && messageQuery.subscribeToMore;
@@ -42,7 +49,7 @@ class ChatRoom extends Component {
                     const newItem = subscriptionData.data.newMessage;
                     const { onMessageReceive } = this.props;
                     onMessageReceive && onMessageReceive(newItem);
-
+                    
                     return Object.assign({}, prev, {
                         message: [ ...prev.message, newItem ]
                     });
@@ -92,20 +99,25 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        let { sender, roomId, sendMessage, sendTo } = this.props;
+        let { sender, sendMessage, sendTo, roomId } = this.props;
         let variables = { 
             sender,
-            content: msgText,
-            roomId
+            content: msgText
         };
-
-        if(sendTo){
-            variables = {
-                ...variables,
-                ...sendTo
-            };
+        sendTo = sendTo ? sendTo : {};
+        const sendToRoomId = _.get(sendTo, 'receiver.roomId');
+        if(sendToRoomId){
+            _.set(sendTo, 'receiver.roomId', [...sendToRoomId, roomId]);
         }
-
+        else {
+            _.set(sendTo, 'receiver.roomId', [roomId]);
+        }
+        
+        variables = {
+            ...variables,
+            receiver: sendTo.receiver
+        };
+        
         sendMessage && sendMessage({ variables });
     }
 

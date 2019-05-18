@@ -19,7 +19,7 @@ class InboxPage extends Component {
         userId: 'admin',
         userName: 'ADMINISTRATOR',
         roomList: [],
-        currentRoomId: 'all',
+        currentRoomId: 'ALL',
         unreadMessageCount: {},
         messageOrder: [],
         roomRendering: {}
@@ -188,14 +188,14 @@ class InboxPage extends Component {
                             tabPosition={'left'}
                         >
                             <Tabs.TabPane 
-                                key={'all'}
+                                key={'ALL'}
                                 tab={
                                     <span>
                                         <Icon type='message' className='icon-message' />
                                         All Chats
                                         <Badge 
                                             className='icon-message-count'
-                                            count={10}
+                                            count={0}
                                             style={{ backgroundColor: '#52c41a' }}
                                         />
                                     </span>
@@ -203,10 +203,9 @@ class InboxPage extends Component {
                             >
                                 <ChatRoom
                                     chatBoxWrapperClassName='big-chatbox'
-                                    title='Message'
-                                    senderId='admin'
-                                    senderName='ADMINISTRATOR'
-                                    roomId='ROOM_admin'
+                                    title='All Chats'
+                                    roomId='ROOM_ALL'
+                                    sender={{ userId, userName }}
                                 />
                             </Tabs.TabPane>
                             {

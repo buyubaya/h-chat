@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Input, Modal, Badge, Icon, Card, Divider, Form } from 'antd';
+import { Button, Input, Modal, Badge, Icon, Card, Tabs } from 'antd';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Subscription, compose, graphql } from 'react-apollo';
 import {
     JOIN_ROOM_MUTATION
 } from '../apollo/qms';
-import {
-    // ROOM_QUERY,
-    // INVITE_TO_ROOM_MUTATION,
-    // ROOM_INVITED_SUBSCRIPTION, 
-    MESSAGE_SUBSCRIPTION
-} from '../apollo/chatGroup/qms';
 // COMPONENTS
 import ChatRoom from '../components/ChatRoom';
-import UserList from '../components/home/UserList';
-import ContactMeChatBox from '../components/ContactMeChatBox';
 
 
 class ChatPrivatePage extends Component {
@@ -23,8 +15,9 @@ class ChatPrivatePage extends Component {
         userId: null,
         userName: 'GUEST_USER',
         roomId: null,
-        roomTitle: 'HELLO',
+        roomTitle: 'Private Chat',
         groupId: 'GUEST_USER',
+
         sendTo: {
             receiver: {
                 roomId: ['ADMIN'],
@@ -40,7 +33,9 @@ class ChatPrivatePage extends Component {
                 roomId: ['ROOM_GUEST'],
                 groupId: ['GUEST_USER']
             }
-        }
+        },
+
+        chatMode: 'ALL'
     };
 
     componentWillMount() {
@@ -94,8 +89,12 @@ class ChatPrivatePage extends Component {
         }
     }
 
+    handleTabClick = (key, e) => {
+        this.setState({ chatMode: key });
+    }
+
     render() {
-        const { userId, userName, roomId, roomTitle, groupId, sendTo, listenTo } = this.state;
+        const { userId, userName, roomId, roomTitle, groupId, sendTo, listenTo, chatMode } = this.state;
         const sender = { userId, userName, roomId, groupId };
 
         if(!userId){
@@ -103,73 +102,78 @@ class ChatPrivatePage extends Component {
         }
         
         return (
-            <div className='msg-info-area'>
-                <Card>
-                    <Form>
-                        <table className='msg-info-table'>
-                            <thead>
-                                <tr>
-                                    <th colSpan={2}>User Info</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>User ID</th>
-                                    <th>{userId}</th>
-                                </tr>
-                                <tr>
-                                    <th>User Name</th>
-                                    <td>
-                                        <Input 
-                                            value={userName} 
-                                            placeholder='User Name' 
-                                            onChange={e => this.setState({ userName: e.target.value })}
-                                            onBlur={e => {
-                                                e.persist();
-                                                const value = e.target.value;
-                                                this.setState(state => {
-                                                    if(value && value.trim()){
-                                                        return({ userName: value });
-                                                    }
-                                                    return({ userName: 'GUEST_USER' });
-                                                });
-                                            }}
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>User Room ID</th>
-                                    <td>
-                                        <Input 
-                                            value={roomId} 
-                                            placeholder='User Room ID' 
-                                            onChange={e => this.setState({ roomId: e.target.value })}
-                                            onBlur={e => {
-                                                e.persist();
-                                                const value = e.target.value;
-                                                this.setState(state => {
-                                                    if(value && value.trim()){
-                                                        return({ roomId: value });
-                                                    }
-                                                    return({ roomId: 'ROOM_GLOBAL' });
-                                                });
-                                            }}
-                                        />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </Form>
+            <div className='chatbox-private-area'>
+                <Card className='msg-info-area'>
+                    <Input 
+                        value={userName} 
+                        placeholder='User Name' 
+                        onChange={e => this.setState({ userName: e.target.value })}
+                        onBlur={e => {
+                            e.persist();
+                            const value = e.target.value;
+                            this.setState(state => {
+                                if(value && value.trim()){
+                                    return({ userName: value });
+                                }
+                                return({ userName: 'GUEST_USER' });
+                            });
+                        }}
+                    />
                 </Card>
 
-                <ChatRoom 
-                    title={roomTitle}
-                    roomId={roomId}
-                    sender={sender}
-                    sendTo={sendTo}
-                    listenTo={listenTo}
-                    onMessageReceive={this.handleMessageReceive}
-                />
+                <Tabs
+                    className='home-room-tabs'
+                    activeKey={chatMode}
+                    onTabClick={this.handleTabClick}
+                >
+                    <Tabs.TabPane 
+                        key={'ALL'}
+                        tab={
+                            <span>
+                                <Icon type='message' className='icon-message' />
+                                All Chats
+                            </span>
+                        }
+                    >
+                        <div className='chatbox-all'>
+                            <ChatRoom 
+                                title={'All Chats'}
+                                roomId={'ROOM_ALL'}
+                                sender={sender}
+                                sendTo={{
+                                    receiver: {
+                                        roomId: 'ROOM_ALL'
+                                    }
+                                }}
+                                listenTo={{
+                                    receiver: {
+                                        roomId: 'ROOM_ALL'
+                                    }
+                                }}
+                            />
+                        </div>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane 
+                        key={'ADMIN'}
+                        tab={
+                            <span>
+                                <Icon type='message' className='icon-message' />
+                                Admin Chat
+                            </span>
+                        }
+                    >
+                        <div className='chatbox-private'>
+                            <ChatRoom 
+                                title={roomTitle}
+                                roomId={roomId}
+                                sender={sender}
+                                sendTo={sendTo}
+                                listenTo={listenTo}
+                                onMessageReceive={this.handleMessageReceive}
+                            />
+                        </div>
+                    </Tabs.TabPane>
+                </Tabs>
             </div>
         );
     }

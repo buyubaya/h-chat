@@ -35,7 +35,6 @@ body {
 
 .chatbox-wrapper {
 	max-width: 100%;
-	overflow: hidden;
 
 	// CHATBOX
 	.chatbox {
@@ -159,6 +158,8 @@ body {
 
 	.msg-text {
 		margin: 0;
+		word-break: break-all;
+		white-space: pre-wrap;
 	}
 
 	// SEND BOX
@@ -395,9 +396,14 @@ $icon-message-size: 30px;
 				border: 1px solid $chatbox-msg-v2-color;
 				border-left: none;
 				border-radius: 0 0.25rem 0.25rem 0;
-
-				&.ant-tabs-tab-active, &:hover {
+				
+				&.ant-tabs-tab:not(.ant-tabs-tab-active):hover {
 					color: $chatbox-msg-v2-color;
+				}
+
+				&.ant-tabs-tab-active {
+					color: #fff;
+					background: $chatbox-msg-v2-color;
 				}
 			}
 	
@@ -418,10 +424,22 @@ $icon-message-size: 30px;
 			}
 	
 			.ant-tabs-ink-bar {
-				width: 0.5rem !important;
-				border-radius: 0 0.25rem 0.25rem 0;
+				width: 0 !important;
+				// border-radius: 0 0.25rem 0.25rem 0;
 				background: $chatbox-msg-v2-color;
-				margin-right: 1rem;
+				// margin-right: 1rem;
+
+				&:before {
+					content: '';
+					display: block;
+					width: 1rem;
+					height: 1rem;
+					border-radius: 50%;
+					background: $chatbox-msg-v2-color;
+					position: absolute;
+					top: calc(50% - 0.5rem);
+					left: -0.5rem;
+				}
 			}
 		}
 
@@ -572,15 +590,62 @@ $icon-message-size: 30px;
 }
 
 
-// TABLE
-.msg-info-table {
-	width: 100%;
-	thead {
-		background: $chatbox-msg-v2-bg-color;
+// CHATBOX PRIVATE
+.chatbox-private-area {
+	width: 500px;
+	max-width: 100%;
+	margin: 20px auto;
+}
+
+
+// TAB HORIZONTAL
+.home-room-tabs {
+	margin-top: 20px;
+	overflow: visible;
+
+	.ant-tabs-bar {
+		border-bottom: 1px solid $chatbox-msg-v1-bg-color;
+		margin-bottom: 0;
 	}
-	tr>th {
-		width: 200px;
-		min-width: 200px;
-		max-width: 200px;
+
+	.ant-tabs-nav {
+		display: flex;
+
+		& > div {
+			display: flex;
+			flex: 1;
+		}
+
+		.ant-tabs-ink-bar {
+			display: none !important;
+		}
+
+		.ant-tabs-tab {
+			flex: 1;
+
+			.icon-message svg {
+				width: 1rem;
+				height: 1rem;
+			}
+
+			margin-right: 0;
+
+			&:hover {
+				color: $chatbox-msg-v1-bg-color;
+			}
+
+			&.ant-tabs-tab-active {
+				color: #fff;
+				background: $chatbox-msg-v1-bg-color;
+				&:hover {
+					color: #fff;
+				}
+			}
+		}
+	}
+
+	// CHATBOX
+	.chat-header {
+		display: none;
 	}
 }

@@ -21,14 +21,8 @@ class ChatRoom extends Component {
     componentDidMount(){
         // MESSAGE
         let { sender, roomId, listenTo } = this.props;
-        const listenToSenderRoomId = _.get(listenTo, 'sender.roomId');
         const listenToReceiverRoomId = _.get(listenTo, 'receiver.roomId');
-        if(listenToSenderRoomId){
-            _.set(listenTo, 'sender.roomId', [...listenToSenderRoomId, roomId]);
-        }
-        else {
-            _.set(listenTo, 'sender.roomId', [roomId]);
-        }
+        listenTo = listenTo ? listenTo : {};
         if(listenToReceiverRoomId){
             _.set(listenTo, 'receiver.roomId', [...listenToReceiverRoomId, roomId]);
         }
@@ -105,18 +99,24 @@ class ChatRoom extends Component {
     }
 
     handleMessageSend = (msgText) => {
-        let { sender, sendMessage, sendTo } = this.props;
+        let { sender, sendMessage, sendTo, roomId } = this.props;
         let variables = { 
             sender,
             content: msgText
         };
-
-        if(sendTo){
-            variables = {
-                ...variables,
-                receiver: sendTo.receiver || {} 
-            };
+        sendTo = sendTo ? sendTo : {};
+        const sendToRoomId = _.get(sendTo, 'receiver.roomId');
+        if(sendToRoomId){
+            _.set(sendTo, 'receiver.roomId', [...sendToRoomId, roomId]);
         }
+        else {
+            _.set(sendTo, 'receiver.roomId', [roomId]);
+        }
+        
+        variables = {
+            ...variables,
+            receiver: sendTo.receiver
+        };
         
         sendMessage && sendMessage({ variables });
     }
